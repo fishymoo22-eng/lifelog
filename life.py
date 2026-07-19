@@ -23,6 +23,7 @@ def main():
     st.title("Life Log")
     render_things_to_remember(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
+    render_activities(run_timestamp, conn)
     render_journal(run_timestamp, conn)
     render_mood(run_timestamp, conn)
     
@@ -215,6 +216,125 @@ def render_dreams(run_timestamp, conn):
     cursor.close()
 
 
+def render_activities(run_timestamp, conn):
+    """
+    Render section: Activities
+    This section can be used to document activities through the day.
+    """
+
+    # display title: log my activities!
+    st.header("Activities")
+
+    cursor = conn.cursor()
+
+    # define list of activity options
+    activity_menu = {
+        "Develop Life Log :computer:": {
+            "selected": False
+        },
+        "Go on a walk :walking_man:": {
+            "selected": False
+        },
+        "Play catch :baseball:": {
+            "selected": False
+        },
+        "Play basketball :basketball:": {
+            "selected": False
+        },
+        "Play on swingset :chains:": {
+            "selected": False
+        },
+        "Read :open_book:": {
+            "selected": False
+        },
+        "Dance :dancer:": {
+            "selected": False
+        },
+        "Watch TV :tv:": {
+            "selected": False
+        },
+        "Watch a movie :movie_camera:": {
+            "selected": False
+        },
+    }
+
+    with st.expander("Click to expand/collapse", expanded = False):
+        activity_date = st.date_input("Specify date:", key = "activity")
+
+        # loop through all activities to display
+        _write_text("Select completed activities:")
+        for activity_text in activity_menu:
+            activity_dict = activity_menu[activity_text]
+
+            # display activity with checkbox and save selection state
+            activity_dict["selected"] = st.checkbox(activity_text)
+
+        # loop through activities again if any were selected
+        f_selected_activities = any(
+            activity_menu[activity_text]["selected"] for activity_text in activity_menu 
+        )
+        if f_selected_activities:
+            # rate resistance to each selected activity 
+            _write_text("Rate intial resistance to activities:")
+                
+            for activity_text in activity_menu:
+                activity_dict = activity_menu[activity_text]
+                if activity_dict["selected"]:
+                    activity_dict["resistance"] = st.slider(
+                        f"{'&nbsp;' * 8}{activity_text}", 
+                        min_value = 1,
+                        max_value = 10, 
+                        value = 10,
+                        key = f"{activity_text} resistance"
+                    )
+            
+            # rate enjoyment of each selected activity 
+            _write_text("Rate eventual enjoyment of activities:")
+                
+            for activity_text in activity_menu:
+                activity_dict = activity_menu[activity_text]
+                # If activity is selected, display feedback 
+                if activity_dict["selected"]:
+                    activity_dict["enjoyment"] = st.slider(
+                        f"{'&nbsp;' * 8}{activity_text}", 
+                        min_value = 1,
+                        max_value = 10, 
+                        value = 10,
+                        key = f"{activity_text} enjoyment"
+                    )
+            
+        # display button to push to database
+        activities_submit_button = st.button("Submit Activities")
+
+        # save the captured input on click
+        if activities_submit_button and f_selected_activities:
+            # save activities to database
+            activity_data = [
+                (
+                    run_timestamp,
+                    activity_date,
+                    activity_text,
+                    activity_menu[activity_text]["resistance"],
+                    activity_menu[activity_text]["enjoyment"]
+                )
+                for activity_text 
+                in activity_menu
+                if activity_menu[activity_text]["selected"]
+            ]
+            
+            cursor.executemany("""
+                insert into activities (entry_time, date, activity, resistance_rating, enjoyment_rating)
+                values (%s, %s, %s, %s, %s)
+            """, activity_data)
+            conn.commit()
+            
+            st.success(f"[{run_timestamp}] Activity data recorded!")
+        elif activities_submit_button and not f_selected_activities:
+            st.warning("Please select an activity.")
+
+    cursor.close()
+
+
 def render_journal(run_timestamp, conn):
     """
     Render section: Journal
@@ -260,7 +380,6 @@ def render_journal(run_timestamp, conn):
                 audio_file
             )
             
-            cursor = conn.cursor()
             cursor.execute("""
                 insert into journal (entry_time, date, journal_text, file_name)
                 values (%s, %s, %s, %s)
@@ -342,10 +461,10 @@ def render_mood(run_timestamp, conn):
                 workday
             )
             
-            cursor = conn.cursor()
-            cursor.execute(
-                "insert into mood values (%s, %s, %s, %s, %s)", mood_data
-            )
+            cursor.execute("""
+                insert into mood (entry_time, date, how_was_your_day, day_descriptors, how_was_work)
+                values (%s, %s, %s, %s, %s)
+            """, mood_data)
             conn.commit()
             
             st.success(f"[{run_timestamp}] Mood data recorded!")
