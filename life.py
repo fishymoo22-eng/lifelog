@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 import psycopg
 import pytz
+import random
 
 
 def main():
@@ -23,6 +24,7 @@ def main():
     st.title("Life Log")
     render_things_to_remember(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
+    render_activity_roll(run_timestamp, conn)
     render_activities(run_timestamp, conn)
     render_journal(run_timestamp, conn)
     render_mood(run_timestamp, conn)
@@ -195,7 +197,7 @@ def render_dreams(run_timestamp, conn):
             # Forms require a dedicated submit button
             dream_submit_button = st.form_submit_button("Submit Dream")
 
-        # save the captured input on click
+        # conditional logic if button is clicked
         if dream_submit_button:
             # save entry to database
             dream_data = (
@@ -215,6 +217,177 @@ def render_dreams(run_timestamp, conn):
 
     cursor.close()
 
+
+def render_activity_roll(run_timestamp, conn):
+    """
+    Render section: Activity Roll
+    This section can be used to randomly roll for an activity.
+    """
+
+    # display title: log my activities!
+    st.header("Random Activity Roll")
+
+    cursor = conn.cursor()
+
+    # define list of activity options
+    rerolls_allowed = False
+    activity_menu = {
+        "Develop Life Log :computer:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 15,
+            "participant_requirement": 1
+        },
+        "Go on a walk :walking_man:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 15,
+            "participant_requirement": 1
+        },
+        "Play catch :baseball:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 15,
+            "participant_requirement": 2
+        },
+        "Play basketball :basketball:": {
+            "accepted_times": ["morning", "afternoon"],
+            "time_requirement": 30,
+            "participant_requirement": 2
+        },
+        "Play on swingset :chains:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 15,
+            "participant_requirement": 1
+        },
+        "Read :open_book:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 15,
+            "participant_requirement": 1
+        },
+        "Dance :dancer:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 5,
+            "participant_requirement": 1
+        },
+        "Watch TV :tv:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 60,
+            "participant_requirement": 1
+        },
+        "Watch a movie :movie_camera:": {
+            "accepted_times": ["morning", "afternoon", "night"],
+            "time_requirement": 120,
+            "participant_requirement": 1
+        },
+    }
+
+    with st.expander("Click to expand/collapse", expanded = False):
+        # specify activity requirements 
+        time_of_day = st.radio(
+            "Enter time of day:",
+            ("Morning", "Afternoon", "Night"),
+            index = None,
+            horizontal = True
+        )
+        time_available = st.number_input(
+            "Enter number of available minutes:",
+            min_value = 0,
+            step = 15,
+            value = 0
+        )
+        participants_available = st.number_input(
+            "Enter number of available participants (including yourself):",
+            min_value = 1,
+            value = 1
+        )
+
+        # grab last roll time from database
+        cursor.execute("""
+            select roll_time 
+                ,activity
+            from random_activity_rolls
+            order by roll_time desc
+            limit 1 
+        """)
+        last_roll = cursor.fetchone()
+
+        # if there is not existing data, set last roll info to none 
+        if not last_roll:
+            last_roll_date = None
+            last_roll_activity = None 
+        else:
+            last_roll_date = last_roll[0]
+            last_roll_activity = last_roll[1]
+
+        # compare last roll date to current date 
+        current_date = datetime.strptime(run_timestamp, "%Y-%m-%d %I:%M:%S %p")
+        if last_roll_date:
+            # if last roll was today, disable roll button 
+            if not rerolls_allowed and last_roll_date.date() == current_date.date():
+                roll_disabled = True
+            else:
+                roll_disabled = False 
+                last_roll_activity = None
+        # if there is no roll history, enable button
+        else:
+            roll_disabled = False 
+            last_roll_activity = None
+
+        # display button to push to database
+        activities_roll_button = st.button(
+            "Roll for Activity",
+            disabled = roll_disabled
+        )
+
+        # conditional logic if button is clicked
+        if activities_roll_button:
+            # verify that all requirements are filled out 
+            if time_of_day is None \
+                or time_available is None \
+                or participants_available is None:
+                st.warning("Please specify all fields to roll an activity.")
+                return
+
+            # using activity requirements, get list of potential activities
+            activity_options = [
+                activity 
+                for activity
+                in activity_menu
+                if time_of_day.lower() in activity_menu[activity]["accepted_times"]
+                    and time_available >= activity_menu[activity]["time_requirement"]
+                    and participants_available >= activity_menu[activity]["participant_requirement"]
+            ]
+
+            # if there are no activities that meet parameters, display warning 
+            if not activity_options:
+                st.warning("No activities meet the specifications.")
+                return
+            
+            # randomly roll on an activity 
+            new_activity_roll = random.choice(activity_options)
+
+            # push random roll to database 
+            random_roll_data = (
+                current_date,
+                new_activity_roll,
+                time_of_day,
+                time_available,
+                participants_available
+            )
+
+            cursor.execute("""
+                insert into random_activity_rolls (roll_time, activity, time_of_day, time_available, participants_available)
+                values (%s, %s, %s, %s, %s)
+            """, random_roll_data)
+            conn.commit()
+
+            # rerun to disable roll button
+            st.rerun()
+
+        # if there is a last activity of the day, display it with date
+        if last_roll_activity:
+            _write_text(last_roll_activity)
+            st.success(f"[{last_roll_date}] Random activity rolled!")
+
+    cursor.close()
 
 def render_activities(run_timestamp, conn):
     """
@@ -306,7 +479,7 @@ def render_activities(run_timestamp, conn):
         # display button to push to database
         activities_submit_button = st.button("Submit Activities")
 
-        # save the captured input on click
+        # conditional logic if button is clicked
         if activities_submit_button and f_selected_activities:
             # save activities to database
             activity_data = [
@@ -370,7 +543,7 @@ def render_journal(run_timestamp, conn):
             # Forms require a dedicated submit button
             journal_submit_button = st.form_submit_button("Submit Journal")
 
-        # save the captured input on click
+        # conditional logic if button is clicked
         if journal_submit_button:
             # save entry to database
             journal_data = (
@@ -450,7 +623,7 @@ def render_mood(run_timestamp, conn):
             # Forms require a dedicated submit button
             mood_submit_button = st.form_submit_button("Submit Mood")
 
-        # save the captured input on click
+        # conditional logic if button is clicked
         if mood_submit_button:
             # save entry to database
             mood_data = (
