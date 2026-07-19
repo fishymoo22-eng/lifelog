@@ -11,6 +11,7 @@ st.markdown(
     <style>
         .block-container {
             padding-bottom: 0rem;
+            padding-top: 1rem;
         }
     </style>
     """,
