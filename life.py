@@ -27,7 +27,7 @@ def main():
     render_mood(run_timestamp, conn)
     
     # display last run date in gray
-    st.markdown(f":gray[Last run on: {run_timestamp}]")
+    _write_text(f":gray[Last run on: {run_timestamp}]")
 
     # close connection 
     conn.close()
@@ -172,7 +172,7 @@ def render_dreams(run_timestamp, conn):
         with st.form("dream_form", clear_on_submit = True, border = False):
 
             # offer various options for recording dreams:
-            dream_date = st.date_input("Specify date, if applicable:", key = "dream")
+            dream_date = st.date_input("Specify date:", key = "dream")
 
             # upload voice memo
             uploaded_file = st.file_uploader(
@@ -228,7 +228,7 @@ def render_journal(run_timestamp, conn):
 
     with st.expander("Click to expand/collapse", expanded = False):
         with st.form("journal_form", clear_on_submit = True, border = False):
-            journal_date = st.date_input("Specify date, if applicable:", key = "journal")
+            journal_date = st.date_input("Specify date:", key = "journal")
 
             # upload voice memo
             uploaded_file = st.file_uploader(
@@ -286,7 +286,7 @@ def render_mood(run_timestamp, conn):
     with st.expander("Click to expand/collapse", expanded = False):
         with st.form("mood_form", clear_on_submit = True, border = False):
 
-            mood_date = st.date_input("Specify date, if applicable:", key = "mood")
+            mood_date = st.date_input("Specify date:", key = "mood")
 
             # log how my day was
             general_day = st.radio(
@@ -297,7 +297,7 @@ def render_mood(run_timestamp, conn):
             )
 
             # log descriptors for day
-            st.write("What was it like?")
+            _write_text("What was it like?")
             adventurous_day = st.checkbox("Adventurous :airplane:")
             sociable_day = st.checkbox("Socialable :handshake:")
             sad_day = st.checkbox("Sad :cry:")
@@ -351,6 +351,16 @@ def render_mood(run_timestamp, conn):
             st.success(f"[{run_timestamp}] Mood data recorded!")
 
     cursor.close()
+
+
+def _write_text(
+    text: str,
+    size: str = "14"
+):
+    """
+    Display text with custom font size to match Streamlit labels.
+    """
+    return st.markdown(f"<span style='font-size: {size}px;'>{text}</span>", unsafe_allow_html = True)
 
 
 if __name__ == "__main__":
