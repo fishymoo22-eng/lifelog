@@ -33,6 +33,12 @@ with st.expander("Click to expand/collapse", expanded = False):
         things_to_remember_new = st.data_editor(
             things_to_remember_curr,
             num_rows = "dynamic",
+            column_config = {
+                "thing_to_remember": st.column_config.TextColumn(
+                    "thing_to_remember",
+                    width = 275
+                )
+            }
         )
 
         # The app will only proceed past this line when the button is clicked
