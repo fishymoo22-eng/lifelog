@@ -3,9 +3,24 @@ import numpy as np
 import pandas as pd
 import datetime
 import psycopg
+import pytz
 
-# log rerun 
-run_timestamp = datetime.datetime.now().strftime("%Y-%m-%d %I:%M:%S %p")
+# remove excess padding from bottom of page
+st.markdown(
+    """
+    <style>
+        .block-container {
+            padding-bottom: 0rem;
+        }
+    </style>
+    """,
+    unsafe_allow_html = True,
+)
+
+# record run time in relevant timezone
+user_tz = st.context.timezone 
+tz_obj = pytz.timezone(user_tz)
+run_timestamp = datetime.datetime.now(tz_obj).strftime("%Y-%m-%d %I:%M:%S %p")
 
 # display title: log my life!
 st.title("Life Log")
@@ -273,3 +288,6 @@ with st.expander("Click to expand/collapse", expanded = False):
 
 cursor.close()
 conn.close()
+
+# display last run date in gray
+st.markdown(f":gray[Last run on: {run_timestamp}]")
