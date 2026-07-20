@@ -28,6 +28,7 @@ def main():
     render_activities(run_timestamp, conn)
     render_journal(run_timestamp, conn)
     render_mood(run_timestamp, conn)
+    configure_user_options(run_timestamp, conn)
     
     # display last run date in gray
     _write_text(f":gray[Last run on: {run_timestamp}]")
@@ -70,7 +71,7 @@ def render_things_to_remember(run_timestamp, conn):
         if "things_to_remember_update" not in st.session_state:
             st.session_state["things_to_remember_update"] = False
 
-        with st.form(key="things_to_remember_form", border=False):
+        with st.form(key = "things_to_remember_form", border=False):
             # read things to remember from sql
             things_to_remember_curr = pd.read_sql_query("""
                 select thing_to_remember 
@@ -84,7 +85,7 @@ def render_things_to_remember(run_timestamp, conn):
                 num_rows = "dynamic",
                 column_config = {
                     "thing_to_remember": st.column_config.TextColumn(
-                        "thing_to_remember",
+                        "Thing to Remember",
                         width = 275
                     )
                 }
@@ -229,55 +230,19 @@ def render_activity_roll(run_timestamp, conn):
 
     cursor = conn.cursor()
 
-    # define list of activity options
-    rerolls_allowed = False
-    activity_menu = {
-        "Develop Life Log :computer:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 15,
-            "participant_requirement": 1
-        },
-        "Go on a walk :walking_man:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 15,
-            "participant_requirement": 1
-        },
-        "Play catch :baseball:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 15,
-            "participant_requirement": 2
-        },
-        "Play basketball :basketball:": {
-            "accepted_times": ["morning", "afternoon"],
-            "time_requirement": 30,
-            "participant_requirement": 2
-        },
-        "Play on swingset :chains:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 15,
-            "participant_requirement": 1
-        },
-        "Read :open_book:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 15,
-            "participant_requirement": 1
-        },
-        "Dance :dancer:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 5,
-            "participant_requirement": 1
-        },
-        "Watch TV :tv:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 60,
-            "participant_requirement": 1
-        },
-        "Watch a movie :movie_camera:": {
-            "accepted_times": ["morning", "afternoon", "night"],
-            "time_requirement": 120,
-            "participant_requirement": 1
-        },
-    }
+    # pull activity reroll option 
+    cursor.execute("""
+        select activity_rerolls_allowed 
+        from configuration
+    """)
+    activity_rerolls_allowed = cursor.fetchone()[0]
+
+    # pull list of activities config
+    activity_config = pd.read_sql_query("""
+        select * 
+        from activity_config 
+    """, conn)
+    activity_menu = activity_config.to_dict("records")
 
     with st.expander("Click to expand/collapse", expanded = False):
         # specify activity requirements 
@@ -319,17 +284,11 @@ def render_activity_roll(run_timestamp, conn):
 
         # compare last roll date to current date 
         current_date = datetime.strptime(run_timestamp, "%Y-%m-%d %I:%M:%S %p")
+        roll_disabled = False
         if last_roll_date:
             # if last roll was today, disable roll button 
-            if not rerolls_allowed and last_roll_date.date() == current_date.date():
+            if not activity_rerolls_allowed and last_roll_date.date() == current_date.date():
                 roll_disabled = True
-            else:
-                roll_disabled = False 
-                last_roll_activity = None
-        # if there is no roll history, enable button
-        else:
-            roll_disabled = False 
-            last_roll_activity = None
 
         # display button to push to database
         activities_roll_button = st.button(
@@ -348,12 +307,12 @@ def render_activity_roll(run_timestamp, conn):
 
             # using activity requirements, get list of potential activities
             activity_options = [
-                activity 
-                for activity
+                activity_dict["activity"]
+                for activity_dict
                 in activity_menu
-                if time_of_day.lower() in activity_menu[activity]["accepted_times"]
-                    and time_available >= activity_menu[activity]["time_requirement"]
-                    and participants_available >= activity_menu[activity]["participant_requirement"]
+                if time_of_day in activity_dict["accepted_times"]
+                    and time_available >= activity_dict["time_requirement"]
+                    and participants_available >= activity_dict["participant_requirement"]
             ]
 
             # if there are no activities that meet parameters, display warning 
@@ -383,9 +342,9 @@ def render_activity_roll(run_timestamp, conn):
             st.rerun()
 
         # if there is a last activity of the day, display it with date
-        if last_roll_activity:
+        if last_roll_date:
             _write_text(last_roll_activity)
-            st.success(f"[{last_roll_date}] Random activity rolled!")
+            st.success(f"[{last_roll_date.strftime("%Y-%m-%d %I:%M:%S %p")}] Random activity rolled!")
 
     cursor.close()
 
@@ -400,35 +359,20 @@ def render_activities(run_timestamp, conn):
 
     cursor = conn.cursor()
 
-    # define list of activity options
+    # pull current activity list from database 
+    activity_config = pd.read_sql_query("""
+        select * 
+        from activity_config 
+    """, conn)
+    activity_list = activity_config["activity"].tolist()
+
+    # initialize activity menu with dictionary under each activity
     activity_menu = {
-        "Develop Life Log :computer:": {
+        activity_text: {
             "selected": False
-        },
-        "Go on a walk :walking_man:": {
-            "selected": False
-        },
-        "Play catch :baseball:": {
-            "selected": False
-        },
-        "Play basketball :basketball:": {
-            "selected": False
-        },
-        "Play on swingset :chains:": {
-            "selected": False
-        },
-        "Read :open_book:": {
-            "selected": False
-        },
-        "Dance :dancer:": {
-            "selected": False
-        },
-        "Watch TV :tv:": {
-            "selected": False
-        },
-        "Watch a movie :movie_camera:": {
-            "selected": False
-        },
+        }
+        for activity_text 
+        in activity_list
     }
 
     with st.expander("Click to expand/collapse", expanded = False):
@@ -641,6 +585,104 @@ def render_mood(run_timestamp, conn):
             conn.commit()
             
             st.success(f"[{run_timestamp}] Mood data recorded!")
+
+    cursor.close()
+
+
+def configure_user_options(run_timestamp, conn):
+    """
+    Render section: Configure User Options.
+    This section provides a table with user configuration.
+    """
+    
+    # display header: log my things to remember!
+    st.header("Configuration")
+
+    cursor = conn.cursor()
+
+    with st.expander("Click to expand/collapse", expanded = False):
+        if "configuration_update" not in st.session_state:
+            st.session_state["configuration_update"] = False
+
+        with st.form(key="configuration_form", border=False):
+            # pull current reroll setting from database
+            cursor.execute("""
+                select activity_rerolls_allowed 
+                from configuration
+            """)
+            activity_rerolls_allowed = cursor.fetchone()[0]
+
+            # display toggle with default option 
+            new_activity_rerolls_allowed = st.toggle(
+                "Allow activity rerolls", 
+                value = activity_rerolls_allowed
+            )
+            
+            # pull current activity list from database 
+            curr_activity_config = pd.read_sql_query("""
+                select * 
+                from activity_config 
+            """, conn)
+
+            # display with st.data_editor, which allows us to remove or edit items dynamically
+            new_activity_config = st.data_editor(
+                curr_activity_config,
+                num_rows = "dynamic",
+                column_config = {
+                    "activity": st.column_config.TextColumn(
+                        "Activity",
+                        required = True,
+                    ),
+                    "accepted_times": st.column_config.MultiselectColumn(
+                        "Accepted Times",
+                        options = ["Morning", "Afternoon", "Night"],
+                        required = True,
+                        default = ["Morning", "Afternoon", "Night"],
+                    ),
+                    "time_requirement": st.column_config.NumberColumn(
+                        "Time Requirement (Minutes)",
+                        required = True,
+                    ),
+                    "participant_requirement": st.column_config.NumberColumn(
+                        "Participant Requirement (Including Self)",
+                        required = True,
+                    )
+                }
+            )
+
+            # The app will only proceed past this line when the button is clicked
+            submit_button = st.form_submit_button(label="Save Changes")
+
+        if submit_button:
+            # if reroll config was changed, update database table
+            if new_activity_rerolls_allowed != activity_rerolls_allowed:
+                cursor.execute(f"""
+                    update configuration
+                    set activity_rerolls_allowed = {new_activity_rerolls_allowed};
+                """)
+
+            # remove existing config 
+            cursor.execute("""
+                truncate table activity_config
+            """)
+            conn.commit()
+            
+            # update activity config table
+            new_activity_config_records = [tuple(vals) for vals in new_activity_config.to_numpy()]
+            cursor.executemany("""
+                insert into activity_config (activity, accepted_times, time_requirement, participant_requirement)
+                values (%s, %s, %s, %s)
+            """, new_activity_config_records)
+            conn.commit()
+
+            # rerun to pull updated data from database 
+            st.session_state["configuration_update"] = True
+            st.rerun()
+
+        # display success message
+        if st.session_state["configuration_update"]:
+            st.success(f"[{run_timestamp}] Configuration updated!")
+            st.session_state["configuration_update"] = False
 
     cursor.close()
 
