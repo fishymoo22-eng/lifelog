@@ -74,9 +74,9 @@ def render_aquarium():
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
-            "top_y_1": 20,
-            "top_y_2": 40,
-            "speed": 18, 
+            "top_y_1": 30,
+            "top_y_2": 50,
+            "speed": 35, 
             "delay": -2,
             "size": 0.8
         },
@@ -88,11 +88,11 @@ def render_aquarium():
             "base_color": "#ff5fa2",
             "light_accent_color": "#ff9bc8",
             "dark_accent_color": "#d9367a",
-            "top_y_1": 20,
-            "top_y_2": 40,
-            "speed": 24,
+            "top_y_1": 35,
+            "top_y_2": 45,
+            "speed": 44,
             "delay": 0,
-            "size": 1.5
+            "size": 1.2
         },
         {
             "fish_id": 3,
@@ -102,9 +102,9 @@ def render_aquarium():
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
             "dark_accent_color": "#0d3c78",
-            "top_y_1": 20,
-            "top_y_2": 40,
-            "speed": 15, 
+            "top_y_1": 60,
+            "top_y_2": 34,
+            "speed": 42, 
             "delay": -7,
             "size": 0.9
         },
@@ -116,11 +116,11 @@ def render_aquarium():
             "base_color": "#fcd628",
             "light_accent_color": "#ffe987",
             "dark_accent_color": "#ffc21c",
-            "top_y_1": 30,
-            "top_y_2": 70,
-            "speed": 20, 
-            "delay": 2,
-            "size": 2
+            "top_y_1": 65,
+            "top_y_2": 60,
+            "speed": 50, 
+            "delay": -5,
+            "size": 1.5
         }
     ]
 
@@ -186,6 +186,31 @@ def render_aquarium():
 
         fish_dict["svg"] = full_svg_text
 
+    # define bubble html
+    bubble_html = ""
+
+    # define random seed 
+    if "aquarium_seed" not in st.session_state:
+        st.session_state.aquarium_seed = random.randint(0, 999999)
+    random.seed(st.session_state.aquarium_seed)
+    
+    for i in range(30):
+        bubble_html += f"""
+        <div class="bubble"
+            style="
+                --left:{random.randint(0,100)}%;
+                --size:{random.uniform(6,20):.1f}px;
+                --duration:{random.uniform(4,10):.1f}s;
+                --delay:{random.uniform(-10,0):.1f}s;
+                --drift:{random.randint(-25,25)}px;
+            ">
+        </div>
+        """
+
+    # read kelp svg 
+    kelp_long_svg = Path(f"aquarium_shapes/kelp_long.svg").read_text()
+    kelp_short_svg = Path(f"aquarium_shapes/kelp_short.svg").read_text()
+
     # define html content 
     content = f"""
     <html>
@@ -193,10 +218,16 @@ def render_aquarium():
     <style>
 
     body {{
-        background:#91c7ed;
         margin:0;
         overflow:hidden;
+    }}
+
+    .aquarium {{
+        position: relative;
+        width:100%;
         height:400px;
+        background:#91c7ed;
+        overflow:hidden;
     }}
 
     .fish-container {{
@@ -213,11 +244,71 @@ def render_aquarium():
 
         top: var(--depth, 20%);
         transform: scale(var(--size, 1));
+        
+        z-index:5;
+    }}
+
+    .bubble {{
+        position: absolute;
+
+        left: var(--left);
+        bottom: -30px;
+
+        width: var(--size);
+        height: var(--size);
+
+        border-radius: 50%;
+
+        background: transparent;
+        border: 1px solid rgba(255,255,255,.45);
+
+        box-shadow:
+            inset 2px 2px 2px rgba(255,255,255,.2);
+
+        animation: rise var(--duration) linear infinite;
+        animation-delay: var(--delay);
+
+        pointer-events: none;
+
+        z-index:2;
+    }}
+    .bubble::after {{
+        content: "";
+
+        position: absolute;
+
+        width: 20%;
+        height: 20%;
+
+        top: 20%;
+        left: 20%;
+
+        border-radius: 50%;
+
+        background: rgba(255,255,255,.8);
+
+        filter: blur(1px);
     }}
 
     svg {{
         width:130px;
         height:auto;
+    }}
+
+    .kelp-container {{
+        position: absolute;
+
+        bottom: -10px;
+        left: 10%;
+
+        height: 250px;
+
+        z-index: 2;
+    }}
+
+    .kelp-container svg {{
+        height: 100%;
+        width: auto;
     }}
 
     /* animate tail if SVG contains fish-tail in id */
@@ -239,34 +330,47 @@ def render_aquarium():
             fin-flutter .7s ease-in-out infinite alternate;
     }}
 
+    /* animate bubbles */
+    @keyframes rise {{
+        from {{
+            transform: translate(0, 0);
+            opacity: 1;
+        }}
+
+        to {{
+            transform: translate(var(--drift),-380px);
+            opacity: 1;
+        }}
+    }}
+
     /* animate fish swimming */
     @keyframes swim {{
         0% {{
-            left:-150px;
+            left:-100%;
             top: var(--top1);
             transform:scaleX(-1) scale(var(--size));
         }}
 
-        45% {{
-            left:100%;
+        49% {{
+            left:150%;
             top: var(--top1);
             transform:scaleX(-1) scale(var(--size));
         }}
 
         50% {{
-            left:100%;
+            left:150%;
             top: var(--top2);
             transform:scaleX(1) scale(var(--size));
         }}
 
-        95% {{
-            left:-150px;
+        99% {{
+            left:-100%;
             top: var(--top2);
             transform:scaleX(1) scale(var(--size));
         }}
 
         100% {{
-            left:-150px;
+            left:-100%;
             top: var(--top1);
             transform:scaleX(-1) scale(var(--size));
         }}
@@ -292,13 +396,25 @@ def render_aquarium():
     }}
 
     </style>
+    
+    <div class="aquarium">
 
-    /* insert each fish svg */
-    {
-        """
-        """.join([fish_dict["svg"] for fish_dict in fish_config])
-    }
+        <!-- insert bubbles -->
+        {bubble_html}
 
+        <!-- insert kelp -->
+        <div class="kelp-container">
+            {kelp_long_svg}
+            {kelp_short_svg}
+        </div>
+
+        <!-- insert fish -->
+        {
+            """
+            """.join([fish_dict["svg"] for fish_dict in fish_config])
+        }
+
+    </div>
     </html>
     """
 
