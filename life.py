@@ -213,8 +213,6 @@ def render_aquarium():
 
     # define html content 
     content = f"""
-    <html>
-
     <style>
 
     body {{
@@ -410,12 +408,10 @@ def render_aquarium():
 
         <!-- insert fish -->
         {
-            """
-            """.join([fish_dict["svg"] for fish_dict in fish_config])
+            " ".join([fish_dict["svg"] for fish_dict in fish_config])
         }
 
     </div>
-    </html>
     """
 
     # detect whether each fish is clicked 
