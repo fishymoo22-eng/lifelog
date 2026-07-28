@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="130px"
+   height="60px"
+   viewBox="0 0 100 50"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="fish_two_color_tail_lines.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="swatch9"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#ff7a00;stop-opacity:1;"
+         offset="0"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       id="swatch7">
+      <stop
+         style="stop-color:#ff7a00;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+    </linearGradient>
+    <inkscape:path-effect
+       effect="skeletal"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       pattern="M 0,14.513788 C 0,6.5021771 6.5021771,0 14.513788,0 c 8.011611,0 14.513788,6.5021771 14.513788,14.513788 0,8.011611 -6.502177,14.513788 -14.513788,14.513788 C 6.5021771,29.027576 0,22.525399 0,14.513788 Z"
+       copytype="single_stretched"
+       prop_scale="1"
+       scale_y_rel="false"
+       spacing="0"
+       normal_offset="0"
+       tang_offset="0"
+       prop_units="false"
+       vertical_pattern="false"
+       hide_knot="false"
+       fuse_tolerance="0" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="11.313708"
+     inkscape:cx="72.124895"
+     inkscape:cy="36.19503"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <!-- Main body group -->
+  <!-- Tail -->
+  <g
+     id="fish-body"
+     transform="matrix(1.2760047,0,0,1.2760047,-21.375798,-9.6491681)">
+    <!-- Main torso -->
+    <path
+       id="body"
+       d="M 15,25 C 30,5 65,12 78,25 65,38 30,45 15,25 Z"
+       fill="#ff7a00" />
+    <path
+       id="body-1"
+       d="m 15,24.983955 c 5.417325,-7.147314 12.994295,-10.127379 16.552253,-10.815857 3.753827,7.52123 4.048664,14.405113 0.248644,21.852686 C 27.690134,34.743049 20.187199,32.241754 15,24.983955 Z"
+       fill="#ff7a00"
+       sodipodi:nodetypes="cccc"
+       style="fill:#ffa95a;fill-opacity:1;stroke-width:0.866191" />
+    <!-- Eye -->
+    <circle
+       id="eye-white"
+       cx="22.5"
+       cy="22"
+       r="2"
+       fill="#ffffff" />
+    <!-- Pupil -->
+    <circle
+       id="pupil"
+       cx="22"
+       cy="22"
+       r="1"
+       fill="#000000" />
+    <!-- Gills -->
+    <path
+       id="gill-1"
+       d="m 36.666668,20 q 4,5 0,10"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.75"
+       stroke-linecap="round" />
+    <path
+       id="gill-2"
+       d="m 38.666668,20 q 4,5 0,10"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.75"
+       stroke-linecap="round" />
+    <path
+       id="gill-2-2"
+       d="m 19.719709,27.139122 q -0.647057,0.787362 -1.717705,1.000177"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.0995893"
+       stroke-linecap="round"
+       style="stroke-width:0.23622;stroke-linecap:round;stroke-dasharray:none" />
+    <path
+       id="gill-3"
+       d="m 40.666668,20 q 4,5 0,10"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.75"
+       stroke-linecap="round" />
+    <!-- Pectoral fin -->
+    <path
+       id="pectoral-fin"
+       d="m 45.585298,31.622108 c 5,7 2,12 -2,10 -2,-3 0,-8 2,-10 z"
+       fill="#e66e00" />
+  </g>
+  <g
+     id="fish-tail"
+     transform="matrix(1.2760047,0,0,1.2760047,-21.375798,-9.6491681)">
+    <!-- Main torso -->
+    <!-- Eye -->
+    <!-- Pupil -->
+    <!-- Gills -->
+    <!-- Pectoral fin -->
+    <path
+       id="fish-tail-0"
+       d="m 75.195513,25.080128 c 7,-7 17,-13 22,-11 -3,8 -3,14 0,22 -5,2 -15,-4 -22,-11 z"
+       fill="#ff7a00" />
+    <path
+       id="fish-stroke-6"
+       d="m 93.426892,24.101649 q -8.173959,-3.665027 -16.347921,0"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.917911"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+    <path
+       id="fish-stroke-5"
+       d="m 93.733746,26.054099 q -8.270939,3.656363 -16.541878,0"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="0.922248"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+    <path
+       id="fish-stroke-4"
+       d="M 94.448402,20.489128 Q 84.838526,18.118132 77.316994,23.950343"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="1.01928"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+    <path
+       id="fish-stroke-3"
+       d="M 94.604187,29.804188 Q 84.994312,32.175184 77.47278,26.342973"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="1.01928"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+    <path
+       id="fish-stroke-2"
+       d="M 95.776492,15.880975 Q 84.734404,16.439951 77.454069,23.811284"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="1.04278"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+    <path
+       id="fish-stroke-1"
+       d="M 95.558557,34.100738 Q 84.516468,33.541762 77.236133,26.170429"
+       fill="none"
+       stroke="#e66e00"
+       stroke-width="1.04278"
+       stroke-linecap="round"
+       style="stroke-width:0.727559;stroke-dasharray:none" />
+  </g>
+</svg>

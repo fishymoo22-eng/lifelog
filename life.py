@@ -1,7 +1,9 @@
-import streamlit as st
-import numpy as np
+from pathlib import Path
 import pandas as pd
 from datetime import datetime
+
+import streamlit as st
+from st_click_detector import click_detector
 import psycopg
 import pytz
 import random
@@ -21,6 +23,7 @@ def main():
 
     # configure and render app
     configure_app()
+    render_aquarium()
     st.title("Life Log")
     render_things_to_remember(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
@@ -54,6 +57,275 @@ def configure_app():
         """,
         unsafe_allow_html = True,
     )
+
+
+def render_aquarium():
+    """
+    Render section: Aquarium.
+    This section displays a nice aquarium.
+    """
+    
+    fish_config = [
+        {
+            "fish_id": 1,
+            "fish_name": "Nemo",
+            "fish_type": "fish_two_color_tail_lines",
+            "fish_mapping": "journal",
+            "base_color": "#ff7a00",
+            "light_accent_color": "#ffa95a",
+            "dark_accent_color": "#e66e00",
+            "top_y_1": 20,
+            "top_y_2": 40,
+            "speed": 18, 
+            "delay": -2,
+            "size": 0.8
+        },
+        {
+            "fish_id": 2,
+            "fish_name": "Bubbles",
+            "fish_type": "fish_two_color",
+            "fish_mapping": "journal",
+            "base_color": "#ff5fa2",
+            "light_accent_color": "#ff9bc8",
+            "dark_accent_color": "#d9367a",
+            "top_y_1": 20,
+            "top_y_2": 40,
+            "speed": 24,
+            "delay": 0,
+            "size": 1.5
+        },
+        {
+            "fish_id": 3,
+            "fish_name": "Dory",
+            "fish_type": "fish_two_color",
+            "fish_mapping": "journal",
+            "base_color": "#1356ad",
+            "light_accent_color": "#5084c7",
+            "dark_accent_color": "#0d3c78",
+            "top_y_1": 20,
+            "top_y_2": 40,
+            "speed": 15, 
+            "delay": -7,
+            "size": 0.9
+        },
+        {
+            "fish_id": 4,
+            "fish_name": "Marlin",
+            "fish_type": "fish_one_color",
+            "fish_mapping": "test",
+            "base_color": "#fcd628",
+            "light_accent_color": "#ffe987",
+            "dark_accent_color": "#ffc21c",
+            "top_y_1": 30,
+            "top_y_2": 70,
+            "speed": 20, 
+            "delay": 2,
+            "size": 2
+        }
+    ]
+
+    # build dictonary with svg of each fish type 
+    fish_shape_svg = {
+        "fish_one_color": Path(f"aquarium_shapes/fish_one_color.svg").read_text(),
+        "fish_two_color": Path(f"aquarium_shapes/fish_two_color.svg").read_text(),
+        "fish_two_color_tail_lines": Path(f"aquarium_shapes/fish_two_color_tail_lines.svg").read_text()
+    }
+
+    for fish_dict in fish_config:
+        # grab raw fish svg 
+        fish_svg_text = fish_shape_svg[fish_dict["fish_type"]]
+
+        # map svg colors to new colors
+        color_map = {
+            "#ff7a00": fish_dict["base_color"], 
+            "#ffa95a": fish_dict["light_accent_color"], 
+            "#e66e00": fish_dict["dark_accent_color"]
+        }
+
+        for old_color, new_color in color_map.items():
+            fish_svg_text = fish_svg_text.replace(old_color, new_color)
+
+        # map svg ids to unique ids per fish
+        fish_id = fish_dict["fish_id"]
+        id_map = {
+            '"fish-body"': f'"f{fish_id}-fish-body"',
+            '"body"': f'"f{fish_id}-body"',
+            '"body-0"': f'"f{fish_id}-body-0"',
+            '"fish-tail-0"': f'"f{fish_id}-fish-tail-0"',
+            '"eye-white"': f'"f{fish_id}-eye-white"',
+            '"pupil"': f'"f{fish_id}-pupil"',
+            '"gill-1"': f'"f{fish_id}-gill-1"',
+            '"gill-2"': f'"f{fish_id}-gill-2"',
+            '"gill-2-2"': f'"f{fish_id}-gill-2-2"',
+            '"gill-3"': f'"f{fish_id}-gill-3"',
+            '"pectoral-fin"': f'"f{fish_id}-pectoral-fin"',
+            'linearGradient9': f'f{fish_id}linearGradient9',
+            'swatch7': f'f{fish_id}swatch7',
+            'swatch9': f'f{fish_id}swatch9',
+        }
+
+        for old_id, new_id in id_map.items():
+            fish_svg_text = fish_svg_text.replace(old_id, new_id)
+
+        # build full svg for fish in dict
+        full_svg_text = f"""
+            <p><a href="javascript:void(0)" id={fish_dict["fish_id"]}>
+                <div class="fish-container"
+                    style="
+                    --top1:{fish_dict["top_y_1"]}%;
+                    --top2:{fish_dict["top_y_2"]}%;
+                    --speed:{fish_dict["speed"]}s; 
+                    --delay:{fish_dict["delay"]}s; 
+                    --size:{fish_dict["size"]};">
+
+                    {fish_svg_text}
+
+                </div>
+            </a></p>
+        """
+
+        fish_dict["svg"] = full_svg_text
+
+    # define html content 
+    content = f"""
+    <html>
+
+    <style>
+
+    body {{
+        background:#91c7ed;
+        margin:0;
+        overflow:hidden;
+        height:400px;
+    }}
+
+    .fish-container {{
+        position: absolute;
+        left: -30%;
+
+        animation-name: swim;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+
+        animation-duration: var(--speed, 20s);
+        animation-delay: var(--delay, 0s);
+
+        top: var(--depth, 20%);
+        transform: scale(var(--size, 1));
+    }}
+
+    svg {{
+        width:130px;
+        height:auto;
+    }}
+
+    /* animate tail if SVG contains fish-tail in id */
+    [id$="fish-tail"] {{
+        transform-box:fill-box;
+        transform-origin:left center;
+
+        animation:
+            tail-wag .7s ease-in-out infinite alternate;
+            # transform: rotate(10deg);
+    }}
+
+    /* animate fin */
+    [id$="pectoral-fin"] {{
+        transform-box:fill-box;
+        transform-origin:top center;
+
+        animation:
+            fin-flutter .7s ease-in-out infinite alternate;
+    }}
+
+    /* animate fish swimming */
+    @keyframes swim {{
+        0% {{
+            left:-150px;
+            top: var(--top1);
+            transform:scaleX(-1) scale(var(--size));
+        }}
+
+        45% {{
+            left:100%;
+            top: var(--top1);
+            transform:scaleX(-1) scale(var(--size));
+        }}
+
+        50% {{
+            left:100%;
+            top: var(--top2);
+            transform:scaleX(1) scale(var(--size));
+        }}
+
+        95% {{
+            left:-150px;
+            top: var(--top2);
+            transform:scaleX(1) scale(var(--size));
+        }}
+
+        100% {{
+            left:-150px;
+            top: var(--top1);
+            transform:scaleX(-1) scale(var(--size));
+        }}
+    }}
+
+    /* animate tail/fin wagging */
+    @keyframes tail-wag {{
+        from {{
+            transform:rotate(12deg);
+        }}
+        to {{
+            transform:rotate(-12deg);
+        }}
+    }}
+
+    @keyframes fin-flutter {{
+        from {{
+            transform:rotate(-10deg);
+        }}
+        to {{
+            transform:rotate(15deg);
+        }}
+    }}
+
+    </style>
+
+    /* insert each fish svg */
+    {
+        """
+        """.join([fish_dict["svg"] for fish_dict in fish_config])
+    }
+
+    </html>
+    """
+
+    # detect whether each fish is clicked 
+    clicked = click_detector(content, key = "aquarium")
+
+    # initialize selected fish at beginning of session
+    if "selected_fish" not in st.session_state:
+        st.session_state.selected_fish = None
+
+    # on first clicked fish, set selected fish 
+    if clicked and (
+        st.session_state.selected_fish is None
+        or st.session_state.selected_fish != clicked
+    ):
+        st.session_state.selected_fish = clicked
+    # if we click the same fish again, unselect 
+    elif clicked and st.session_state.selected_fish == clicked:
+        st.session_state.selected_fish = None
+
+    # display clicked fish
+    if st.session_state.selected_fish is None:
+        st.write("Click a fish")
+    else:
+        st.write(
+            f"You selected: {st.session_state.selected_fish}"
+        )
 
 
 def render_things_to_remember(run_timestamp, conn):
