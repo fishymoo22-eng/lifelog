@@ -55,9 +55,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="11.313708"
-     inkscape:cx="72.124895"
-     inkscape:cy="36.19503"
+     inkscape:zoom="5.656854"
+     inkscape:cx="79.461128"
+     inkscape:cy="29.786874"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
@@ -67,15 +67,14 @@
   <!-- Main body group -->
   <!-- Tail -->
   <g
-     id="fish-body"
-     transform="matrix(1.2760047,0,0,1.2760047,-21.375798,-9.6491681)">
+     id="fish-body">
     <!-- Main torso -->
     <path
        id="body"
        d="M 15,25 C 30,5 65,12 78,25 65,38 30,45 15,25 Z"
        fill="#ff7a00" />
     <path
-       id="body-1"
+       id="body-light"
        d="m 15,24.983955 c 5.417325,-7.147314 12.994295,-10.127379 16.552253,-10.815857 3.753827,7.52123 4.048664,14.405113 0.248644,21.852686 C 27.690134,34.743049 20.187199,32.241754 15,24.983955 Z"
        fill="#ff7a00"
        sodipodi:nodetypes="cccc"
@@ -110,7 +109,7 @@
        stroke-width="0.75"
        stroke-linecap="round" />
     <path
-       id="gill-2-2"
+       id="mouth"
        d="m 19.719709,27.139122 q -0.647057,0.787362 -1.717705,1.000177"
        fill="none"
        stroke="#e66e00"
@@ -127,19 +126,18 @@
     <!-- Pectoral fin -->
     <path
        id="pectoral-fin"
-       d="m 45.585298,31.622108 c 5,7 2,12 -2,10 -2,-3 0,-8 2,-10 z"
+       d="m 45.585298,31.622108 c 1.31936,1.866207 2.425476,3.990586 2.604709,6.305293 0.08726,1.24312 -0.172537,2.625471 -1.134964,3.495878 -0.800504,0.726402 -2.013928,0.791412 -2.98917,0.414802 -0.506952,-0.106156 -0.759128,-0.585484 -0.9094,-1.033387 -0.687142,-1.740697 -0.405732,-3.69782 0.198828,-5.418982 0.49044,-1.381252 1.206557,-2.703215 2.229997,-3.763604 z"
        fill="#e66e00" />
   </g>
   <g
-     id="fish-tail"
-     transform="matrix(1.2760047,0,0,1.2760047,-21.375798,-9.6491681)">
+     id="fish-tail">
     <!-- Main torso -->
     <!-- Eye -->
     <!-- Pupil -->
     <!-- Gills -->
     <!-- Pectoral fin -->
     <path
-       id="fish-tail-0"
+       id="fish-tail-base"
        d="m 75.195513,25.080128 c 7,-7 17,-13 22,-11 -3,8 -3,14 0,22 -5,2 -15,-4 -22,-11 z"
        fill="#ff7a00" />
     <path
@@ -148,47 +146,47 @@
        fill="none"
        stroke="#e66e00"
        stroke-width="0.917911"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
     <path
        id="fish-stroke-5"
        d="m 93.733746,26.054099 q -8.270939,3.656363 -16.541878,0"
        fill="none"
        stroke="#e66e00"
        stroke-width="0.922248"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
     <path
        id="fish-stroke-4"
        d="M 94.448402,20.489128 Q 84.838526,18.118132 77.316994,23.950343"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.01928"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
     <path
        id="fish-stroke-3"
        d="M 94.604187,29.804188 Q 84.994312,32.175184 77.47278,26.342973"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.01928"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
     <path
        id="fish-stroke-2"
        d="M 95.776492,15.880975 Q 84.734404,16.439951 77.454069,23.811284"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.04278"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
     <path
        id="fish-stroke-1"
        d="M 95.558557,34.100738 Q 84.516468,33.541762 77.236133,26.170429"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.04278"
-       stroke-linecap="round"
-       style="stroke-width:0.727559;stroke-dasharray:none" />
+       stroke-linecap="butt"
+       style="stroke-width:0.46629922;stroke-dasharray:none" />
   </g>
 </svg>

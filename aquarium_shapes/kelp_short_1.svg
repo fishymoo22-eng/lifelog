@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   class="kelp"
+   viewBox="-10 -20 120 440"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="kelp_long.svg"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath3">
+      <rect
+         style="fill:#0000ff;fill-rule:evenodd"
+         id="rect4"
+         width="84.969246"
+         height="153.70233"
+         x="18.683886"
+         y="265.21524" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4">
+      <rect
+         style="fill:#0000ff;fill-rule:evenodd"
+         id="rect5"
+         width="84.969246"
+         height="153.70233"
+         x="18.683886"
+         y="265.21524" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5">
+      <rect
+         style="fill:#0000ff;fill-rule:evenodd"
+         id="rect6"
+         width="84.969246"
+         height="153.70233"
+         x="18.683886"
+         y="265.21524" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.8477273"
+     inkscape:cx="-5.6826567"
+     inkscape:cy="315.25215"
+     inkscape:window-width="1920"
+     inkscape:window-height="1094"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <!-- main kelp body -->
+  <path
+     d="M 50,400 C 72.353072,349.68037 70,280 45,220 20,160 75,120 55,60 45,30 50,10 60,0 h 15 c -15,50 -5,90 5,120 20,60 -25,110 -5,170 14.458795,57.03567 -5,90 -10,110 z"
+     fill="#2f9e44"
+     id="path1"
+     clip-path="url(#clipPath5)"
+     sodipodi:nodetypes="cssccsccc" />
+  <!-- lighter accent stripe -->
+  <path
+     d="m 56.700124,390 c 25.781516,-48.71064 12.767198,-111.03142 -3,-160 C 30.336888,157.44022 75.570221,129.12505 65,80 57.618296,45.693571 50.638826,33.547199 58.90198,9.808655"
+     fill="none"
+     stroke="#7bdc65"
+     stroke-width="8"
+     stroke-linecap="round"
+     opacity="0.7"
+     id="path2"
+     style="stroke-width:5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none"
+     sodipodi:nodetypes="cssc"
+     clip-path="url(#clipPath4)"
+     transform="translate(1.5998757,4)" />
+  <path
+     d="M 59.758918,388.27599 C 76.699418,340.28206 72.93202,314.16705 64.876999,264.76747 52.556421,189.20821 77.329139,127.40104 66.758918,78.275993 59.377214,43.969564 50.638826,33.547199 58.90198,9.808655"
+     fill="none"
+     stroke="#7bdc65"
+     stroke-width="8"
+     stroke-linecap="round"
+     opacity="0.7"
+     id="path3"
+     style="stroke:#c5eecc;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     sodipodi:nodetypes="cssc"
+     clip-path="url(#clipPath3)"
+     transform="matrix(1,0,0,0.94176914,1.5998757,22.714821)" />
+</svg>

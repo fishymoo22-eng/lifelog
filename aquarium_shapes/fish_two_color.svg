@@ -9,7 +9,6 @@
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -45,16 +44,6 @@
        vertical_pattern="false"
        hide_knot="false"
        fuse_tolerance="0" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#swatch9"
-       id="linearGradient9"
-       x1="15"
-       y1="25.000388"
-       x2="78"
-       y2="25.000388"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.2813414,0,0,1.2813414,-22.136788,-9.9608506)" />
   </defs>
   <sodipodi:namedview
      id="namedview1"
@@ -66,9 +55,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="8.0000001"
-     inkscape:cx="66.562499"
-     inkscape:cy="40.3125"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="59.131804"
+     inkscape:cy="33.67596"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
@@ -91,12 +80,7 @@
        fill="#ff7a00"
        style="stroke-width:1.28135" />
     <path
-       id="body-0"
-       d="m -2.9166665,22.073181 c 19.2201215,-25.6268272 64.0670695,-16.6574376 80.7245075,0 -16.657438,16.657439 -61.504386,25.626828 -80.7245075,0 z"
-       fill="#ff7a00"
-       style="fill:url(#linearGradient9);fill-opacity:1;fill-rule:nonzero;stroke-width:1.28135" />
-    <path
-       id="fish-tail-0"
+       id="body-light"
        d="M -2.9166665,22.052125 C 4.0247763,12.893976 13.733462,9.0754954 18.29242,8.19332 23.102354,17.830583 23.480141,26.651188 18.611018,36.194071 13.343728,34.556857 3.7299063,31.351844 -2.9166665,22.052125 Z"
        fill="#ff7a00"
        sodipodi:nodetypes="cccc"
@@ -133,7 +117,7 @@
        stroke-width="0.961006"
        stroke-linecap="round" />
     <path
-       id="gill-2-2"
+       id="mouth"
        d="M 3.130892,24.81363 Q 2.301791,25.82251 0.92992547,26.095198"
        fill="none"
        stroke="#e66e00"
@@ -150,7 +134,7 @@
     <!-- Pectoral fin -->
     <path
        id="pectoral-fin"
-       d="m 36.273542,30.557866 c 6.406707,8.969389 2.562682,15.376096 -2.562684,12.813414 -2.562682,-3.844025 0,-10.250732 2.562684,-12.813414 z"
+       d="m 36.273542,30.557866 c 1.705603,2.410508 3.131337,5.160567 3.342434,8.154025 0.104129,1.609996 -0.270728,3.405078 -1.556876,4.489406 -1.047178,0.868869 -2.565089,0.906226 -3.792409,0.432581 -0.848623,-0.245033 -1.0755,-1.20796 -1.320892,-1.944126 -0.68301,-2.432338 -0.10355,-5.020583 0.85503,-7.295247 0.600275,-1.404947 1.408072,-2.734092 2.472713,-3.836639 z"
        fill="#e66e00"
        style="stroke-width:1.28135" />
   </g>
