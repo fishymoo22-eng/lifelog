@@ -216,23 +216,20 @@ def render_aquarium():
 
     # define kelp layout
     kelp_config = [
-        {"svg": kelp_long_svg, "left": 9.5, "scale": 1, "flip": False},
-        {"svg": kelp_short_1_svg, "left": 15, "scale": 1, "flip": True},
-        {"svg": kelp_short_2_svg, "left": 12, "scale":1, "flip": False},
+        {"svg": kelp_short_1_svg, "left": 30, "scale": 1},
+        {"svg": kelp_long_svg, "left": 40, "scale": 1},
+        {"svg": kelp_short_2_svg, "left": 50, "scale":1},
     ]
 
     # generate kelp html
     kelp_html = ""
 
     for kelp in kelp_config:
-        flip = "scaleX(-1)" if kelp["flip"] else "scaleX(1)"
-
         kelp_html += f"""
         <div class="kelp"
             style="
-                --left:{kelp["left"]}%;
+                --left:{kelp["left"]}px;
                 --scale:{kelp["scale"]};
-                --flip:{flip};
             ">
             {kelp["svg"]}
         </div>
@@ -380,7 +377,6 @@ def render_aquarium():
         height:200px;
 
         transform:
-            var(--flip)
             scale(var(--scale));
 
         transform-origin:bottom center;
@@ -426,7 +422,7 @@ def render_aquarium():
     /* animate fish swimming */
     @keyframes swim {{
         0% {{
-            left:-20%;
+            left:-140px;
             top: var(--top1);
             transform:scaleX(-1) scale(var(--size));
         }}
@@ -444,13 +440,13 @@ def render_aquarium():
         }}
 
         95% {{
-            left:-20%;
+            left:-140px;
             top: var(--top2);
             transform:scaleX(1) scale(var(--size));
         }}
 
         100% {{
-            left:-20%;
+            left:-140px;
             top: var(--top1);
             transform:scaleX(-1) scale(var(--size));
         }}
