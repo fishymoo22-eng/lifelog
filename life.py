@@ -73,7 +73,7 @@ def render_aquarium():
     fish_config = [
         {
             "fish_id": 1,
-            "fish_name": "Nemo",
+            "fish_name": "Marlin",
             "fish_type": "fish_two_color_tail_lines",
             "fish_mapping": "journal",
             "base_color": "#ff7a00",
@@ -84,7 +84,7 @@ def render_aquarium():
         },
         {
             "fish_id": 2,
-            "fish_name": "Bubbles",
+            "fish_name": "Pinky",
             "fish_type": "fish_two_color_tail_lines",
             "fish_mapping": "journal",
             "base_color": "#ff5fa2",
@@ -106,7 +106,7 @@ def render_aquarium():
         },
         {
             "fish_id": 4,
-            "fish_name": "Marlin",
+            "fish_name": "Banana",
             "fish_type": "fish_one_color",
             "fish_mapping": "test",
             "base_color": "#fcd628",
@@ -117,7 +117,7 @@ def render_aquarium():
         },
         {
             "fish_id": 5,
-            "fish_name": "Marlin",
+            "fish_name": "Nemo",
             "fish_type": "fish_baby",
             "fish_mapping": "test2",
             "base_color": "#ff7a00",
@@ -178,8 +178,8 @@ def render_aquarium():
             <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
                 <div class="fish-container"
                     style="
-                    --top1:{random.randint(15, 70)}%;
-                    --top2:{random.randint(15, 70)}%;
+                    --top1:{random.randint(5, 70)}%;
+                    --top2:{random.randint(5, 70)}%;
                     --speed:{fish_dict["speed"]}s; 
                     --fin-speed:{fish_dict["size"]}s;
                     --delay:{random.randint(-40, 40)}s; 
