@@ -71,63 +71,67 @@
     <!-- Main torso -->
     <path
        id="body"
-       d="M 15,25 C 30,5 65,12 78,25 65,38 30,45 15,25 Z"
-       fill="#ff7a00" />
+       d="m -3.1196121,22.135208 c 19.3820221,-25.8426957 64.6067391,-16.7977522 81.4044921,0 -16.797753,16.797752 -62.02247,25.842696 -81.4044921,0 z"
+       fill="#ff7a00"
+       style="stroke-width:1.29214" />
     <path
        id="body-light"
-       d="m 15,24.983955 c 5.417325,-7.147314 12.994295,-10.127379 16.552253,-10.815857 3.753827,7.52123 4.048664,14.405113 0.248644,21.852686 C 27.690134,34.743049 20.187199,32.241754 15,24.983955 Z"
+       d="M -3.1196121,22.114476 C 3.880302,12.879183 13.670769,9.0285371 18.26813,8.1389307 23.11858,17.857374 23.49955,26.752278 18.589411,36.375546 13.277752,34.724541 3.5829482,31.49253 -3.1196121,22.114476 Z"
        fill="#ff7a00"
        sodipodi:nodetypes="cccc"
-       style="fill:#ffa95a;fill-opacity:1;stroke-width:0.866191" />
+       style="fill:#ffa95a;fill-opacity:1;stroke-width:1.11924" />
     <!-- Eye -->
     <circle
        id="eye-white"
-       cx="22.5"
-       cy="22"
-       r="2"
-       fill="#ffffff" />
+       cx="6.5713992"
+       cy="18.258802"
+       r="2.5842695"
+       fill="#ffffff"
+       style="stroke-width:1.29214" />
     <!-- Pupil -->
     <circle
        id="pupil"
-       cx="22"
-       cy="22"
-       r="1"
-       fill="#000000" />
+       cx="5.9253316"
+       cy="18.258802"
+       r="1.2921348"
+       fill="#000000"
+       style="stroke-width:1.29214" />
     <!-- Gills -->
     <path
        id="gill-1"
-       d="m 36.666668,20 q 4,5 0,10"
+       d="m 24.876643,15.674534 q 5.168539,6.460674 0,12.921348"
        fill="none"
        stroke="#e66e00"
-       stroke-width="0.75"
+       stroke-width="0.969101"
        stroke-linecap="round" />
     <path
        id="gill-2"
-       d="m 38.666668,20 q 4,5 0,10"
+       d="m 27.460913,15.674534 q 5.168539,6.460674 0,12.921348"
        fill="none"
        stroke="#e66e00"
-       stroke-width="0.75"
+       stroke-width="0.969101"
        stroke-linecap="round" />
     <path
        id="mouth"
-       d="m 19.719709,27.139122 q -0.647057,0.787362 -1.717705,1.000177"
+       d="M 2.9788882,24.899242 Q 2.1428033,25.91662 0.75938174,26.191605"
        fill="none"
        stroke="#e66e00"
        stroke-width="0.0995893"
        stroke-linecap="round"
-       style="stroke-width:0.23622;stroke-linecap:round;stroke-dasharray:none" />
+       style="stroke-width:0.305229;stroke-linecap:round;stroke-dasharray:none" />
     <path
        id="gill-3"
-       d="m 40.666668,20 q 4,5 0,10"
+       d="m 30.045182,15.674534 q 5.16854,6.460674 0,12.921348"
        fill="none"
        stroke="#e66e00"
-       stroke-width="0.75"
+       stroke-width="0.969101"
        stroke-linecap="round" />
     <!-- Pectoral fin -->
     <path
        id="pectoral-fin"
-       d="m 45.585298,31.622108 c 1.31936,1.866207 2.425476,3.990586 2.604709,6.305293 0.08726,1.24312 -0.172537,2.625471 -1.134964,3.495878 -0.800504,0.726402 -2.013928,0.791412 -2.98917,0.414802 -0.506952,-0.106156 -0.759128,-0.585484 -0.9094,-1.033387 -0.687142,-1.740697 -0.405732,-3.69782 0.198828,-5.418982 0.49044,-1.381252 1.206557,-2.703215 2.229997,-3.763604 z"
-       fill="#e66e00" />
+       d="m 36.400715,30.691864 c 1.704792,2.411392 3.134043,5.156375 3.365636,8.147289 0.112751,1.606278 -0.222941,3.392462 -1.466526,4.517145 -1.03436,0.93861 -2.602267,1.022611 -3.862412,0.53598 -0.65505,-0.137168 -0.980895,-0.756524 -1.175067,-1.335275 -0.88788,-2.249215 -0.52426,-4.778082 0.256913,-7.002055 0.633714,-1.784764 1.559034,-3.492918 2.881456,-4.863084 z"
+       fill="#e66e00"
+       style="stroke-width:1.29214" />
   </g>
   <g
      id="fish-tail">
@@ -138,55 +142,56 @@
     <!-- Pectoral fin -->
     <path
        id="fish-tail-base"
-       d="m 75.195513,25.080128 c 7,-7 17,-13 22,-11 -3,8 -3,14 0,22 -5,2 -15,-4 -22,-11 z"
-       fill="#ff7a00" />
+       d="M 74.661104,22.238744 C 83.706048,13.193801 96.627396,5.4409919 103.08807,8.0252616 c -3.876405,10.3370784 -3.876405,18.0898864 0,28.4269644 -6.460674,2.584271 -19.382022,-5.168539 -28.426966,-14.213482 z"
+       fill="#ff7a00"
+       style="stroke-width:1.29214" />
     <path
        id="fish-stroke-6"
-       d="m 93.426892,24.101649 q -8.173959,-3.665027 -16.347921,0"
+       d="m 98.218503,20.974417 q -10.561856,-4.735708 -21.123717,0"
        fill="none"
        stroke="#e66e00"
        stroke-width="0.917911"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
     <path
        id="fish-stroke-5"
-       d="m 93.733746,26.054099 q -8.270939,3.656363 -16.541878,0"
+       d="m 98.615,23.497246 q -10.687168,4.724514 -21.374336,0"
        fill="none"
        stroke="#e66e00"
        stroke-width="0.922248"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
     <path
        id="fish-stroke-4"
-       d="M 94.448402,20.489128 Q 84.838526,18.118132 77.316994,23.950343"
+       d="M 99.538432,16.306553 Q 87.121177,13.242907 77.402344,20.77891"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.01928"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
     <path
        id="fish-stroke-3"
-       d="M 94.604187,29.804188 Q 84.994312,32.175184 77.47278,26.342973"
+       d="M 99.739727,28.342866 Q 87.322474,31.406513 77.603641,23.870511"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.01928"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
     <path
        id="fish-stroke-2"
-       d="M 95.776492,15.880975 Q 84.734404,16.439951 77.454069,23.811284"
+       d="M 101.2545,10.352199 Q 86.986637,11.074471 77.579463,20.599227"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.04278"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
     <path
        id="fish-stroke-1"
-       d="M 95.558557,34.100738 Q 84.516468,33.541762 77.236133,26.170429"
+       d="M 100.9729,33.894588 Q 86.705034,33.172316 77.29786,23.64756"
        fill="none"
        stroke="#e66e00"
        stroke-width="1.04278"
        stroke-linecap="butt"
-       style="stroke-width:0.46629922;stroke-dasharray:none" />
+       style="stroke-width:0.602521;stroke-dasharray:none" />
   </g>
 </svg>

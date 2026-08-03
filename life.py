@@ -74,66 +74,93 @@ def render_aquarium():
         {
             "fish_id": 1,
             "fish_name": "Marlin",
-            "fish_type": "fish_two_color_tail_lines",
+            "fish_type": "fish_two_color_tail_lines_adult",
             "fish_mapping": "journal",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
             "speed": 35, 
-            "size": 0.95
+            "size": 1
         },
         {
             "fish_id": 2,
             "fish_name": "Pinky",
-            "fish_type": "fish_two_color_tail_lines",
+            "fish_type": "fish_two_color_tail_lines_adult",
             "fish_mapping": "journal",
             "base_color": "#ff5fa2",
             "light_accent_color": "#ff9bc8",
             "dark_accent_color": "#d9367a",
             "speed": 44,
-            "size": 1.1
+            "size": 1
         },
         {
             "fish_id": 3,
             "fish_name": "Dory",
-            "fish_type": "fish_two_color",
+            "fish_type": "fish_two_color_adult",
             "fish_mapping": "journal",
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
             "dark_accent_color": "#0d3c78",
             "speed": 42, 
-            "size": 0.95
+            "size": 1
         },
         {
             "fish_id": 4,
             "fish_name": "Banana",
-            "fish_type": "fish_one_color",
+            "fish_type": "fish_one_color_adult",
             "fish_mapping": "test",
             "base_color": "#fcd628",
             "light_accent_color": "#ffe987",
             "dark_accent_color": "#ffc21c",
             "speed": 50, 
-            "size": 1.15
+            "size": 1
         },
         {
             "fish_id": 5,
             "fish_name": "Nemo",
-            "fish_type": "fish_baby",
+            "fish_type": "fish_two_color_baby",
             "fish_mapping": "test2",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
             "speed": 50, 
-            "size": 0.75
+            "size": 0.4
+        },
+        {
+            "fish_id": 6,
+            "fish_name": "Nemo2",
+            "fish_type": "fish_two_color_child",
+            "fish_mapping": "test2",
+            "base_color": "#ff7a00",
+            "light_accent_color": "#ffa95a",
+            "dark_accent_color": "#e66e00",
+            "speed": 55, 
+            "size": 0.6
+        },
+        {
+            "fish_id": 7,
+            "fish_name": "Nemo3",
+            "fish_type": "fish_two_color_teen",
+            "fish_mapping": "test2",
+            "base_color": "#ff7a00",
+            "light_accent_color": "#ffa95a",
+            "dark_accent_color": "#e66e00",
+            "speed": 55, 
+            "size": 0.8
         }
     ]
 
     # build dictonary with svg of each fish type 
     fish_shape_svg = {
-        "fish_baby": Path(f"aquarium_shapes/fish_baby.svg").read_text(),
-        "fish_one_color": Path(f"aquarium_shapes/fish_one_color.svg").read_text(),
-        "fish_two_color": Path(f"aquarium_shapes/fish_two_color.svg").read_text(),
-        "fish_two_color_tail_lines": Path(f"aquarium_shapes/fish_two_color_tail_lines.svg").read_text()
+        "fish_one_color_baby": Path(f"aquarium_shapes/fish/one_color/fish_baby.svg").read_text(),
+        "fish_one_color_child": Path(f"aquarium_shapes/fish/one_color/fish_child.svg").read_text(),
+        "fish_one_color_teen": Path(f"aquarium_shapes/fish/one_color/fish_teen.svg").read_text(),
+        "fish_one_color_adult": Path(f"aquarium_shapes/fish/one_color/fish_adult.svg").read_text(),
+        "fish_two_color_baby": Path(f"aquarium_shapes/fish/two_color/fish_baby.svg").read_text(),
+        "fish_two_color_child": Path(f"aquarium_shapes/fish/two_color/fish_child.svg").read_text(),
+        "fish_two_color_teen": Path(f"aquarium_shapes/fish/two_color/fish_teen.svg").read_text(),
+        "fish_two_color_adult": Path(f"aquarium_shapes/fish/two_color/fish_adult.svg").read_text(),
+        "fish_two_color_tail_lines_adult": Path(f"aquarium_shapes/fish/two_color_tail_lines/fish_adult.svg").read_text()
     }
 
     for fish_dict in fish_config:
@@ -210,9 +237,9 @@ def render_aquarium():
         """
 
     # read kelp svg 
-    kelp_long_svg = Path("aquarium_shapes/kelp_long.svg").read_text()
-    kelp_short_1_svg = Path("aquarium_shapes/kelp_short_1.svg").read_text()
-    kelp_short_2_svg = Path("aquarium_shapes/kelp_short_2.svg").read_text()
+    kelp_long_svg = Path("aquarium_shapes/kelp/kelp_long.svg").read_text()
+    kelp_short_1_svg = Path("aquarium_shapes/kelp/kelp_short_1.svg").read_text()
+    kelp_short_2_svg = Path("aquarium_shapes/kelp/kelp_short_2.svg").read_text()
 
     # define kelp layout
     kelp_config = [

@@ -55,9 +55,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="32"
-     inkscape:cx="39.984375"
-     inkscape:cy="32.484375"
+     inkscape:zoom="8"
+     inkscape:cx="53.4375"
+     inkscape:cy="23.9375"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
@@ -69,11 +69,12 @@
   <!-- Tail -->
   <path
      id="fish-tail"
-     d="m 74.003972,24.532439 c 5.967945,-7.469275 14.493581,-13.871509 18.756399,-11.737431 -2.557691,8.536313 -2.557691,14.938547 0,23.47486 -4.262818,2.134078 -12.788454,-4.268156 -18.756399,-11.737429 z"
+     d="M 73.254042,23.391512 C 82.085999,12.337739 94.703079,2.8630777 101.01162,6.0212976 c -3.785126,12.6328834 -3.785126,22.1075424 0,34.7404244 -6.308541,3.158219 -18.925621,-6.316441 -27.757578,-17.37021 z"
      fill="#ff7a00"
-     style="stroke-width:0.953802" />
+     style="stroke-width:1.41153" />
   <g
-     id="fish-body">
+     id="fish-body"
+     transform="matrix(1.4798989,0,0,1.4798989,-36.264359,-12.914019)">
     <!-- Main torso -->
     <path
        id="body"
@@ -105,7 +106,7 @@
        stroke="#e66e00"
        stroke-width="0.958385"
        stroke-linecap="round"
-       style="stroke-width:0.79166667;stroke-dasharray:none" />
+       style="stroke-width:0.791667;stroke-dasharray:none" />
     <path
        id="gill-2"
        d="m 43.909141,17.056692 q 5.111374,6.389233 0,12.778467"
@@ -113,7 +114,7 @@
        stroke="#e66e00"
        stroke-width="0.958385"
        stroke-linecap="round"
-       style="stroke-width:0.79166667;stroke-dasharray:none" />
+       style="stroke-width:0.791667;stroke-dasharray:none" />
     <path
        id="mouth"
        d="m 30.429131,26.512702 q -0.82684,1.006128 -2.194964,1.278074"
@@ -129,7 +130,7 @@
        stroke="#e66e00"
        stroke-width="0.958385"
        stroke-linecap="round"
-       style="stroke-width:0.79166667;stroke-dasharray:none" />
+       style="stroke-width:0.791667;stroke-dasharray:none" />
     <!-- Pectoral fin -->
     <path
        id="pectoral-fin"
