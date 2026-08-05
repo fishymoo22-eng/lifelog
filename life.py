@@ -124,7 +124,7 @@ def render_aquarium():
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
             "speed": 50, 
-            "size": 0.4
+            "size": 0.35
         },
         {
             "fish_id": 6,
@@ -201,22 +201,73 @@ def render_aquarium():
             fish_svg_text = fish_svg_text.replace(old_id, new_id)
 
         # build full svg for fish in dict
-        full_svg_text = f"""
-            <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
-                <div class="fish-container"
-                    style="
-                    --top1:{random.randint(5, 70)}%;
-                    --top2:{random.randint(5, 70)}%;
-                    --speed:{fish_dict["speed"]}s; 
-                    --fin-speed:{fish_dict["size"]}s;
-                    --delay:{random.randint(-40, 40)}s; 
-                    --size:{fish_dict["size"]};">
+        top1 = random.randint(5, 70)
+        top2 = random.randint(5, 70)
+        delay = random.randint(-40, 40)
 
-                    {fish_svg_text}
+        if not fish_dict["fish_type"].endswith("baby"):
+            full_svg_text = f"""
+                <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
+                    <div class="fish-container"
+                        style="
+                        --top1:{random.randint(5, 70)}%;
+                        --top2:{random.randint(5, 70)}%;
+                        --speed:{fish_dict["speed"]}s; 
+                        --fin-speed:{fish_dict["size"]}s;
+                        --delay:{random.randint(-40, 40)}s; 
+                        --size:{fish_dict["size"]};">
 
-                </div>
-            </a></p>
-        """
+                        {fish_svg_text}
+
+                    </div>
+                </a></p>
+            """
+        # if baby, make it swim next to daddy 
+        else:
+            fish_types = list(fish_shape_svg.keys())
+            fish_index = fish_types.index(fish_dict["fish_type"])
+
+            if fish_index > 0:
+                fish_daddy_type = fish_types[fish_index - 1]
+                fish_daddy_svg = fish_shape_svg[fish_daddy_type]
+
+                # make sure daddy fish has same color as baby
+                for old_color, new_color in color_map.items():
+                    fish_daddy_svg = fish_daddy_svg.replace(old_color, new_color)
+                for old_id, new_id in id_map.items():
+                    fish_daddy_svg = fish_daddy_svg.replace(old_id, f"{new_id}-dad")
+
+            # define full svg text 
+            full_svg_text = f"""
+                <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
+                    <div class="fish-container"
+                        style="
+                        --top1:{top1}%;
+                        --top2:{top2}%;
+                        --speed:{fish_dict["speed"]}s; 
+                        --fin-speed:{1}s;
+                        --delay:{delay}s; 
+                        --size:1;">
+
+                        {fish_daddy_svg}
+
+                    </div>
+                </a></p>
+                <p><a href="javascript:void(0)" id=Baby{fish_dict["fish_name"]}>
+                    <div class="fish-container"
+                        style="
+                        --top1:{top1+5}%;
+                        --top2:{top2+5}%;
+                        --speed:{fish_dict["speed"]}s; 
+                        --fin-speed:{fish_dict["size"]}s;
+                        --delay:{delay+0.7}s;
+                        --size:{fish_dict["size"]};">
+
+                        {fish_svg_text}
+
+                    </div>
+                </a></p>
+            """
 
         fish_dict["svg"] = full_svg_text
 
