@@ -75,72 +75,67 @@ def render_aquarium():
         {
             "fish_id": 1,
             "fish_name": "Tilly",
-            "fish_type": "fish_adult",
             "fish_mapping": "Things to Remember",
+            "generation": 0,
+            "level": 0,
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
             "gradient_color_1": "#ff912d",
             "gradient_color_2": "#f2be7f",
-            "gradient_color_3": "#e6d4a4",
-            "speed": 35, 
-            "size": 1
+            "gradient_color_3": "#e6d4a4"
         },
         {
             "fish_id": 2,
             "fish_name": "Dolly",
-            "fish_type": "fish_adult",
             "fish_mapping": "Dreams",
+            "generation": 0,
+            "level": 0,
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
             "dark_accent_color": "#0d3c78",
             "gradient_color_1": "#385ba2",
             "gradient_color_2": "#7fa3f2",
-            "gradient_color_3": "#a4c7e6",
-            "speed": 44,
-            "size": 1
+            "gradient_color_3": "#a4c7e6"
         },
         {
             "fish_id": 3,
             "fish_name": "Allie",
-            "fish_type": "fish_adult",
             "fish_mapping": "Activities",
+            "generation": 0,
+            "level": 0,
             "base_color": "#ff5fa2",
             "light_accent_color": "#ff9bc8",
             "dark_accent_color": "#d9367a",
             "gradient_color_1": "#fd7eb3",
             "gradient_color_2": "#f27f9a",
-            "gradient_color_3": "#e6a4c3",
-            "speed": 42, 
-            "size": 1
+            "gradient_color_3": "#e6a4c3"
         },
         {
             "fish_id": 4,
             "fish_name": "Jelly",
-            "fish_type": "fish_adult",
             "fish_mapping": "Journal",
+            "generation": 0,
+            "level": 0,
             "base_color": "#8b5fbf",
             "light_accent_color": "#b58dd9",
             "dark_accent_color": "#67418f",
             "gradient_color_1": "#9b72c9",
             "gradient_color_2": "#c3a6df",
-            "gradient_color_3": "#ded0e8",
-            "speed": 50, 
-            "size": 1
+            "gradient_color_3": "#ded0e8"
         },
         {
             "fish_id": 5,
             "fish_name": "Millie",
-            "fish_type": "fish_baby",
             "fish_mapping": "Mood",
+            "generation": 0,
+            "level": 0,
             "base_color": "#fcd628",
             "light_accent_color": "#ffe987",
             "dark_accent_color": "#ffc21c",
             "gradient_color_1": "#f8d63e",
             "gradient_color_2": "#ebd15f",
-            "gradient_color_3": "#e6d4a4",
-            "speed": 50, 
-            "size": 0.35
+            "gradient_color_3": "#e6d4a4"
         }
     ]
 
@@ -155,36 +150,50 @@ def render_aquarium():
 
     for type in fish_shape_types:
         # ingest raw svg file 
-        raw_svg_text = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
-
-        # remove light body
-        no_light_body_svg_txt = re.sub(
-            r'<path\b(?=[^>]*\bid="body-light")[^>]*/>',
-            '',
-            raw_svg_text
-        )
-
-        # remove individual scale paths
-        no_light_body_scales_svg_txt = re.sub(
-            r'<path\b(?=[^>]*\bid="scale-[^"]+")[^>]*/>',
-            '',
-            no_light_body_svg_txt
-        )
-
-        # remove individual tail-line paths
-        no_texture_svg_txt = re.sub(
-            r'<path\b(?=[^>]*\bid="tail-line-[^"]+")[^>]*/>',
-            '',
-            no_light_body_scales_svg_txt
-        )
-
-        # add cleaned svg text to dictionary
-        fish_shape_svg[type] = no_texture_svg_txt
+        svg_text = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
+        fish_shape_svg[type] = svg_text
 
     # now loop through all fish in config 
     for fish_dict in fish_config:
-        # grab modified fish svg 
-        fish_svg_text = fish_shape_svg[fish_dict["fish_type"]]
+        # determine fish type and size based on level
+        if fish_dict["level"] < 5:
+            fish_type = "fish_baby"
+        elif fish_dict["level"] < 10:
+            fish_type = "fish_child"
+        elif fish_dict["level"] < 15:
+            fish_type = "fish_teen"
+        else:
+            fish_type = "fish_adult"
+
+        # the size starts at 0.335, then adds 0.035 up until level 19, where it reaches 1
+        fish_size = 0.335 + 0.035 * fish_dict["level"]
+        
+        # grab raw fish svg 
+        fish_svg_text = fish_shape_svg[fish_type]
+    
+        # remove light body for generation 0
+        if fish_dict["generation"] == 0:
+            fish_svg_text = re.sub(
+                r'<path\b(?=[^>]*\bid="body-light")[^>]*/>',
+                '',
+                fish_svg_text
+            )
+
+        # remove individual tail-line paths for generation 0 and 1
+        if fish_dict["generation"] <= 1:
+            fish_svg_text = re.sub(
+                r'<path\b(?=[^>]*\bid="tail-line-[^"]+")[^>]*/>',
+                '',
+                fish_svg_text
+            )
+
+        # remove individual scale paths generations 0/1/2
+        if fish_dict["generation"] <= 2:
+            fish_svg_text = re.sub(
+                r'<path\b(?=[^>]*\bid="scale-[^"]+")[^>]*/>',
+                '',
+                fish_svg_text
+            )
 
         # map svg colors to new colors
         color_map = {
@@ -223,25 +232,27 @@ def render_aquarium():
         top1 = random.randint(5, 70)
         top2 = random.randint(5, 70)
         delay = random.randint(-40, 40)
+        speed = random.randint(35, 50)
 
-        if not fish_dict["fish_type"].endswith("baby"):
+        # for all first gen fish or fish past level 0, just display the fish alone
+        if fish_dict["level"] > 0 or fish_dict["generation"] == 0:
             full_svg_text = f"""
                 <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
                     <div class="fish-container"
                         style="
                         --top1:{top1}%;
                         --top2:{top2}%;
-                        --speed:{fish_dict["speed"]}s; 
-                        --fin-speed:{fish_dict["size"]}s;
+                        --speed:{speed}s; 
+                        --fin-speed:{fish_size}s;
                         --delay:{delay}s;  
-                        --size:{fish_dict["size"]};">
+                        --size:{fish_size};">
 
                         {fish_svg_text}
 
                     </div>
                 </a></p>
             """
-        # if baby, make it swim next to daddy 
+        # for later gen, level 0 babies, make them swim next to daddy 
         else:
             fish_daddy_svg = fish_shape_svg["fish_adult"]
 
@@ -258,8 +269,8 @@ def render_aquarium():
                         style="
                         --top1:{top1}%;
                         --top2:{top2}%;
-                        --speed:{fish_dict["speed"]}s; 
-                        --fin-speed:{1}s;
+                        --speed:{speed}s; 
+                        --fin-speed:1s;
                         --delay:{delay}s; 
                         --size:1;">
 
@@ -272,10 +283,10 @@ def render_aquarium():
                         style="
                         --top1:{top1+5}%;
                         --top2:{top2+5}%;
-                        --speed:{fish_dict["speed"]}s; 
-                        --fin-speed:{fish_dict["size"]}s;
+                        --speed:{speed}s; 
+                        --fin-speed:{fish_size}s;
                         --delay:{delay+0.7}s;
-                        --size:{fish_dict["size"]};">
+                        --size:{fish_size};">
 
                         {fish_svg_text}
 
