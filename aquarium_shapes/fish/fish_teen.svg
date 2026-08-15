@@ -14,21 +14,6 @@
   <defs
      id="defs1">
     <linearGradient
-       id="swatch9"
-       inkscape:swatch="solid">
-      <stop
-         style="stop-color:#ff7a00;stop-opacity:1;"
-         offset="0"
-         id="stop9" />
-    </linearGradient>
-    <linearGradient
-       id="swatch7">
-      <stop
-         style="stop-color:#ff7a00;stop-opacity:1;"
-         offset="0"
-         id="stop7" />
-    </linearGradient>
-    <linearGradient
        id="linearGradient32">
       <stop
          style="stop-color:#ff7a00;stop-opacity:1;"
@@ -102,7 +87,6 @@
      inkscape:current-layer="fish-body"
      showguides="true" />
   <!-- Main body group -->
-  <!-- Tail -->
   <g
      id="fish-body"
      clip-path="none"
@@ -131,7 +115,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0234169,0,0,1.0875383,-1.1744,-1.8201204)"
          inkscape:path-effect="#path-effect2232" />
       <path
@@ -142,7 +125,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2231" />
       <path
@@ -153,7 +135,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2230" />
       <path
@@ -164,7 +145,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2229" />
       <path
@@ -175,7 +155,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2228" />
       <path
@@ -186,7 +165,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0234169,0,0,1.0875383,-1.1744002,-2.1189264)"
          inkscape:path-effect="#path-effect2226" />
       <path
@@ -197,7 +175,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2225" />
       <path
@@ -208,7 +185,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2224" />
       <path
@@ -219,7 +195,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2223" />
       <path
@@ -230,7 +205,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2222" />
       <path
@@ -241,7 +215,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2219" />
       <path
@@ -252,7 +225,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2218" />
       <path
@@ -263,7 +235,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2217" />
       <path
@@ -274,7 +245,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2216" />
       <path
@@ -285,7 +255,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.58939924;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(0.60413751,0,0,0.87286824,29.278386,3.2091591)"
          inkscape:path-effect="#path-effect2215" />
       <path
@@ -295,8 +264,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-17"
          d="m 33.464652,34.274438 q 4.634803,2.125117 0.06826,4.464165"
@@ -305,7 +273,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2205" />
       <path
@@ -315,8 +282,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-19"
          d="m 31.021503,7.0531697 q 4.634807,2.1251165 0.06826,4.4641653"
@@ -325,7 +291,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2200" />
       <path
@@ -336,7 +301,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2199" />
       <path
@@ -347,7 +311,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2191" />
       <path
@@ -358,7 +321,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2190" />
       <path
@@ -369,7 +331,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2189" />
       <path
@@ -380,7 +341,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2188" />
       <path
@@ -391,7 +351,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2184" />
       <path
@@ -402,7 +361,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2183" />
       <path
@@ -413,7 +371,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2182" />
       <path
@@ -424,7 +381,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2181" />
       <path
@@ -435,7 +391,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.55501832;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(0.64156114,0,0,0.92693856,26.571439,1.8987668)"
          inkscape:path-effect="#path-effect2180" />
       <path
@@ -446,7 +401,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0221519,0,0,1.102645,-1.1089575,-2.161482)"
          inkscape:path-effect="#path-effect2177" />
       <path
@@ -456,8 +410,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-32"
          d="m 45.52878,26.615233 q 4.743138,2.311148 0.06986,4.854957"
@@ -465,8 +418,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-33"
          d="m 45.530261,16.605602 q 4.737273,2.343251 0.06977,4.922396"
@@ -474,8 +426,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-12-1"
          d="m 55.452799,17.199273 q 4.634609,2.125118 0.06826,4.464171"
@@ -484,7 +435,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2176" />
       <path
@@ -495,7 +445,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2175" />
       <path
@@ -506,7 +455,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2174" />
       <path
@@ -517,7 +465,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2173" />
       <path
@@ -528,7 +475,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2164" />
       <path
@@ -539,7 +485,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2163" />
       <path
@@ -550,7 +495,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2162" />
       <path
@@ -561,7 +505,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2161" />
       <path
@@ -572,7 +515,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2157" />
       <path
@@ -583,7 +525,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2156" />
       <path
@@ -594,7 +535,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0171884,0,0,1.1631221,-0.85217436,-5.4960964)"
          inkscape:path-effect="#path-effect2150" />
       <path
@@ -605,7 +545,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2149" />
       <path
@@ -616,7 +555,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2148" />
       <path
@@ -627,7 +565,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2147" />
       <path
@@ -638,7 +575,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2140" />
       <path
@@ -649,7 +585,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2112" />
       <path
@@ -660,7 +595,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2108" />
       <path
@@ -671,7 +605,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2107" />
       <path
@@ -682,7 +615,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2102" />
       <path
@@ -693,7 +625,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0256836,0,0,1.0609232,-3.8655399,6.3704867)"
          inkscape:path-effect="#path-effect2232-1" />
       <path
@@ -704,7 +635,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.022072,0,0,1.1035152,-3.6786993,4.8757192)"
          inkscape:path-effect="#path-effect2226-3" />
       <path
@@ -715,7 +645,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0208192,0,0,1.1186475,-3.6138876,4.982909)"
          inkscape:path-effect="#path-effect2177-9" />
       <path
@@ -726,7 +655,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-4.0153395,6.9738335)"
          inkscape:path-effect="#path-effect2108-8" />
       <path
@@ -737,7 +665,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0217702,0,0,1.1072279,-3.6630849,5.6277168)"
          inkscape:path-effect="#path-effect2102-6" />
       <path
@@ -748,7 +675,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2101" />
       <path
@@ -759,7 +685,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2100" />
       <path
@@ -770,7 +695,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2099" />
       <path
@@ -781,7 +705,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2095" />
       <path
@@ -792,7 +715,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.022072,0,0,1.1035152,-6.0718854,2.3927705)"
          inkscape:path-effect="#path-effect2226-3-2" />
       <path
@@ -803,7 +725,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.022072,0,0,1.1035152,-8.3685214,4.9822817)"
          inkscape:path-effect="#path-effect2226-3-2-6" />
       <path
@@ -814,7 +735,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.472012;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-21-4-0-3-6-5"
@@ -824,7 +744,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-6.4085256,4.4908848)"
          inkscape:path-effect="#path-effect2108-8-8" />
       <path
@@ -834,8 +753,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-32-54"
          d="m 40.763725,26.709751 q 4.743138,2.311148 0.06986,4.854957"
@@ -843,8 +761,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-33-3"
          d="m 40.765206,16.70012 q 4.737273,2.343251 0.06977,4.922396"
@@ -852,8 +769,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-6-8-65-1"
          d="m 40.84568,31.84409 q 4.736904,2.345101 0.06977,4.92628"
@@ -862,7 +778,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.472012;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-21-4-0-3-6-5-2"
@@ -872,7 +787,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-32-54-3"
@@ -881,8 +795,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-21-4-0-3-6-5-2-4"
          d="m 38.243167,14.352729 q 4.767062,2.182847 0.07021,4.58544"
@@ -891,7 +804,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-31-8"
@@ -900,8 +812,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-32-5"
          d="m 43.098013,28.732905 q 4.743138,2.311148 0.06986,4.854957"
@@ -909,8 +820,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.468891;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-33-7"
          d="m 43.099494,18.723274 q 4.737273,2.343251 0.06977,4.922396"
@@ -918,8 +828,7 @@
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none" />
+         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1" />
       <path
          id="scale-6-8-65-6"
          d="m 43.179964,33.867244 q 4.736904,2.345101 0.06977,4.92628"
@@ -928,7 +837,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.472012;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-21-4-0-3-6-5-1"
@@ -938,7 +846,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-21-4-0-3-6-5-8"
@@ -948,7 +855,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-8.8017072,2.0818894)"
          inkscape:path-effect="#path-effect2108-8-8-9" />
       <path
@@ -959,7 +865,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
       />
       <path
          id="scale-30-7-4-1-1"
@@ -969,7 +874,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-3.8346501,-3.0017847)"
          inkscape:path-effect="#path-effect2095-1" />
       <path
@@ -980,7 +884,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-8.6895801,-2.9068208)"
          inkscape:path-effect="#path-effect2095-1-2" />
       <path
@@ -991,7 +894,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-3.739173,26.393961)"
          inkscape:path-effect="#path-effect2095-1-6" />
       <path
@@ -1002,7 +904,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-8.4641843,26.386321)"
          inkscape:path-effect="#path-effect2095-1-6-8" />
       <path
@@ -1013,7 +914,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2094" />
       <path
@@ -1024,7 +924,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2093" />
       <path
@@ -1035,7 +934,6 @@
          stroke-width="0.958385"
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         clip-path="none"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)"
          inkscape:path-effect="#path-effect2092" />
     </g>
@@ -1057,22 +955,25 @@
        style="stroke-width:1.27785"
        r="1.2778467" />
     <!-- Gills -->
-    <path
-       id="gill-1"
-       d="m 32.101047,17.474602 q 5.111384,6.389233 0,12.778467"
-       fill="none"
-       stroke="#e66e00"
-       stroke-width="0.958385"
-       stroke-linecap="round"
-       style="stroke-width:0.958333;stroke-dasharray:none" />
-    <path
-       id="gill-2"
-       d="m 34.461537,17.474602 q 5.111374,6.389233 0,12.778467"
-       fill="none"
-       stroke="#e66e00"
-       stroke-width="0.958385"
-       stroke-linecap="round"
-       style="stroke-width:0.958333;stroke-dasharray:none" />
+    <g
+       id="gills">
+      <path
+         id="gill-1"
+         d="m 32.101047,17.474602 q 5.111384,6.389233 0,12.778467"
+         fill="none"
+         stroke="#e66e00"
+         stroke-width="0.958385"
+         stroke-linecap="round"
+         style="stroke-width:0.958333;stroke-dasharray:none" />
+      <path
+         id="gill-2"
+         d="m 34.461537,17.474602 q 5.111374,6.389233 0,12.778467"
+         fill="none"
+         stroke="#e66e00"
+         stroke-width="0.958385"
+         stroke-linecap="round"
+         style="stroke-width:0.958333;stroke-dasharray:none" />
+    </g>
     <path
        id="mouth"
        d="M 16.345764,26.512702 Q 15.518924,27.51883 14.1508,27.790776"
@@ -1088,6 +989,7 @@
        fill="#e66e00"
        style="stroke-width:1.06298" />
   </g>
+  <!-- Tail -->
   <g
      id="fish-tail">
     <path
@@ -1095,7 +997,6 @@
        d="m 74.003972,24.324106 c 7.890293,-7.917405 19.162142,-14.7037501 24.798065,-12.441635 -3.381554,9.048461 -3.381554,15.834806 0,24.883267 -5.635923,2.262115 -16.907772,-4.52423 -24.798065,-12.441632 z"
        fill="#ff7a00"
        style="stroke-width:1.12913"
-       clip-path="none"
        transform="matrix(1.1964402,0,0,1.1964402,-14.825356,-6.6056894)" />
     <g
        id="tail-lines"
