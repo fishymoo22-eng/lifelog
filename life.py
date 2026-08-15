@@ -76,8 +76,8 @@ def render_aquarium():
             "fish_id": 1,
             "fish_name": "Tilly",
             "fish_mapping": "Things to Remember",
-            "generation": 0,
-            "level": 0,
+            "generation": 1,
+            "level": 5,
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
@@ -89,7 +89,7 @@ def render_aquarium():
             "fish_id": 2,
             "fish_name": "Dolly",
             "fish_mapping": "Dreams",
-            "generation": 0,
+            "generation": 2,
             "level": 0,
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
@@ -102,7 +102,7 @@ def render_aquarium():
             "fish_id": 3,
             "fish_name": "Allie",
             "fish_mapping": "Activities",
-            "generation": 0,
+            "generation": 1,
             "level": 0,
             "base_color": "#ff5fa2",
             "light_accent_color": "#ff9bc8",
@@ -115,8 +115,8 @@ def render_aquarium():
             "fish_id": 4,
             "fish_name": "Jelly",
             "fish_mapping": "Journal",
-            "generation": 0,
-            "level": 0,
+            "generation": 1,
+            "level": 4,
             "base_color": "#8b5fbf",
             "light_accent_color": "#b58dd9",
             "dark_accent_color": "#67418f",
@@ -150,11 +150,43 @@ def render_aquarium():
 
     for type in fish_shape_types:
         # ingest raw svg file 
-        svg_text = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
-        fish_shape_svg[type] = svg_text
+        fish_shape_svg[type] = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
 
-    # now loop through all fish in config 
+    # finalize fish configuration
+    fish_config_w_daddys = []
     for fish_dict in fish_config:
+        fish_dict_copy = fish_dict.copy()
+
+        # define randomized values
+        fish_dict_copy["top1"] = random.randint(5, 70)
+        fish_dict_copy["top2"] = random.randint(5, 70)
+        fish_dict_copy["delay"] = random.randint(-40, 40)
+        fish_dict_copy["speed"] = random.randint(35, 50)
+
+        # for later generation level 0 babies, add a daddy
+        if fish_dict_copy["generation"] > 0 and fish_dict_copy["level"] == 0:
+            # define daddy features based on baby
+            daddy_dict = fish_dict_copy.copy()
+
+            # modify certain features
+            daddy_dict["fish_id"] = f"dad-{fish_dict_copy['fish_id']}"
+            daddy_dict["fish_name"] = f"Daddy {fish_dict_copy['fish_name']}"
+            daddy_dict["generation"] = fish_dict_copy["generation"] + 1
+            daddy_dict["level"] = 19
+
+            # update baby fish positioning based on daddy
+            fish_dict_copy["top1"] = fish_dict_copy["top1"] + 5
+            fish_dict_copy["top2"] = fish_dict_copy["top2"] + 5
+            fish_dict_copy["delay"] = fish_dict_copy["delay"] + 0.7
+            fish_dict_copy["speed"] = fish_dict_copy["speed"]
+
+            fish_config_w_daddys.append(daddy_dict)
+
+        # add dictionary to final fish config list
+        fish_config_w_daddys.append(fish_dict_copy)
+
+    # now loop through all fish in final config 
+    for fish_dict in fish_config_w_daddys:
         # determine fish type and size based on level
         if fish_dict["level"] < 5:
             fish_type = "fish_baby"
@@ -228,73 +260,23 @@ def render_aquarium():
         for old_id, new_id in id_map.items():
             fish_svg_text = fish_svg_text.replace(old_id, new_id)
 
-        # build full svg for fish in dict
-        top1 = random.randint(5, 70)
-        top2 = random.randint(5, 70)
-        delay = random.randint(-40, 40)
-        speed = random.randint(35, 50)
+        # save finalized svg text
+        fish_dict["svg"] = f"""
+            <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
+                <div class="fish-container"
+                    style="
+                    --top1:{fish_dict['top1']}%;
+                    --top2:{fish_dict['top2']}%;
+                    --speed:{fish_dict['speed']}s; 
+                    --fin-speed:{fish_size}s;
+                    --delay:{fish_dict['delay']}s;  
+                    --size:{fish_size};">
 
-        # for all first gen fish or fish past level 0, just display the fish alone
-        if fish_dict["level"] > 0 or fish_dict["generation"] == 0:
-            full_svg_text = f"""
-                <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
-                    <div class="fish-container"
-                        style="
-                        --top1:{top1}%;
-                        --top2:{top2}%;
-                        --speed:{speed}s; 
-                        --fin-speed:{fish_size}s;
-                        --delay:{delay}s;  
-                        --size:{fish_size};">
+                    {fish_svg_text}
 
-                        {fish_svg_text}
-
-                    </div>
-                </a></p>
-            """
-        # for later gen, level 0 babies, make them swim next to daddy 
-        else:
-            fish_daddy_svg = fish_shape_svg["fish_adult"]
-
-            # make sure daddy fish has same color as baby
-            for old_color, new_color in color_map.items():
-                fish_daddy_svg = fish_daddy_svg.replace(old_color, new_color)
-            for old_id, new_id in id_map.items():
-                fish_daddy_svg = fish_daddy_svg.replace(old_id, f"{new_id}-dad")
-
-            # define full svg text 
-            full_svg_text = f"""
-                <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
-                    <div class="fish-container"
-                        style="
-                        --top1:{top1}%;
-                        --top2:{top2}%;
-                        --speed:{speed}s; 
-                        --fin-speed:1s;
-                        --delay:{delay}s; 
-                        --size:1;">
-
-                        {fish_daddy_svg}
-
-                    </div>
-                </a></p>
-                <p><a href="javascript:void(0)" id=Baby{fish_dict["fish_name"]}>
-                    <div class="fish-container"
-                        style="
-                        --top1:{top1+5}%;
-                        --top2:{top2+5}%;
-                        --speed:{speed}s; 
-                        --fin-speed:{fish_size}s;
-                        --delay:{delay+0.7}s;
-                        --size:{fish_size};">
-
-                        {fish_svg_text}
-
-                    </div>
-                </a></p>
-            """
-
-        fish_dict["svg"] = full_svg_text
+                </div>
+            </a></p>
+        """
 
     # define bubble html
     bubble_html = ""
@@ -591,7 +573,7 @@ def render_aquarium():
         </div>
 
         {
-            " ".join([fish_dict["svg"] for fish_dict in fish_config])
+            " ".join([fish_dict["svg"] for fish_dict in fish_config_w_daddys])
         }
 
     </div>
