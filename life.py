@@ -74,77 +74,98 @@ def render_aquarium():
         {
             "fish_id": 1,
             "fish_name": "Marlin",
-            "fish_type": "fish_two_color_tail_lines_adult",
+            "fish_type": "fish_adult",
             "fish_mapping": "journal",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
+            "gradient_color_1": "#ff912d",
+            "gradient_color_2": "#f2be7f",
+            "gradient_color_3": "#e6d4a4",
             "speed": 35, 
             "size": 1
         },
         {
             "fish_id": 2,
             "fish_name": "Pinky",
-            "fish_type": "fish_two_color_tail_lines_adult",
+            "fish_type": "fish_adult",
             "fish_mapping": "journal",
             "base_color": "#ff5fa2",
             "light_accent_color": "#ff9bc8",
             "dark_accent_color": "#d9367a",
+            "gradient_color_1": "#fd7eb3",
+            "gradient_color_2": "#f27f9a",
+            "gradient_color_3": "#e6a4c3",
             "speed": 44,
             "size": 1
         },
         {
             "fish_id": 3,
             "fish_name": "Dory",
-            "fish_type": "fish_two_color_adult",
+            "fish_type": "fish_adult",
             "fish_mapping": "journal",
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
             "dark_accent_color": "#0d3c78",
+            "gradient_color_1": "#385ba2",
+            "gradient_color_2": "#7fa3f2",
+            "gradient_color_3": "#a4c7e6",
             "speed": 42, 
             "size": 1
         },
         {
             "fish_id": 4,
             "fish_name": "Banana",
-            "fish_type": "fish_one_color_adult",
+            "fish_type": "fish_adult",
             "fish_mapping": "test",
             "base_color": "#fcd628",
             "light_accent_color": "#ffe987",
             "dark_accent_color": "#ffc21c",
+            "gradient_color_1": "#f8d63e",
+            "gradient_color_2": "#ebd15f",
+            "gradient_color_3": "#e6d4a4",
             "speed": 50, 
             "size": 1
         },
         {
             "fish_id": 5,
             "fish_name": "Nemo",
-            "fish_type": "fish_two_color_baby",
+            "fish_type": "fish_baby",
             "fish_mapping": "test2",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
+            "gradient_color_1": "#ff912d",
+            "gradient_color_2": "#f2be7f",
+            "gradient_color_3": "#e6d4a4",
             "speed": 50, 
             "size": 0.35
         },
         {
             "fish_id": 6,
             "fish_name": "Nemo2",
-            "fish_type": "fish_two_color_child",
+            "fish_type": "fish_child",
             "fish_mapping": "test2",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
+            "gradient_color_1": "#ff912d",
+            "gradient_color_2": "#f2be7f",
+            "gradient_color_3": "#e6d4a4",
             "speed": 55, 
             "size": 0.6
         },
         {
             "fish_id": 7,
             "fish_name": "Nemo3",
-            "fish_type": "fish_two_color_teen",
+            "fish_type": "fish_teen",
             "fish_mapping": "test2",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
+            "gradient_color_1": "#ff912d",
+            "gradient_color_2": "#f2be7f",
+            "gradient_color_3": "#e6d4a4",
             "speed": 55, 
             "size": 0.8
         }
@@ -152,15 +173,10 @@ def render_aquarium():
 
     # build dictonary with svg of each fish type 
     fish_shape_svg = {
-        "fish_one_color_baby": Path(f"aquarium_shapes/fish/one_color/fish_baby.svg").read_text(),
-        "fish_one_color_child": Path(f"aquarium_shapes/fish/one_color/fish_child.svg").read_text(),
-        "fish_one_color_teen": Path(f"aquarium_shapes/fish/one_color/fish_teen.svg").read_text(),
-        "fish_one_color_adult": Path(f"aquarium_shapes/fish/one_color/fish_adult.svg").read_text(),
-        "fish_two_color_baby": Path(f"aquarium_shapes/fish/two_color/fish_baby.svg").read_text(),
-        "fish_two_color_child": Path(f"aquarium_shapes/fish/two_color/fish_child.svg").read_text(),
-        "fish_two_color_teen": Path(f"aquarium_shapes/fish/two_color/fish_teen.svg").read_text(),
-        "fish_two_color_adult": Path(f"aquarium_shapes/fish/two_color/fish_adult.svg").read_text(),
-        "fish_two_color_tail_lines_adult": Path(f"aquarium_shapes/fish/two_color_tail_lines/fish_adult.svg").read_text()
+        "fish_baby": Path(f"aquarium_shapes/fish/fish_baby.svg").read_text(),
+        "fish_child": Path(f"aquarium_shapes/fish/fish_child.svg").read_text(),
+        "fish_teen": Path(f"aquarium_shapes/fish/fish_teen.svg").read_text(),
+        "fish_adult": Path(f"aquarium_shapes/fish/fish_adult.svg").read_text()
     }
 
     for fish_dict in fish_config:
@@ -171,7 +187,10 @@ def render_aquarium():
         color_map = {
             "#ff7a00": fish_dict["base_color"], 
             "#ffa95a": fish_dict["light_accent_color"], 
-            "#e66e00": fish_dict["dark_accent_color"]
+            "#e66e00": fish_dict["dark_accent_color"],
+            "#ff912d": fish_dict["gradient_color_1"],
+            "#f2be7f": fish_dict["gradient_color_2"],
+            "#e6d4a4": fish_dict["gradient_color_3"],
         }
 
         for old_color, new_color in color_map.items():
@@ -189,10 +208,10 @@ def render_aquarium():
             '"pupil"': f'"f{fish_id}-pupil"',
             '"gill-1"': f'"f{fish_id}-gill-1"',
             '"gill-2"': f'"f{fish_id}-gill-2"',
-            '"gill-3"': f'"f{fish_id}-gill-3"',
             '"mouth"': f'"f{fish_id}-mouth"',
             '"pectoral-fin"': f'"f{fish_id}-pectoral-fin"',
             'linearGradient9': f'f{fish_id}linearGradient9',
+            'linearGradient32': f'f{fish_id}linearGradient32',
             'swatch7': f'f{fish_id}swatch7',
             'swatch9': f'f{fish_id}swatch9',
         }
@@ -210,11 +229,11 @@ def render_aquarium():
                 <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
                     <div class="fish-container"
                         style="
-                        --top1:{random.randint(5, 70)}%;
-                        --top2:{random.randint(5, 70)}%;
+                        --top1:{top1}%;
+                        --top2:{top2}%;
                         --speed:{fish_dict["speed"]}s; 
                         --fin-speed:{fish_dict["size"]}s;
-                        --delay:{random.randint(-40, 40)}s; 
+                        --delay:{delay}s;  
                         --size:{fish_dict["size"]};">
 
                         {fish_svg_text}
@@ -224,18 +243,13 @@ def render_aquarium():
             """
         # if baby, make it swim next to daddy 
         else:
-            fish_types = list(fish_shape_svg.keys())
-            fish_index = fish_types.index(fish_dict["fish_type"])
+            fish_daddy_svg = fish_shape_svg["fish_adult"]
 
-            if fish_index > 0:
-                fish_daddy_type = fish_types[fish_index - 1]
-                fish_daddy_svg = fish_shape_svg[fish_daddy_type]
-
-                # make sure daddy fish has same color as baby
-                for old_color, new_color in color_map.items():
-                    fish_daddy_svg = fish_daddy_svg.replace(old_color, new_color)
-                for old_id, new_id in id_map.items():
-                    fish_daddy_svg = fish_daddy_svg.replace(old_id, f"{new_id}-dad")
+            # make sure daddy fish has same color as baby
+            for old_color, new_color in color_map.items():
+                fish_daddy_svg = fish_daddy_svg.replace(old_color, new_color)
+            for old_id, new_id in id_map.items():
+                fish_daddy_svg = fish_daddy_svg.replace(old_id, f"{new_id}-dad")
 
             # define full svg text 
             full_svg_text = f"""
