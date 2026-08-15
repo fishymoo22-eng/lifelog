@@ -210,10 +210,7 @@ def render_aquarium():
             '"gill-2"': f'"f{fish_id}-gill-2"',
             '"mouth"': f'"f{fish_id}-mouth"',
             '"pectoral-fin"': f'"f{fish_id}-pectoral-fin"',
-            'linearGradient9': f'f{fish_id}linearGradient9',
             'linearGradient32': f'f{fish_id}linearGradient32',
-            'swatch7': f'f{fish_id}swatch7',
-            'swatch9': f'f{fish_id}swatch9',
         }
 
         for old_id, new_id in id_map.items():
