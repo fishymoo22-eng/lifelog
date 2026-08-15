@@ -94,7 +94,7 @@ def render_aquarium(conn):
         fish_shape_svg[type] = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
 
     # finalize fish configuration
-    fish_config_w_daddys = []
+    fish_config_w_daddys = {}
     for fish_dict in fish_config:
         fish_dict_copy = fish_dict.copy()
 
@@ -121,13 +121,13 @@ def render_aquarium(conn):
             fish_dict_copy["delay"] = fish_dict_copy["delay"] + 0.7
             fish_dict_copy["speed"] = fish_dict_copy["speed"]
 
-            fish_config_w_daddys.append(daddy_dict)
+            fish_config_w_daddys[str(daddy_dict["fish_id"])] = daddy_dict
 
         # add dictionary to final fish config list
-        fish_config_w_daddys.append(fish_dict_copy)
+        fish_config_w_daddys[str(fish_dict_copy["fish_id"])] = fish_dict_copy
 
     # now loop through all fish in final config 
-    for fish_dict in fish_config_w_daddys:
+    for fish_id, fish_dict in fish_config_w_daddys.items():
         # determine fish type and size based on level
         if fish_dict["level"] < 5:
             fish_type = "fish_baby"
@@ -203,7 +203,7 @@ def render_aquarium(conn):
 
         # save finalized svg text
         fish_dict["svg"] = f"""
-            <p><a href="javascript:void(0)" id={fish_dict["fish_name"]}>
+            <p><a href="javascript:void(0)" id={fish_dict["fish_id"]}>
                 <div class="fish-container"
                     style="
                     --top1:{fish_dict['top1']}%;
@@ -514,7 +514,7 @@ def render_aquarium(conn):
         </div>
 
         {
-            " ".join([fish_dict["svg"] for fish_dict in fish_config_w_daddys])
+            " ".join([fish_dict["svg"] for fish_dict in fish_config_w_daddys.values()])
         }
 
     </div>
@@ -541,8 +541,9 @@ def render_aquarium(conn):
     if st.session_state.selected_fish is None:
         st.write("Click a fish!")
     else:
+        clicked_fish = fish_config_w_daddys[st.session_state.selected_fish]
         st.write(
-            f"You selected fish: {st.session_state.selected_fish}"
+            f"You selected {clicked_fish["fish_name"]}, who maps to {clicked_fish["fish_mapping"]}!"
         )
 
     cursor.close()
