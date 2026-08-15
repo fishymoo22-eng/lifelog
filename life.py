@@ -1,6 +1,7 @@
 from pathlib import Path
 import pandas as pd
 from datetime import datetime
+import re
 
 import streamlit as st
 from st_click_detector import click_detector
@@ -73,9 +74,9 @@ def render_aquarium():
     fish_config = [
         {
             "fish_id": 1,
-            "fish_name": "Marlin",
+            "fish_name": "Tilly",
             "fish_type": "fish_adult",
-            "fish_mapping": "journal",
+            "fish_mapping": "Things to Remember",
             "base_color": "#ff7a00",
             "light_accent_color": "#ffa95a",
             "dark_accent_color": "#e66e00",
@@ -87,37 +88,51 @@ def render_aquarium():
         },
         {
             "fish_id": 2,
-            "fish_name": "Pinky",
+            "fish_name": "Dolly",
             "fish_type": "fish_adult",
-            "fish_mapping": "journal",
-            "base_color": "#ff5fa2",
-            "light_accent_color": "#ff9bc8",
-            "dark_accent_color": "#d9367a",
-            "gradient_color_1": "#fd7eb3",
-            "gradient_color_2": "#f27f9a",
-            "gradient_color_3": "#e6a4c3",
-            "speed": 44,
-            "size": 1
-        },
-        {
-            "fish_id": 3,
-            "fish_name": "Dory",
-            "fish_type": "fish_adult",
-            "fish_mapping": "journal",
+            "fish_mapping": "Dreams",
             "base_color": "#1356ad",
             "light_accent_color": "#5084c7",
             "dark_accent_color": "#0d3c78",
             "gradient_color_1": "#385ba2",
             "gradient_color_2": "#7fa3f2",
             "gradient_color_3": "#a4c7e6",
+            "speed": 44,
+            "size": 1
+        },
+        {
+            "fish_id": 3,
+            "fish_name": "Allie",
+            "fish_type": "fish_adult",
+            "fish_mapping": "Activities",
+            "base_color": "#ff5fa2",
+            "light_accent_color": "#ff9bc8",
+            "dark_accent_color": "#d9367a",
+            "gradient_color_1": "#fd7eb3",
+            "gradient_color_2": "#f27f9a",
+            "gradient_color_3": "#e6a4c3",
             "speed": 42, 
             "size": 1
         },
         {
             "fish_id": 4,
-            "fish_name": "Banana",
+            "fish_name": "Jelly",
             "fish_type": "fish_adult",
-            "fish_mapping": "test",
+            "fish_mapping": "Journal",
+            "base_color": "#8b5fbf",
+            "light_accent_color": "#b58dd9",
+            "dark_accent_color": "#67418f",
+            "gradient_color_1": "#9b72c9",
+            "gradient_color_2": "#c3a6df",
+            "gradient_color_3": "#ded0e8",
+            "speed": 50, 
+            "size": 1
+        },
+        {
+            "fish_id": 5,
+            "fish_name": "Millie",
+            "fish_type": "fish_baby",
+            "fish_mapping": "Mood",
             "base_color": "#fcd628",
             "light_accent_color": "#ffe987",
             "dark_accent_color": "#ffc21c",
@@ -125,62 +140,50 @@ def render_aquarium():
             "gradient_color_2": "#ebd15f",
             "gradient_color_3": "#e6d4a4",
             "speed": 50, 
-            "size": 1
-        },
-        {
-            "fish_id": 5,
-            "fish_name": "Nemo",
-            "fish_type": "fish_baby",
-            "fish_mapping": "test2",
-            "base_color": "#ff7a00",
-            "light_accent_color": "#ffa95a",
-            "dark_accent_color": "#e66e00",
-            "gradient_color_1": "#ff912d",
-            "gradient_color_2": "#f2be7f",
-            "gradient_color_3": "#e6d4a4",
-            "speed": 50, 
             "size": 0.35
-        },
-        {
-            "fish_id": 6,
-            "fish_name": "Nemo2",
-            "fish_type": "fish_child",
-            "fish_mapping": "test2",
-            "base_color": "#ff7a00",
-            "light_accent_color": "#ffa95a",
-            "dark_accent_color": "#e66e00",
-            "gradient_color_1": "#ff912d",
-            "gradient_color_2": "#f2be7f",
-            "gradient_color_3": "#e6d4a4",
-            "speed": 55, 
-            "size": 0.6
-        },
-        {
-            "fish_id": 7,
-            "fish_name": "Nemo3",
-            "fish_type": "fish_teen",
-            "fish_mapping": "test2",
-            "base_color": "#ff7a00",
-            "light_accent_color": "#ffa95a",
-            "dark_accent_color": "#e66e00",
-            "gradient_color_1": "#ff912d",
-            "gradient_color_2": "#f2be7f",
-            "gradient_color_3": "#e6d4a4",
-            "speed": 55, 
-            "size": 0.8
         }
     ]
 
     # build dictonary with svg of each fish type 
-    fish_shape_svg = {
-        "fish_baby": Path(f"aquarium_shapes/fish/fish_baby.svg").read_text(),
-        "fish_child": Path(f"aquarium_shapes/fish/fish_child.svg").read_text(),
-        "fish_teen": Path(f"aquarium_shapes/fish/fish_teen.svg").read_text(),
-        "fish_adult": Path(f"aquarium_shapes/fish/fish_adult.svg").read_text()
-    }
+    fish_shape_types = [
+        "fish_baby",
+        "fish_child",
+        "fish_teen",
+        "fish_adult"
+    ]
+    fish_shape_svg = {}
 
+    for type in fish_shape_types:
+        # ingest raw svg file 
+        raw_svg_text = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
+
+        # remove light body
+        no_light_body_svg_txt = re.sub(
+            r'<path\b(?=[^>]*\bid="body-light")[^>]*/>',
+            '',
+            raw_svg_text
+        )
+
+        # remove individual scale paths
+        no_light_body_scales_svg_txt = re.sub(
+            r'<path\b(?=[^>]*\bid="scale-[^"]+")[^>]*/>',
+            '',
+            no_light_body_svg_txt
+        )
+
+        # remove individual tail-line paths
+        no_texture_svg_txt = re.sub(
+            r'<path\b(?=[^>]*\bid="tail-line-[^"]+")[^>]*/>',
+            '',
+            no_light_body_scales_svg_txt
+        )
+
+        # add cleaned svg text to dictionary
+        fish_shape_svg[type] = no_texture_svg_txt
+
+    # now loop through all fish in config 
     for fish_dict in fish_config:
-        # grab raw fish svg 
+        # grab modified fish svg 
         fish_svg_text = fish_shape_svg[fish_dict["fish_type"]]
 
         # map svg colors to new colors
