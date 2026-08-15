@@ -24,7 +24,7 @@ def main():
 
     # configure and render app
     configure_app()
-    render_aquarium()
+    render_aquarium(conn)
     st.title("Life Log")
     render_things_to_remember(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
@@ -60,85 +60,26 @@ def configure_app():
     )
 
 
-def render_aquarium():
+def render_aquarium(conn):
     """
     Render section: Aquarium.
     This section displays a nice aquarium.
     """
+
+    cursor = conn.cursor()
     
     # define random seed 
     if "aquarium_seed" not in st.session_state:
         st.session_state.aquarium_seed = random.randint(0, 999999)
     random.seed(st.session_state.aquarium_seed)
-    
-    fish_config = [
-        {
-            "fish_id": 1,
-            "fish_name": "Tilly",
-            "fish_mapping": "Things to Remember",
-            "generation": 1,
-            "level": 5,
-            "base_color": "#ff7a00",
-            "light_accent_color": "#ffa95a",
-            "dark_accent_color": "#e66e00",
-            "gradient_color_1": "#ff912d",
-            "gradient_color_2": "#f2be7f",
-            "gradient_color_3": "#e6d4a4"
-        },
-        {
-            "fish_id": 2,
-            "fish_name": "Dolly",
-            "fish_mapping": "Dreams",
-            "generation": 2,
-            "level": 0,
-            "base_color": "#1356ad",
-            "light_accent_color": "#5084c7",
-            "dark_accent_color": "#0d3c78",
-            "gradient_color_1": "#385ba2",
-            "gradient_color_2": "#7fa3f2",
-            "gradient_color_3": "#a4c7e6"
-        },
-        {
-            "fish_id": 3,
-            "fish_name": "Allie",
-            "fish_mapping": "Activities",
-            "generation": 1,
-            "level": 0,
-            "base_color": "#ff5fa2",
-            "light_accent_color": "#ff9bc8",
-            "dark_accent_color": "#d9367a",
-            "gradient_color_1": "#fd7eb3",
-            "gradient_color_2": "#f27f9a",
-            "gradient_color_3": "#e6a4c3"
-        },
-        {
-            "fish_id": 4,
-            "fish_name": "Jelly",
-            "fish_mapping": "Journal",
-            "generation": 1,
-            "level": 4,
-            "base_color": "#8b5fbf",
-            "light_accent_color": "#b58dd9",
-            "dark_accent_color": "#67418f",
-            "gradient_color_1": "#9b72c9",
-            "gradient_color_2": "#c3a6df",
-            "gradient_color_3": "#ded0e8"
-        },
-        {
-            "fish_id": 5,
-            "fish_name": "Millie",
-            "fish_mapping": "Mood",
-            "generation": 0,
-            "level": 0,
-            "base_color": "#fcd628",
-            "light_accent_color": "#ffe987",
-            "dark_accent_color": "#ffc21c",
-            "gradient_color_1": "#f8d63e",
-            "gradient_color_2": "#ebd15f",
-            "gradient_color_3": "#e6d4a4"
-        }
-    ]
 
+    # pull in fish configuration from database
+    fish_config_pd = pd.read_sql_query("""
+        select * 
+        from fish_config 
+    """, conn)
+    fish_config = fish_config_pd.to_dict("records")
+    
     # build dictonary with svg of each fish type 
     fish_shape_types = [
         "fish_baby",
@@ -604,6 +545,7 @@ def render_aquarium():
             f"You selected fish: {st.session_state.selected_fish}"
         )
 
+    cursor.close()
 
 def render_things_to_remember(run_timestamp, conn):
     """
