@@ -642,23 +642,8 @@ def render_to_do(run_timestamp, conn):
             st.success(f"[{run_timestamp}] To-Do updated!")
             st.session_state["to_do_update"] = False
 
-            # level up to-do fish
-            cursor.execute("""
-                update fish_config 
-                set level = level + 1 
-                where fish_mapping = %s
-                ;
-            """, ("To-Do",)) 
-            conn.commit()
-
-            cursor.execute("""
-                update fish_config 
-                set generation = generation + 1
-                    ,level = 0
-                where fish_mapping = %s
-                    and level = 20
-            """, ("To-Do",)) 
-            conn.commit()
+            # level up relevant fish 
+            _level_up_fish("To-Do", conn)
 
     cursor.close()
 
@@ -737,23 +722,8 @@ def render_dreams(run_timestamp, conn):
             
             st.success(f"[{run_timestamp}] Dream data recorded!")
 
-            # level up dream fish
-            cursor.execute("""
-                update fish_config 
-                set level = level + 1 
-                where fish_mapping = %s
-                ;
-            """, ("Dreams",)) 
-            conn.commit()
-
-            cursor.execute("""
-                update fish_config 
-                set generation = generation + 1
-                    ,level = 0
-                where fish_mapping = %s
-                    and level = 20
-            """, ("Dreams",)) 
-            conn.commit()
+            # level up relevant fish 
+            _level_up_fish("Dreams", conn)
 
     cursor.close()
 
@@ -1005,23 +975,8 @@ def render_activities(run_timestamp, conn):
             
             st.success(f"[{run_timestamp}] Activity data recorded!")
             
-            # level up activites fish
-            cursor.execute("""
-                update fish_config 
-                set level = level + 1 
-                where fish_mapping = %s
-                ;
-            """, ("Activities",)) 
-            conn.commit()
-
-            cursor.execute("""
-                update fish_config 
-                set generation = generation + 1
-                    ,level = 0
-                where fish_mapping = %s
-                    and level = 20
-            """, ("Activities",)) 
-            conn.commit()
+            # level up relevant fish 
+            _level_up_fish("Activities", conn)
         elif activities_submit_button and not f_selected_activities:
             st.warning("Please select an activity.")
 
@@ -1085,23 +1040,8 @@ def render_journal(run_timestamp, conn):
             
             st.success(f"[{run_timestamp}] Journal data recorded!")
 
-            # level up journal fish
-            cursor.execute("""
-                update fish_config 
-                set level = level + 1 
-                where fish_mapping = %s
-                ;
-            """, ("Journal",)) 
-            conn.commit()
-
-            cursor.execute("""
-                update fish_config 
-                set generation = generation + 1
-                    ,level = 0
-                where fish_mapping = %s
-                    and level = 20
-            """, ("Journal",)) 
-            conn.commit()
+            # level up relevant fish 
+            _level_up_fish("Journal", conn)
 
     cursor.close()
 
@@ -1188,23 +1128,8 @@ def render_mood(run_timestamp, conn):
             
             st.success(f"[{run_timestamp}] Mood data recorded!")
             
-            # level up mood fish
-            cursor.execute("""
-                update fish_config 
-                set level = level + 1 
-                where fish_mapping = %s
-                ;
-            """, ("Mood",)) 
-            conn.commit()
-
-            cursor.execute("""
-                update fish_config 
-                set generation = generation + 1
-                    ,level = 0
-                where fish_mapping = %s
-                    and level = 20
-            """, ("Mood",)) 
-            conn.commit()
+            # level up relevant fish 
+            _level_up_fish("Mood", conn)
 
     cursor.close()
 
@@ -1532,6 +1457,36 @@ def _write_text(
     """
     return st.markdown(f"<span style='font-size: {size}px;'>{text}</span>", unsafe_allow_html = True)
 
+
+def _level_up_fish(mapping: str, conn):
+    """
+    Level up the fish corresponding to the given mapping.
+    """
+
+    cursor = conn.cursor()
+
+    # level up fish with the given mapping
+    cursor.execute("""
+        update fish_config 
+        set level = level + 1 
+        where fish_mapping = %s
+        ;
+    """, (mapping,)) 
+    conn.commit()
+
+    # if the fish just hit level 20, reset back to level 0 
+    # but update generation 
+    cursor.execute("""
+        update fish_config 
+        set generation = generation + 1
+            ,level = 0
+        where fish_mapping = %s
+            and level = 20
+    """, (mapping,)) 
+    conn.commit()
+
+    cursor.close()
+    
 
 if __name__ == "__main__":
     main()
