@@ -81,18 +81,12 @@ def render_aquarium(conn):
     fish_config = fish_config_pd.to_dict("records")
     
     # build dictonary with svg of each fish type 
-    fish_shape_types = [
-        "fish_baby",
-        "fish_child",
-        "fish_teen",
-        "fish_adult"
-    ]
-    fish_shape_svg = {}
-
-    for type in fish_shape_types:
-        # ingest raw svg file 
-        fish_shape_svg[type] = Path(f"aquarium_shapes/fish/{type}.svg").read_text()
-
+    fish_shape_svg = {
+        "Baby": Path(f"aquarium_shapes/fish/fish_baby.svg").read_text(),
+        "Child": Path(f"aquarium_shapes/fish/fish_child.svg").read_text(),
+        "Teen": Path(f"aquarium_shapes/fish/fish_teen.svg").read_text(),
+        "Adult": Path(f"aquarium_shapes/fish/fish_adult.svg").read_text()
+    }
     # finalize fish configuration
     fish_config_w_daddys = {}
     for fish_dict in fish_config:
@@ -111,7 +105,7 @@ def render_aquarium(conn):
 
             # modify certain features
             daddy_dict["fish_id"] = f"dad-{fish_dict_copy['fish_id']}"
-            daddy_dict["fish_name"] = f"Daddy {fish_dict_copy['fish_name']}"
+            daddy_dict["fish_name"] = f"{fish_dict_copy['fish_name']}'s Daddy"
             daddy_dict["generation"] = fish_dict_copy["generation"] + 1
             daddy_dict["level"] = 19
 
@@ -130,13 +124,15 @@ def render_aquarium(conn):
     for fish_id, fish_dict in fish_config_w_daddys.items():
         # determine fish type and size based on level
         if fish_dict["level"] < 5:
-            fish_type = "fish_baby"
+            fish_type = "Baby"
         elif fish_dict["level"] < 10:
-            fish_type = "fish_child"
+            fish_type = "Child"
         elif fish_dict["level"] < 15:
-            fish_type = "fish_teen"
+            fish_type = "Teen"
         else:
-            fish_type = "fish_adult"
+            fish_type = "Adult"
+
+        fish_dict["fish_age"] = fish_type
 
         # the size starts at 0.335, then adds 0.035 up until level 19, where it reaches 1
         fish_size = 0.335 + 0.035 * fish_dict["level"]
@@ -542,9 +538,14 @@ def render_aquarium(conn):
         st.write("Click a fish!")
     else:
         clicked_fish = fish_config_w_daddys[st.session_state.selected_fish]
-        st.write(
-            f"You selected {clicked_fish["fish_name"]}, who maps to {clicked_fish["fish_mapping"]}!"
-        )
+        # display table with fish attributes
+        st.table({
+            "Name": [clicked_fish['fish_name']],
+            "Mapping": [clicked_fish['fish_mapping']],
+            "Age": [fish_dict['fish_age']],
+            "Generation": [clicked_fish['generation']],
+            "Level": [clicked_fish['level']]
+        }, width="content")
 
     cursor.close()
 
