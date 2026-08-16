@@ -1388,6 +1388,24 @@ def render_bingo(run_timestamp, conn):
                     values (%s, %s, %s, %s, %s)
                 """, bingo_data)
                 conn.commit()
+                    
+                # level up bingo fish
+                cursor.execute("""
+                    update fish_config 
+                    set level = level + 1 
+                    where fish_mapping = %s
+                    ;
+                """, ("Bingo",)) 
+                conn.commit()
+
+                cursor.execute("""
+                    update fish_config 
+                    set generation = generation + 1
+                        ,level = 0
+                    where fish_mapping = %s
+                        and level = 20
+                """, ("Bingo",)) 
+                conn.commit()
 
                 st.session_state.bingo_success = (
                     f"[{run_timestamp}] Bingo Progress Recorded!"
