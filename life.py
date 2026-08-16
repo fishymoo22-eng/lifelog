@@ -4,7 +4,7 @@ from datetime import datetime
 import re
 
 import streamlit as st
-from st_click_detector import click_detector
+import streamlit.components.v1 as components
 import psycopg
 import pytz
 import random
@@ -24,8 +24,8 @@ def main():
 
     # configure and render app
     configure_app()
-    render_aquarium(conn)
     st.title("Life Log")
+    render_aquarium(conn)
     render_things_to_remember(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
     render_activity_roll(run_timestamp, conn)
@@ -65,9 +65,12 @@ def render_aquarium(conn):
     Render section: Aquarium.
     This section displays a nice aquarium.
     """
+    
+    # display header: aquarium!
+    st.header("Aquarium")
 
     cursor = conn.cursor()
-    
+
     # define random seed 
     if "aquarium_seed" not in st.session_state:
         st.session_state.aquarium_seed = random.randint(0, 999999)
@@ -199,20 +202,18 @@ def render_aquarium(conn):
 
         # save finalized svg text
         fish_dict["svg"] = f"""
-            <p><a href="javascript:void(0)" id={fish_dict["fish_id"]}>
-                <div class="fish-container"
-                    style="
-                    --top1:{fish_dict['top1']}%;
-                    --top2:{fish_dict['top2']}%;
-                    --speed:{fish_dict['speed']}s; 
-                    --fin-speed:{fish_size}s;
-                    --delay:{fish_dict['delay']}s;  
-                    --size:{fish_size};">
+            <div class="fish-container"
+                style="
+                --top1:{fish_dict['top1']}%;
+                --top2:{fish_dict['top2']}%;
+                --speed:{fish_dict['speed']}s; 
+                --fin-speed:{fish_size}s;
+                --delay:{fish_dict['delay']}s;  
+                --size:{fish_size};">
 
-                    {fish_svg_text}
+                {fish_svg_text}
 
-                </div>
-            </a></p>
+            </div>
         """
 
     # define bubble html
@@ -516,40 +517,21 @@ def render_aquarium(conn):
     </div>
     """
 
-    # detect whether each fish is clicked 
-    clicked = click_detector(content, key = "aquarium")
+    # display aquarium
+    components.html(content, height=400, scrolling=True)
 
-    # initialize selected fish at beginning of session
-    if "selected_fish" not in st.session_state:
-        st.session_state.selected_fish = None
-
-    # on first clicked fish, set selected fish 
-    if clicked and (
-        st.session_state.selected_fish is None
-        or st.session_state.selected_fish != clicked
-    ):
-        st.session_state.selected_fish = clicked
-    # if we click the same fish again, unselect 
-    elif clicked and st.session_state.selected_fish == clicked:
-        st.session_state.selected_fish = None
-
-    # display clicked fish
-    if st.session_state.selected_fish is None:
-        st.write("Click a fish!")
-    else:
-        clicked_fish = fish_config_w_daddys[st.session_state.selected_fish]
-        # display table with fish attributes
-        fish_df = pd.DataFrame(fish_config_w_daddys.values())
-        fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
-        fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
-        fish_df = fish_df.rename(columns={
-            "fish_name": "Name",
-            "fish_mapping": "Mapping",
-            "fish_age": "Age",
-            "generation": "Generation",
-            "level": "Level"
-        })
-        st.table(fish_df, width="content")
+    # display table with fish attributes
+    fish_df = pd.DataFrame(fish_config_w_daddys.values())
+    fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
+    fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
+    fish_df = fish_df.rename(columns={
+        "fish_name": "Name",
+        "fish_mapping": "Mapping",
+        "fish_age": "Age",
+        "generation": "Generation",
+        "level": "Level"
+    })
+    st.table(fish_df)
 
     cursor.close()
 
