@@ -33,7 +33,7 @@ def main():
     render_journal(run_timestamp, conn)
     render_mood(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
-    
+
     # display last run date in gray
     _write_text(f":gray[Last run on: {run_timestamp}]")
 
@@ -687,7 +687,11 @@ def render_dreams(run_timestamp, conn):
         with st.form("dream_form", clear_on_submit = True, border = False):
 
             # offer various options for recording dreams:
-            dream_date = st.date_input("Specify date:", key = "dream")
+            dream_date = st.date_input(
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "dream"
+            )
 
             # upload voice memo
             uploaded_file = st.file_uploader(
@@ -920,7 +924,10 @@ def render_activities(run_timestamp, conn):
     }
 
     with st.expander("Click to expand/collapse", expanded = False):
-        activity_date = st.date_input("Specify date:", key = "activity")
+        activity_date = st.date_input(
+            "Specify date:", 
+            value = datetime.now(pytz.timezone(st.context.timezone)), 
+            key = "activity")
 
         # loop through all activities to display
         _write_text("Select completed activities:")
@@ -1043,7 +1050,11 @@ def render_journal(run_timestamp, conn):
 
     with st.expander("Click to expand/collapse", expanded = False):
         with st.form("journal_form", clear_on_submit = True, border = False):
-            journal_date = st.date_input("Specify date:", key = "journal")
+            journal_date = st.date_input(
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "journal"
+            )
 
             # upload voice memo
             uploaded_file = st.file_uploader(
@@ -1118,7 +1129,11 @@ def render_mood(run_timestamp, conn):
     with st.expander("Click to expand/collapse", expanded = False):
         with st.form("mood_form", clear_on_submit = True, border = False):
 
-            mood_date = st.date_input("Specify date:", key = "mood")
+            mood_date = st.date_input(
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "mood"
+            )
 
             # log how my day was
             general_day = st.radio(
