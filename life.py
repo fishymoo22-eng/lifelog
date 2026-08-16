@@ -950,7 +950,7 @@ def render_activities(run_timestamp, conn):
                     )
             
             # rate enjoyment of each selected activity 
-            _write_text("Rate eventual enjoyment of activities:")
+            _write_text("Rate active enjoyment of activities:")
                 
             for activity_text in activity_menu:
                 activity_dict = activity_menu[activity_text]
@@ -962,6 +962,21 @@ def render_activities(run_timestamp, conn):
                         max_value = 10, 
                         value = 10,
                         key = f"{activity_text} enjoyment"
+                    )
+        
+            # rate retrospective enjoyment of each selected activity 
+            _write_text("Rate retrospective enjoyment of activities:")
+                
+            for activity_text in activity_menu:
+                activity_dict = activity_menu[activity_text]
+                # If activity is selected, display feedback 
+                if activity_dict["selected"]:
+                    activity_dict["retrospective"] = st.slider(
+                        f"{'&nbsp;' * 8}{activity_text}", 
+                        min_value = 1,
+                        max_value = 10, 
+                        value = 10,
+                        key = f"{activity_text} retrospective"
                     )
             
         # display button to push to database
@@ -976,7 +991,8 @@ def render_activities(run_timestamp, conn):
                     activity_date,
                     activity_text,
                     activity_menu[activity_text]["resistance"],
-                    activity_menu[activity_text]["enjoyment"]
+                    activity_menu[activity_text]["enjoyment"],
+                    activity_menu[activity_text]["retrospective"],
                 )
                 for activity_text 
                 in activity_menu
@@ -984,8 +1000,8 @@ def render_activities(run_timestamp, conn):
             ]
             
             cursor.executemany("""
-                insert into activities (entry_time, date, activity, resistance_rating, enjoyment_rating)
-                values (%s, %s, %s, %s, %s)
+                insert into activities (entry_time, date, activity, resistance_rating, enjoyment_rating, retrospective_rating)
+                values (%s, %s, %s, %s, %s, %s)
             """, activity_data)
             conn.commit()
             
