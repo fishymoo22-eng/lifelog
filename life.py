@@ -529,7 +529,7 @@ def render_aquarium(conn):
         "fish_name": "Name",
         "fish_mapping": "Mapping",
         "fish_age": "Age",
-        "generation": "Generation",
+        "generation": "Gen",
         "level": "Level"
     })
     st.table(fish_df)
