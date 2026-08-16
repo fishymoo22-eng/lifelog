@@ -706,6 +706,19 @@ def render_dreams(run_timestamp, conn):
             else:
                 audio_file = None
 
+            # allow user to tag mood/people
+            mood_tags = st.multiselect(
+                "Enter mood tags:",
+                ["Happy", "Funny", "Stressful", "Scary", "Sexy", "Romantic", "Adventurous", "Fantastical"],
+                accept_new_options = True,
+            )
+
+            people_tags = st.multiselect(
+                "Enter people tags:",
+                ["Maddy", "Anthony", "Siena", "Evan", "Felice", "Anabel", "Dylan"],
+                accept_new_options = True,
+            )
+
             # Forms require a dedicated submit button
             dream_submit_button = st.form_submit_button("Submit Dream")
 
@@ -717,11 +730,13 @@ def render_dreams(run_timestamp, conn):
                 dream_date,
                 dream_text,
                 audio_file,
+                mood_tags,
+                people_tags
             )
             
             cursor.execute("""
-                insert into dreams (entry_time, date, dream_text, file_name)
-                values (%s, %s, %s, %s);
+                insert into dreams (entry_time, date, dream_text, file_name, mood_tags, people_tags)
+                values (%s, %s, %s, %s, %s, %s);
             """, dream_data)
             conn.commit()
             
