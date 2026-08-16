@@ -643,7 +643,8 @@ def render_to_do(run_timestamp, conn):
             st.session_state["to_do_update"] = False
 
             # level up relevant fish 
-            _level_up_fish("To-Do", conn)
+            current_date = datetime.strptime(run_timestamp, "%Y-%m-%d %I:%M:%S %p")
+            _level_up_fish("To-Do", current_date.date(), conn)
 
     cursor.close()
 
@@ -723,7 +724,7 @@ def render_dreams(run_timestamp, conn):
             st.success(f"[{run_timestamp}] Dream data recorded!")
 
             # level up relevant fish 
-            _level_up_fish("Dreams", conn)
+            _level_up_fish("Dreams", dream_date, conn)
 
     cursor.close()
 
@@ -976,7 +977,7 @@ def render_activities(run_timestamp, conn):
             st.success(f"[{run_timestamp}] Activity data recorded!")
             
             # level up relevant fish 
-            _level_up_fish("Activities", conn)
+            _level_up_fish("Activities", activity_date, conn)
         elif activities_submit_button and not f_selected_activities:
             st.warning("Please select an activity.")
 
@@ -1041,7 +1042,7 @@ def render_journal(run_timestamp, conn):
             st.success(f"[{run_timestamp}] Journal data recorded!")
 
             # level up relevant fish 
-            _level_up_fish("Journal", conn)
+            _level_up_fish("Journal", journal_date, conn)
 
     cursor.close()
 
@@ -1129,7 +1130,7 @@ def render_mood(run_timestamp, conn):
             st.success(f"[{run_timestamp}] Mood data recorded!")
             
             # level up relevant fish 
-            _level_up_fish("Mood", conn)
+            _level_up_fish("Mood", mood_date, conn)
 
     cursor.close()
 
@@ -1318,23 +1319,8 @@ def render_bingo(run_timestamp, conn):
                 """, bingo_data)
                 conn.commit()
                     
-                # level up bingo fish
-                cursor.execute("""
-                    update fish_config 
-                    set level = level + 1 
-                    where fish_mapping = %s
-                    ;
-                """, ("Bingo",)) 
-                conn.commit()
-
-                cursor.execute("""
-                    update fish_config 
-                    set generation = generation + 1
-                        ,level = 0
-                    where fish_mapping = %s
-                        and level = 20
-                """, ("Bingo",)) 
-                conn.commit()
+                # level up relevant fish
+                _level_up_fish("Bingo", bingo_date, conn, allow_multiple_level_ups_per_day = True)
 
                 st.session_state.bingo_success = (
                     f"[{run_timestamp}] Bingo Progress Recorded!"
@@ -1458,7 +1444,12 @@ def _write_text(
     return st.markdown(f"<span style='font-size: {size}px;'>{text}</span>", unsafe_allow_html = True)
 
 
-def _level_up_fish(mapping: str, conn):
+def _level_up_fish(
+    mapping: str, 
+    date: datetime,
+    conn,
+    allow_multiple_level_ups_per_day: bool = False
+):
     """
     Level up the fish corresponding to the given mapping.
     """
@@ -1466,12 +1457,24 @@ def _level_up_fish(mapping: str, conn):
     cursor = conn.cursor()
 
     # level up fish with the given mapping
-    cursor.execute("""
-        update fish_config 
-        set level = level + 1 
-        where fish_mapping = %s
-        ;
-    """, (mapping,)) 
+    if allow_multiple_level_ups_per_day:
+        cursor.execute("""
+            update fish_config 
+            set level = level + 1 
+                ,last_updated_date = %s
+            where fish_mapping = %s
+            ;
+        """, (date, mapping)) 
+    else:
+        cursor.execute("""
+            update fish_config 
+            set level = level + 1 
+                ,last_updated_date = %s
+            where fish_mapping = %s
+                and last_updated_date <> %s
+            ;
+        """, (date, mapping, date)) 
+
     conn.commit()
 
     # if the fish just hit level 20, reset back to level 0 
