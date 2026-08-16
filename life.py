@@ -521,18 +521,22 @@ def render_aquarium(conn):
     # display aquarium
     components.html(content, height=400, scrolling=True)
 
-    # display table with fish attributes
-    fish_df = pd.DataFrame(fish_config_w_daddys.values())
-    fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
-    fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
-    fish_df = fish_df.rename(columns={
-        "fish_name": "Name",
-        "fish_mapping": "Mapping",
-        "fish_age": "Age",
-        "generation": "Gen",
-        "level": "Level"
-    })
-    st.table(fish_df)
+    with st.expander("Click to expand/collapse", expanded=False):
+        # display table with fish attributes
+        fish_df = pd.DataFrame(fish_config_w_daddys.values())
+        fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
+        fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
+        fish_df = fish_df.rename(columns={
+            "fish_name": "Name",
+            "fish_mapping": "Mapping",
+            "fish_age": "Age",
+            "generation": "Gen",
+            "level": "Level"
+        })
+        st.table(fish_df)
+
+        if st.button("Refresh Aquarium"):
+            st.rerun()
 
     cursor.close()
 
