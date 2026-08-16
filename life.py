@@ -539,13 +539,17 @@ def render_aquarium(conn):
     else:
         clicked_fish = fish_config_w_daddys[st.session_state.selected_fish]
         # display table with fish attributes
-        st.table({
-            "Name": [clicked_fish['fish_name']],
-            "Mapping": [clicked_fish['fish_mapping']],
-            "Age": [fish_dict['fish_age']],
-            "Generation": [clicked_fish['generation']],
-            "Level": [clicked_fish['level']]
-        }, width="content")
+        fish_df = pd.DataFrame(fish_config_w_daddys.values())
+        fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
+        fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
+        fish_df = fish_df.rename(columns={
+            "fish_name": "Name",
+            "fish_mapping": "Mapping",
+            "fish_age": "Age",
+            "generation": "Generation",
+            "level": "Level"
+        })
+        st.table(fish_df, width="content")
 
     cursor.close()
 
