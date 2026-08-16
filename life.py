@@ -32,6 +32,7 @@ def main():
     render_activities(run_timestamp, conn)
     render_journal(run_timestamp, conn)
     render_mood(run_timestamp, conn)
+    render_bingo(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
 
     # display last run date in gray
@@ -1200,6 +1201,204 @@ def render_mood(run_timestamp, conn):
                     and level = 20
             """, ("Mood",)) 
             conn.commit()
+
+    cursor.close()
+
+def render_bingo(run_timestamp, conn):
+    """
+    Render section: Bingo
+    This section can be used to document yearly bingo square progress.
+    """
+
+    st.header("Bingo")
+
+    cursor = conn.cursor()
+
+    bingo_dim = 5
+
+    with st.expander("Click to expand/collapse", expanded=False):
+
+        # read bingo square from database 
+        bingo_square_pd = pd.read_sql_query("""
+            select * 
+            from bingo_square 
+        """, conn)
+        bingo_square = bingo_square_pd.to_dict("records")
+
+        # create matrix (list of lists) of bingo 
+        bingo_matrix = {
+            row + 1: {}
+            for row 
+            in range(bingo_dim) 
+        }
+
+        for square in bingo_square:
+            bingo_matrix[square["row"]][square["column"]] = square
+
+        if "selected_bingo_square" not in st.session_state:
+            st.session_state.selected_bingo_square = None
+
+        # display bingo board
+        with st.container(key="bingo_board"):
+            # build square rules
+            completed_square_rules = []
+
+            # if square is completed, fill in background color
+            for square in bingo_square:
+                if square["progress"] >= square["target"]:
+                    completed_square_rules.append(
+                        f"""
+                        .st-key-bingo_square_{square["id"]}
+                        div[data-testid="stButton"] > button {{
+                            background-color: #d9ead3 !important;
+                        }}
+                        """
+                    )
+
+            # for all squares, define formatting such that squares are touching
+            st.markdown(
+                f"""
+                <style>
+
+                .st-key-bingo_board
+                div[data-testid="stButton"] > button {{
+                    width: 100%;
+                    height: 100px;
+                    padding: 0.25rem;
+                    white-space: normal;
+                    margin-top: -10px;
+                    margin-bottom: -10px;
+                    border-radius: 0px !important;
+                }}
+
+                .st-key-bingo_board
+                div[data-testid="stHorizontalBlock"] {{
+                    gap: 0rem;
+                }}
+
+                {''.join(completed_square_rules)}
+
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # render the bingo board
+            for row in range(1, 1 + bingo_dim):
+                # define square grid 
+                cols = st.columns(bingo_dim, gap="small")
+
+                for col in range(1, 1 + bingo_dim):
+                    square = bingo_matrix[row][col]
+
+                    with cols[col - 1]:
+
+                        # Give each individual square its own CSS scope
+                        # so the completed-square background can target
+                        # exactly this square.
+                        with st.container(
+                            key=f"bingo_square_{square['id']}"
+                        ):
+
+                            label = (
+                                f"{square['title']}\n\n"
+                                f"{square['progress']} / {square['target']}"
+                            )
+
+                            if square["progress"] >= square["target"]:
+                                disable_button = True 
+                            else:
+                                disable_button = False
+
+                            if st.button(
+                                label,
+                                key=f"bingo_{square['id']}",
+                                use_container_width=True,
+                                disabled = disable_button
+                            ):
+                                st.session_state.selected_bingo_square = (
+                                    square["id"]
+                                )
+
+        # find selected bingo square
+        selected_id = st.session_state.selected_bingo_square
+        selected_square = None
+
+        if selected_id is not None:
+
+            for row in bingo_matrix.values():
+                for square in row.values():
+                    if square["id"] == selected_id:
+                        selected_square = square
+                        break
+
+                if selected_square is not None:
+                    break
+
+        # edit selected square
+        if selected_square is not None:
+
+            st.subheader(selected_square["title"])
+
+            bingo_date = st.date_input(
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "bingo"
+            )
+
+            progress = st.number_input(
+                "Enter progress:",
+                min_value=0,
+                max_value=selected_square["target"],
+                value=selected_square["progress"],
+                key=f"progress_{selected_id}",
+            )
+
+            notes = st.text_area(
+                "Enter additional details:",
+                key=f"notes_{selected_id}",
+            )
+
+            # display submit button
+            if st.button(
+                "Submit Bingo Progress",
+                key="submit_bingo",
+            ):
+
+                # update progress counter
+                cursor.execute("""
+                    update bingo_square 
+                    set progress = %s
+                    where id = %s
+                    ;
+                """, (progress, selected_id)) 
+                conn.commit()
+
+                # add notes
+                bingo_data = (
+                    run_timestamp, 
+                    bingo_date,
+                    selected_id,
+                    selected_square["title"],
+                    notes
+                )
+                
+                cursor.execute("""
+                    insert into bingo_notes (entry_time, date, id, title, notes)
+                    values (%s, %s, %s, %s, %s)
+                """, bingo_data)
+                conn.commit()
+
+                st.session_state.bingo_success = (
+                    f"[{run_timestamp}] Bingo Progress Recorded!"
+                )
+
+                st.rerun()
+
+        # display success message 
+        if "bingo_success" in st.session_state:
+            st.success(st.session_state.bingo_success)
+            del st.session_state.bingo_success
 
     cursor.close()
 
