@@ -26,7 +26,7 @@ def main():
     configure_app()
     st.title("Life Log")
     render_aquarium(conn)
-    render_things_to_remember(run_timestamp, conn)
+    render_to_do(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
     render_activity_roll(run_timestamp, conn)
     render_activities(run_timestamp, conn)
@@ -536,36 +536,36 @@ def render_aquarium(conn):
 
     cursor.close()
 
-def render_things_to_remember(run_timestamp, conn):
+def render_to_do(run_timestamp, conn):
     """
-    Render section: Things to Remember.
-    This section keeps a running, editable list of things to remember.
+    Render section: To-Do.
+    This section keeps a running, editable list of to-do.
     """
     
-    # display header: log my things to remember!
-    st.header("Things to Remember")
+    # display header: log my to-do!
+    st.header("To-Do")
 
     cursor = conn.cursor()
 
     with st.expander("Click to expand/collapse", expanded = False):
-        if "things_to_remember_update" not in st.session_state:
-            st.session_state["things_to_remember_update"] = False
+        if "to_do_update" not in st.session_state:
+            st.session_state["to_do_update"] = False
 
-        with st.form(key = "things_to_remember_form", border=False):
-            # read things to remember from sql
-            things_to_remember_curr = pd.read_sql_query("""
-                select thing_to_remember 
-                from things_to_remember 
+        with st.form(key = "to_do_form", border=False):
+            # read to-do from sql
+            to_do_curr = pd.read_sql_query("""
+                select to_do_item 
+                from to_do 
                 order by entry_time
             """, conn)
 
             # display with st.data_editor, which allows us to remove or edit items dynamically
-            things_to_remember_new = st.data_editor(
-                things_to_remember_curr,
+            to_do_new = st.data_editor(
+                to_do_curr,
                 num_rows = "dynamic",
                 column_config = {
-                    "thing_to_remember": st.column_config.TextColumn(
-                        "Thing to Remember",
+                    "to_do_item": st.column_config.TextColumn(
+                        "To-Do Item",
                         width = 275
                     )
                 }
@@ -575,76 +575,76 @@ def render_things_to_remember(run_timestamp, conn):
             submit_button = st.form_submit_button(label="Save Changes")
 
         if submit_button:
-            # get updated list of things to remember and date
-            things_to_remember = [
-                (run_timestamp, thing_to_remember)
-                for thing_to_remember
-                in things_to_remember_new["thing_to_remember"].tolist()
+            # get updated list of to-do and date
+            to_do = [
+                (run_timestamp, to_do_item)
+                for to_do_item
+                in to_do_new["to_do_item"].tolist()
             ]
 
             # insert new items into table, ignoring existing ones 
             cursor.executemany("""
-                insert into things_to_remember (entry_time, thing_to_remember)
+                insert into to_do (entry_time, to_do_item)
                 values (%s, %s)
-                on conflict (thing_to_remember) do nothing;
-            """, things_to_remember)
+                on conflict (to_do_item) do nothing;
+            """, to_do)
             cursor.execute("""
-                insert into things_to_remember_history (entry_time, action, thing_to_remember)
+                insert into to_do_history (entry_time, action, to_do_item)
                 select entry_time
                     ,'Added'
-                    ,thing_to_remember
-                from things_to_remember
-                on conflict (entry_time, action, thing_to_remember) do nothing;
+                    ,to_do_item
+                from to_do
+                on conflict (entry_time, action, to_do_item) do nothing;
             """)
             conn.commit()
 
             # pull any removed items  
-            removed_things_to_remember = [
-                thing_to_remember
-                for thing_to_remember
-                in things_to_remember_curr["thing_to_remember"].tolist()
-                if thing_to_remember not in things_to_remember_new["thing_to_remember"].tolist()
+            removed_to_do = [
+                to_do_item
+                for to_do_item
+                in to_do_curr["to_do_item"].tolist()
+                if to_do_item not in to_do_new["to_do_item"].tolist()
             ]
 
             # delete all removed items 
-            if removed_things_to_remember:
-                placeholders = ", ".join("%s" for _ in removed_things_to_remember)
+            if removed_to_do:
+                placeholders = ", ".join("%s" for _ in removed_to_do)
                 cursor.execute(
-                    f"delete from things_to_remember where thing_to_remember in ({placeholders})", removed_things_to_remember
+                    f"delete from to_do where to_do_item in ({placeholders})", removed_to_do
                 )
                 conn.commit()
 
-                # get removed list of things to remember and date
-                things_to_remember_removed = [
-                    (run_timestamp, "Removed", thing_to_remember)
-                    for thing_to_remember
-                    in removed_things_to_remember
+                # get removed list of to-do and date
+                to_do_removed = [
+                    (run_timestamp, "Removed", to_do_item)
+                    for to_do_item
+                    in removed_to_do
                 ]
 
                 # insert removed items into table
                 cursor.executemany("""
-                    insert into things_to_remember_history (entry_time, action, thing_to_remember)
+                    insert into to_do_history (entry_time, action, to_do_item)
                     values (%s, %s, %s)     
-                    on conflict (entry_time, action, thing_to_remember) do nothing;
-                """, things_to_remember_removed)
+                    on conflict (entry_time, action, to_do_item) do nothing;
+                """, to_do_removed)
                 conn.commit()
 
             # rerun to pull updated data from database 
-            st.session_state["things_to_remember_update"] = True
+            st.session_state["to_do_update"] = True
             st.rerun()
 
         # display success message
-        if st.session_state["things_to_remember_update"]:
-            st.success(f"[{run_timestamp}] Things to remember updated!")
-            st.session_state["things_to_remember_update"] = False
+        if st.session_state["to_do_update"]:
+            st.success(f"[{run_timestamp}] To-Do updated!")
+            st.session_state["to_do_update"] = False
 
-            # level up things to remember fish
+            # level up to-do fish
             cursor.execute("""
                 update fish_config 
                 set level = level + 1 
                 where fish_mapping = %s
                 ;
-            """, ("Things to Remember",)) 
+            """, ("To-Do",)) 
             conn.commit()
 
             cursor.execute("""
@@ -653,7 +653,7 @@ def render_things_to_remember(run_timestamp, conn):
                     ,level = 0
                 where fish_mapping = %s
                     and level = 20
-            """, ("Things to Remember",)) 
+            """, ("To-Do",)) 
             conn.commit()
 
     cursor.close()
@@ -1427,7 +1427,7 @@ def configure_user_options(run_timestamp, conn):
     This section provides a table with user configuration.
     """
     
-    # display header: log my things to remember!
+    # display header: log my to-do!
     st.header("Configuration")
 
     cursor = conn.cursor()
