@@ -690,7 +690,7 @@ def render_dreams(run_timestamp, conn):
             # allow user to tag mood/people
             mood_tags = st.multiselect(
                 "Enter mood tags:",
-                ["Happy", "Funny", "Stressful", "Scary", "Sexy", "Romantic", "Adventurous", "Fantastical"],
+                ["Happy", "Funny", "Fun", "Stressful", "Scary", "Sexy", "Flirty", "Adventurous", "Fantastical", "Sad"],
                 accept_new_options = True,
             )
 
