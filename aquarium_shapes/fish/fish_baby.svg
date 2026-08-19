@@ -66,15 +66,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="4"
-     inkscape:cx="96.749999"
-     inkscape:cy="66.124999"
+     inkscape:zoom="8"
+     inkscape:cx="62.0625"
+     inkscape:cy="38.6875"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1"
+     inkscape:current-layer="scales"
      showguides="true" />
   <!-- Main body group -->
   <g
@@ -466,15 +466,6 @@
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
          transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)" />
       <path
-         id="scale-50-1"
-         d="m 60.339076,7.3006301 q 4.63461,2.125118 0.06826,4.4641699"
-         fill="none"
-         stroke="#e66e00"
-         stroke-width="0.958385"
-         stroke-linecap="round"
-         style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
-         transform="matrix(1.0285792,0,0,1.0271651,-1.441464,-0.51883608)" />
-      <path
          id="scale-51"
          d="m 50.566516,12.249954 q 4.634609,2.125115 0.06826,4.464167"
          fill="none"
@@ -628,7 +619,7 @@
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
          transform="matrix(1.0285792,0,0,1.0271651,-3.8346501,-3.0017847)" />
       <path
-         id="scale-63-0"
+         id="path2"
          d="m 50.56652,7.3006301 q 4.634608,2.125118 0.06826,4.4641699"
          fill="none"
          stroke="#e66e00"
