@@ -11,10 +11,10 @@ def main():
     # define pages
     log_page = st.Page("pages/log.py", title = "Log")
     insights_page = st.Page("pages/insights.py", title = "Insights")
-    recommendations_page = st.Page("pages/recommendations.py", title = "Recommendations")
+    randomizer_page = st.Page("pages/randomizer.py", title = "Randomizer")
 
     # pass to st.navigation
-    pg = st.navigation([log_page, insights_page, recommendations_page])
+    pg = st.navigation([log_page, insights_page, randomizer_page])
 
     # run the selected page
     pg.run()
