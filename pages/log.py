@@ -1271,9 +1271,9 @@ def render_bingo(run_timestamp, conn):
                 /* Force each Streamlit column to exactly 20% */
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
-                    flex: 1 1 20% !important;
+                    flex: 1 1 0% !important;
+                    width: 0 !important;
 
-                    width: 20% !important;
                     min-width: 0 !important;
                     max-width: none !important;
 
