@@ -1223,200 +1223,172 @@ def render_bingo(run_timestamp, conn):
             # -----------------------------------------
 
             st.markdown(
-                f"""
-                <style>
+            f"""
+            <style>
 
-                /* =========================
-                Bingo board
-                ========================= */
+            /* =========================
+            BOARD
+            ========================= */
 
-                .st-key-bingo_board {{
-                    width: 100% !important;
-                    max-width: 100% !important;
-                    min-width: 0 !important;
-
-                    padding-bottom: 1rem !important;
-
-                    box-sizing: border-box !important;
-                }}
+            .st-key-bingo_board {{
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                padding-bottom: 1rem !important;
+                box-sizing: border-box !important;
+            }}
 
 
-                /* =========================
-                Bingo rows
-                ========================= */
+            /* =========================
+            ROW
+            ========================= */
+
+            .st-key-bingo_board
+            div[data-testid="stHorizontalBlock"] {{
+                display: flex !important;
+                flex-flow: row nowrap !important;
+
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+
+                gap: 0 !important;
+
+                margin-bottom: -1rem !important;
+
+                box-sizing: border-box !important;
+            }}
+
+
+            /* =========================
+            COLUMNS
+            ========================= */
+
+            .st-key-bingo_board
+            div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
+                flex: 1 1 0px !important;
+
+                width: auto !important;
+                max-width: none !important;
+                min-width: 0 !important;
+
+                padding: 0 !important;
+                margin: 0 !important;
+
+                box-sizing: border-box !important;
+            }}
+
+
+            /* =========================
+            SQUARE CONTAINER
+            ========================= */
+
+            .st-key-bingo_board
+            [class*="st-key-bingo_square_"] {{
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+
+                padding: 0 !important;
+                margin: 0 !important;
+
+                box-sizing: border-box !important;
+            }}
+
+
+            /* =========================
+            BUTTON WRAPPER
+            ========================= */
+
+            .st-key-bingo_board
+            div[data-testid="stButton"] {{
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+
+                padding: 0 !important;
+                margin: 0 !important;
+
+                box-sizing: border-box !important;
+            }}
+
+
+            /* =========================
+            BUTTON
+            ========================= */
+
+            .st-key-bingo_board
+            div[data-testid="stButton"] > button {{
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+
+                height: 100px !important;
+                min-height: 100px !important;
+                max-height: 100px !important;
+
+                box-sizing: border-box !important;
+
+                padding: 0.25rem !important;
+
+                margin-top: -10px !important;
+                margin-bottom: -10px !important;
+
+                border-radius: 0px !important;
+
+                white-space: normal !important;
+                overflow-wrap: anywhere !important;
+                word-break: break-word !important;
+
+                line-height: 1.5 !important;
+            }}
+
+
+            /* =========================
+            MOBILE
+            ========================= */
+
+            @media (max-width: 640px) {{
 
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] {{
-
-                    display: flex !important;
-                    flex-wrap: nowrap !important;
-
+                    flex: 0 1 auto !important;
                     width: 100% !important;
                     max-width: 100% !important;
-                    min-width: 0 !important;
-
-                    gap: 0 !important;
-
-                    align-items: stretch !important;
-
-                    /* Keep rows touching */
-                    margin-bottom: -1rem !important;
                 }}
-
-
-                /* =========================
-                Bingo columns
-                ========================= */
 
                 .st-key-bingo_board
-                div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
-
-                    flex: 1 1 20% !important;
-
-                    width: 20% !important;
+                div[data-testid="stHorizontalBlock"]
+                > div[data-testid="column"] {{
+                    flex: 1 1 0px !important;
+                    width: auto !important;
                     min-width: 0 !important;
-                    max-width: none !important;
-
-                    padding: 0 !important;
-                    margin: 0 !important;
-
-                    box-sizing: border-box !important;
                 }}
-
-
-                /* =========================
-                Bingo square container
-                ========================= */
-
-                .st-key-bingo_board
-                [class*="st-key-bingo_square_"] {{
-
-                    width: 100% !important;
-                    min-width: 0 !important;
-                    max-width: 100% !important;
-
-                    padding: 0 !important;
-                    margin: 0 !important;
-
-                    box-sizing: border-box !important;
-                }}
-
-
-                /* =========================
-                Button wrapper
-                ========================= */
-
-                .st-key-bingo_board
-                div[data-testid="stButton"] {{
-
-                    width: 100% !important;
-                    min-width: 0 !important;
-                    max-width: 100% !important;
-
-                    padding: 0 !important;
-                    margin: 0 !important;
-
-                    box-sizing: border-box !important;
-                }}
-
-
-                /* =========================
-                Bingo buttons
-                ========================= */
 
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
+                    height: 80px !important;
+                    min-height: 80px !important;
+                    max-height: 80px !important;
 
-                    width: 100% !important;
-                    min-width: 0 !important;
-                    max-width: 100% !important;
+                    font-size: 0.75rem !important;
+                    line-height: 1.2 !important;
 
-                    height: 100px !important;
-                    min-height: 100px !important;
-                    max-height: 100px !important;
-
-                    box-sizing: border-box !important;
-
-                    padding: 0.25rem !important;
-
-                    margin-top: -10px !important;
-                    margin-bottom: -10px !important;
-
-                    border-radius: 0px !important;
-
-                    white-space: normal !important;
-
-                    overflow-wrap: anywhere !important;
-                    word-break: break-word !important;
-
-                    line-height: 1.5 !important;
+                    padding: 0.15rem !important;
                 }}
+            }}
 
 
-                /* =========================
-                Mobile
-                ========================= */
+            /* =========================
+            COMPLETED SQUARES
+            ========================= */
 
-                @media (max-width: 640px) {{
+            {''.join(completed_square_rules)}
 
-                    .st-key-bingo_board {{
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        min-width: 0 !important;
-                    }}
-
-                    .st-key-bingo_board
-                    div[data-testid="stHorizontalBlock"] {{
-
-                        width: 100% !important;
-                        max-width: 100% !important;
-                        min-width: 0 !important;
-
-                        flex-wrap: nowrap !important;
-                        gap: 0 !important;
-                    }}
-
-                    .st-key-bingo_board
-                    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
-
-                        flex: 1 1 0% !important;
-
-                        width: 20% !important;
-                        min-width: 0 !important;
-                        max-width: 20% !important;
-
-                        padding: 0 !important;
-                    }}
-
-                    .st-key-bingo_board
-                    div[data-testid="stButton"] > button {{
-
-                        width: 100% !important;
-                        min-width: 0 !important;
-                        max-width: 100% !important;
-
-                        height: 80px !important;
-                        min-height: 80px !important;
-                        max-height: 80px !important;
-
-                        padding: 0.15rem !important;
-
-                        font-size: 0.75rem !important;
-                        line-height: 1.2 !important;
-                    }}
-                }}
-
-
-                /* =========================
-                Completed squares
-                ========================= */
-
-                {''.join(completed_square_rules)}
-
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
 
             # -----------------------------------------
             # Render bingo board
