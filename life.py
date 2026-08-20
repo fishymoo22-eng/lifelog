@@ -669,6 +669,35 @@ def render_dreams(run_timestamp, conn):
                 value = datetime.now(pytz.timezone(st.context.timezone)), 
                 key = "dream"
             )
+            
+            # allow user to tag mood/people, with existing values as suggestions
+            # first, mood 
+            existing_mood_tags = pd.read_sql_query("""
+                select distinct long.mood_tag
+                from dreams d
+                cross join lateral 
+                    unnest(d.mood_tags) as long(mood_tag)
+                ;
+            """, conn)
+            mood_tags = st.multiselect(
+                "Enter mood tags:",
+                existing_mood_tags,
+                accept_new_options = True,
+            )
+
+            # then people tags 
+            existing_people_tags = pd.read_sql_query("""
+                select distinct long.people_tag
+                from dreams d
+                cross join lateral 
+                    unnest(d.people_tags) as long(people_tag)
+                ;
+            """, conn)
+            people_tags = st.multiselect(
+                "Enter people tags:",
+                existing_people_tags,
+                accept_new_options = True,
+            )
 
             # upload voice memo
             uploaded_file = st.file_uploader(
@@ -686,19 +715,6 @@ def render_dreams(run_timestamp, conn):
                 audio_file = uploaded_file.name
             else:
                 audio_file = None
-
-            # allow user to tag mood/people
-            mood_tags = st.multiselect(
-                "Enter mood tags:",
-                ["Happy", "Funny", "Fun", "Stressful", "Scary", "Sexy", "Flirty", "Adventurous", "Fantastical", "Sad"],
-                accept_new_options = True,
-            )
-
-            people_tags = st.multiselect(
-                "Enter people tags:",
-                ["Maddy", "Anthony", "Siena", "Evan", "Felice", "Anabel", "Dylan"],
-                accept_new_options = True,
-            )
 
             # Forms require a dedicated submit button
             dream_submit_button = st.form_submit_button("Submit Dream")
@@ -870,20 +886,10 @@ def render_activities(run_timestamp, conn):
     cursor = conn.cursor()
 
     # pull current activity list from database 
-    activity_config = pd.read_sql_query("""
-        select * 
-        from activity_config 
+    existing_activities = pd.read_sql_query("""
+        select distinct activity
+        from activities 
     """, conn)
-    activity_list = activity_config["activity"].tolist()
-
-    # initialize activity menu with dictionary under each activity
-    activity_menu = {
-        activity_text: {
-            "selected": False
-        }
-        for activity_text 
-        in activity_list
-    }
 
     with st.expander("Click to expand/collapse", expanded = False):
         activity_date = st.date_input(
@@ -891,20 +897,27 @@ def render_activities(run_timestamp, conn):
             value = datetime.now(pytz.timezone(st.context.timezone)), 
             key = "activity")
 
-        # loop through all activities to display
+        # multiselect activities
         selected_activities = st.multiselect(
             "Select completed activities:",
-            activity_list,
+            existing_activities,
             accept_new_options = True
         )
 
+        # if any are selected
         if selected_activities:
+            # initialize activity menu with dictionary 
+            activity_menu = {
+                activity_text: {}
+                for activity_text 
+                in selected_activities
+            }
+
             # rate resistance to each selected activity 
             _write_text("Rate intial resistance to activities:")
                 
             for activity_text in selected_activities:
-                activity_dict = activity_menu[activity_text]
-                activity_dict["resistance"] = st.slider(
+                activity_menu[activity_text]["resistance"] = st.slider(
                     f"{'&nbsp;' * 8}{activity_text}", 
                     min_value = 1,
                     max_value = 10, 
@@ -916,8 +929,7 @@ def render_activities(run_timestamp, conn):
             _write_text("Rate active enjoyment of activities:")
                 
             for activity_text in selected_activities:
-                activity_dict = activity_menu[activity_text]
-                activity_dict["enjoyment"] = st.slider(
+                activity_menu[activity_text]["enjoyment"] = st.slider(
                     f"{'&nbsp;' * 8}{activity_text}", 
                     min_value = 1,
                     max_value = 10, 
@@ -929,8 +941,7 @@ def render_activities(run_timestamp, conn):
             _write_text("Rate retrospective enjoyment of activities:")
                 
             for activity_text in selected_activities:
-                activity_dict = activity_menu[activity_text]
-                activity_dict["retrospective"] = st.slider(
+                activity_menu[activity_text]["retrospective"] = st.slider(
                     f"{'&nbsp;' * 8}{activity_text}", 
                     min_value = 1,
                     max_value = 10, 
@@ -1008,16 +1019,32 @@ def render_journal(run_timestamp, conn):
                 horizontal = True
             )
             
-            # allow user to tag mood/people
+            # allow user to tag mood/people, with existing values as suggestions
+            # first, mood 
+            existing_mood_tags = pd.read_sql_query("""
+                select distinct long.mood_tag
+                from journal j
+                cross join lateral 
+                    unnest(j.mood_tags) as long(mood_tag)
+                ;
+            """, conn)
             mood_tags = st.multiselect(
                 "Enter mood tags:",
-                ["Happy", "Sociable", "Fun", "Stressful", "Restless", "Productive", "Scary", "Angry", "Adventurous", "Sad", "Unremarkable"],
+                existing_mood_tags,
                 accept_new_options = True,
             )
 
+            # then people tags 
+            existing_people_tags = pd.read_sql_query("""
+                select distinct long.people_tag
+                from journal j
+                cross join lateral 
+                    unnest(j.people_tags) as long(people_tag)
+                ;
+            """, conn)
             people_tags = st.multiselect(
                 "Enter people tags:",
-                ["Maddy", "Anthony", "Siena", "Evan", "Felice", "Dylan", "Mom", "Jessie"],
+                existing_people_tags,
                 accept_new_options = True,
             )
 
