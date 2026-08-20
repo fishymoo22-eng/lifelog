@@ -30,6 +30,7 @@ def main():
     render_dreams(run_timestamp, conn)
     render_activity_roll(run_timestamp, conn)
     render_activities(run_timestamp, conn)
+    render_reflections(run_timestamp, conn)
     render_journal(run_timestamp, conn)
     render_bingo(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
@@ -1077,6 +1078,94 @@ def render_journal(run_timestamp, conn):
             _level_up_fish("Journal", journal_date, conn)
 
     cursor.close()
+
+
+def render_reflections(run_timestamp, conn):
+    """
+    Render section: Reflections.
+    This section keeps a running, editable list of reflections.
+    """
+    
+    # display header: log my reflections!
+    st.header("Reflections")
+
+    cursor = conn.cursor()
+
+    with st.expander("Click to expand/collapse", expanded = False):
+        if "reflections_update" not in st.session_state:
+            st.session_state["reflections_update"] = False
+
+        with st.form(key = "reflections_form", border=False):
+            # read to-do from sql
+            reflections_curr = pd.read_sql_query("""
+                select reflection 
+                from reflections 
+                order by entry_time
+            """, conn)
+
+            # display with st.data_editor, which allows us to remove or edit items dynamically
+            reflections_new = st.data_editor(
+                reflections_curr,
+                num_rows = "dynamic",
+                column_config = {
+                    "reflection": st.column_config.TextColumn(
+                        "Reflection",
+                        width = 275
+                    )
+                }
+            )
+
+            # The app will only proceed past this line when the button is clicked
+            submit_button = st.form_submit_button(label="Save Changes")
+
+        if submit_button:
+            # get updated list of to-do and date
+            reflections = [
+                (run_timestamp, reflection)
+                for reflection
+                in reflections_new["reflection"].tolist()
+            ]
+
+            # insert new items into table, ignoring existing ones 
+            cursor.executemany("""
+                insert into reflections (entry_time, reflection)
+                values (%s, %s)
+                on conflict (reflection) do nothing;
+            """, reflections)
+            conn.commit()
+
+            # pull any removed items  
+            removed_reflections = [
+                reflection
+                for reflection
+                in reflections_curr["reflection"].tolist()
+                if reflection not in reflections_new["reflection"].tolist()
+            ]
+
+            # delete all removed items 
+            if removed_reflections:
+                placeholders = ", ".join("%s" for _ in removed_reflections)
+                cursor.execute(
+                    f"delete from reflections where reflection in ({placeholders})", removed_reflections
+                )
+                conn.commit()
+
+            # rerun to pull updated data from database 
+            st.session_state["reflections_update"] = True
+            st.rerun()
+
+        # display success message
+        if st.session_state["reflections_update"]:
+            st.success(f"[{run_timestamp}] Reflections updated!")
+            st.session_state["reflections_update"] = False
+
+            # level up relevant fish 
+            current_date = datetime.strptime(run_timestamp, "%Y-%m-%d %I:%M:%S %p")
+            _level_up_fish("Reflections", current_date.date(), conn)
+
+    cursor.close()
+
+
 
 def render_bingo(run_timestamp, conn):
     """
