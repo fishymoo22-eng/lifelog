@@ -892,67 +892,57 @@ def render_activities(run_timestamp, conn):
             key = "activity")
 
         # loop through all activities to display
-        _write_text("Select completed activities:")
-        for activity_text in activity_menu:
-            activity_dict = activity_menu[activity_text]
-
-            # display activity with checkbox and save selection state
-            activity_dict["selected"] = st.checkbox(activity_text)
-
-        # loop through activities again if any were selected
-        f_selected_activities = any(
-            activity_menu[activity_text]["selected"] for activity_text in activity_menu 
+        selected_activities = st.multiselect(
+            "Select completed activities:",
+            activity_list,
+            accept_new_options = True
         )
-        if f_selected_activities:
+
+        if selected_activities:
             # rate resistance to each selected activity 
             _write_text("Rate intial resistance to activities:")
                 
-            for activity_text in activity_menu:
+            for activity_text in selected_activities:
                 activity_dict = activity_menu[activity_text]
-                if activity_dict["selected"]:
-                    activity_dict["resistance"] = st.slider(
-                        f"{'&nbsp;' * 8}{activity_text}", 
-                        min_value = 1,
-                        max_value = 10, 
-                        value = 10,
-                        key = f"{activity_text} resistance"
-                    )
+                activity_dict["resistance"] = st.slider(
+                    f"{'&nbsp;' * 8}{activity_text}", 
+                    min_value = 1,
+                    max_value = 10, 
+                    value = 10,
+                    key = f"{activity_text} resistance"
+                )
             
             # rate enjoyment of each selected activity 
             _write_text("Rate active enjoyment of activities:")
                 
-            for activity_text in activity_menu:
+            for activity_text in selected_activities:
                 activity_dict = activity_menu[activity_text]
-                # If activity is selected, display feedback 
-                if activity_dict["selected"]:
-                    activity_dict["enjoyment"] = st.slider(
-                        f"{'&nbsp;' * 8}{activity_text}", 
-                        min_value = 1,
-                        max_value = 10, 
-                        value = 10,
-                        key = f"{activity_text} enjoyment"
-                    )
+                activity_dict["enjoyment"] = st.slider(
+                    f"{'&nbsp;' * 8}{activity_text}", 
+                    min_value = 1,
+                    max_value = 10, 
+                    value = 10,
+                    key = f"{activity_text} enjoyment"
+                )
         
             # rate retrospective enjoyment of each selected activity 
             _write_text("Rate retrospective enjoyment of activities:")
                 
-            for activity_text in activity_menu:
+            for activity_text in selected_activities:
                 activity_dict = activity_menu[activity_text]
-                # If activity is selected, display feedback 
-                if activity_dict["selected"]:
-                    activity_dict["retrospective"] = st.slider(
-                        f"{'&nbsp;' * 8}{activity_text}", 
-                        min_value = 1,
-                        max_value = 10, 
-                        value = 10,
-                        key = f"{activity_text} retrospective"
-                    )
+                activity_dict["retrospective"] = st.slider(
+                    f"{'&nbsp;' * 8}{activity_text}", 
+                    min_value = 1,
+                    max_value = 10, 
+                    value = 10,
+                    key = f"{activity_text} retrospective"
+                )
             
         # display button to push to database
         activities_submit_button = st.button("Submit Activities")
 
         # conditional logic if button is clicked
-        if activities_submit_button and f_selected_activities:
+        if activities_submit_button and selected_activities:
             # save activities to database
             activity_data = [
                 (
@@ -964,8 +954,7 @@ def render_activities(run_timestamp, conn):
                     activity_menu[activity_text]["retrospective"],
                 )
                 for activity_text 
-                in activity_menu
-                if activity_menu[activity_text]["selected"]
+                in selected_activities
             ]
             
             cursor.executemany("""
@@ -978,7 +967,7 @@ def render_activities(run_timestamp, conn):
             
             # level up relevant fish 
             _level_up_fish("Activities", activity_date, conn)
-        elif activities_submit_button and not f_selected_activities:
+        elif activities_submit_button and not selected_activities:
             st.warning("Please select an activity.")
 
     cursor.close()
