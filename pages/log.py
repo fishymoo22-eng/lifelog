@@ -1218,33 +1218,81 @@ def render_bingo(run_timestamp, conn):
                 f"""
                 <style>
 
+                /* Board */
+                .st-key-bingo_board {{
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    padding-bottom: 1rem !important;
+                }}
+
+                /* Button wrapper */
+                .st-key-bingo_board
+                div[data-testid="stButton"] {{
+                    width: 100% !important;
+                    margin: 0px !important;
+                    padding: 0px !important;
+                }}
+
+                /* Bingo button */
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
-                    width: 100%;
-                    height: 100px;
-                    padding: 0.25rem;
-                    white-space: normal;
+                    width: 100% !important;
+                    min-width: 100px !important;
+
+                    height: 100px !important;
+                    min-height: 100px !important;
+                    max-height: 100px !important;
+
+                    box-sizing: border-box !important;
+
+                    padding: 0.25rem !important;
                     margin-top: -10px;
                     margin-bottom: -10px;
                     border-radius: 0px !important;
+
+                    white-space: normal !important;
+                    line-height: 1.5 !important;
                 }}
 
+                /* Each bingo row */
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] {{
+                    display: flex !important;
+                    flex-wrap: nowrap !important;
+
+                    width: 100% !important;
+                    max-width: 100% !important;
+
                     gap: 0rem;
+
+                    align-items: stretch !important;
                 }}
+
+                /* Force each Streamlit column to exactly 20% */
+                .st-key-bingo_board
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
+                    flex: 1 1 20% !important;
+
+                    width: 20% !important;
+                    min-width: 100px !important;
+                    max-width: none !important;
+
+                    padding: 0px !important;
+                    margin: 0px !important;
+                }}
+
 
                 {''.join(completed_square_rules)}
 
                 </style>
                 """,
                 unsafe_allow_html=True,
-            )
+            )            
 
             # render the bingo board
             for row in range(1, 1 + bingo_dim):
                 # define square grid 
-                cols = st.columns(bingo_dim, gap="small")
+                cols = st.columns(bingo_dim, gap=None)
 
                 for col in range(1, 1 + bingo_dim):
                     square = bingo_matrix[row][col]
