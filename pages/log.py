@@ -1225,42 +1225,39 @@ def render_bingo(run_timestamp, conn):
                 f"""
                 <style>
 
-                /* Bingo board */
-                .st-key-bingo_board {{
-                    width: 100% !important;
-                    max-width: 100% !important;
-                    min-width: 0 !important;
+                /* ==============================
+                Bingo board
+                ============================== */
 
-                    padding-bottom: 1rem !important;
-                    box-sizing: border-box !important;
+                .st-key-bingo_board {{
+                    width: 100%;
+                    max-width: 100%;
+                    box-sizing: border-box;
+                    padding-bottom: 1rem;
                 }}
 
-                /* Bingo rows */
+
+                /* ==============================
+                Remove spacing between rows
+                ============================== */
+
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] {{
-                    width: 100% !important;
-                    max-width: 100% !important;
-                    min-width: 0 !important;
-
                     gap: 0 !important;
-
                     margin-bottom: -1rem !important;
                 }}
 
-                /* Columns */
-                .st-key-bingo_board
-                div[data-testid="column"] {{
-                    min-width: 0 !important;
-                    padding: 0 !important;
-                    margin: 0 !important;
 
-                    box-sizing: border-box !important;
-                }}
+                /* ==============================
+                Bingo buttons
+                ============================== */
 
-                /* Button */
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
+
                     width: 100% !important;
+
+                    /* CRITICAL: allow button to shrink */
                     min-width: 0 !important;
                     max-width: 100% !important;
 
@@ -1273,9 +1270,9 @@ def render_bingo(run_timestamp, conn):
                     margin-top: -10px !important;
                     margin-bottom: -10px !important;
 
-                    box-sizing: border-box !important;
-
                     border-radius: 0px !important;
+
+                    box-sizing: border-box !important;
 
                     white-space: normal !important;
                     overflow-wrap: anywhere !important;
@@ -1284,7 +1281,34 @@ def render_bingo(run_timestamp, conn):
                     line-height: 1.5 !important;
                 }}
 
-                /* Completed */
+
+                /* ==============================
+                Mobile
+                ============================== */
+
+                @media (max-width: 640px) {{
+
+                    .st-key-bingo_board
+                    div[data-testid="stButton"] > button {{
+
+                        height: 75px !important;
+                        min-height: 75px !important;
+                        max-height: 75px !important;
+
+                        font-size: 0.7rem !important;
+
+                        padding: 0.15rem !important;
+
+                        line-height: 1.15 !important;
+                    }}
+
+                }}
+
+
+                /* ==============================
+                Completed squares
+                ============================== */
+
                 {''.join(completed_square_rules)}
 
                 </style>
@@ -1297,8 +1321,7 @@ def render_bingo(run_timestamp, conn):
 
             for row in range(1, 1 + bingo_dim):
 
-                cols = st.columns(
-                    [1, 1, 1, 1, 1],
+                cols = st.columns(bingo_dim,
                     gap=None
                 )
 
