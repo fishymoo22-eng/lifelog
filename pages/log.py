@@ -1237,7 +1237,7 @@ def render_bingo(run_timestamp, conn):
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
                     width: 100% !important;
-                    min-width: 100px !important;
+                    min-width: 0 !important;
 
                     height: 100px !important;
                     min-height: 100px !important;
@@ -1261,7 +1261,7 @@ def render_bingo(run_timestamp, conn):
                     flex-wrap: nowrap !important;
 
                     width: 100% !important;
-                    max-width: 100% !important;
+                    min-width: 0 !important;
 
                     gap: 0rem;
 
@@ -1274,7 +1274,7 @@ def render_bingo(run_timestamp, conn):
                     flex: 1 1 20% !important;
 
                     width: 20% !important;
-                    min-width: 100px !important;
+                    min-width: 0 !important;
                     max-width: none !important;
 
                     padding: 0px !important;
