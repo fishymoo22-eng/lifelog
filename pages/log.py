@@ -1248,6 +1248,28 @@ def render_bingo(run_timestamp, conn):
                 unsafe_allow_html=True,
             )
 
+            # Inject CSS to override mobile column stacking
+            st.markdown(
+                """
+                <style>
+                @media (max-width: 640px) {
+                    /* Target Streamlit column parent flex containers */
+                    div[data-testid="stHorizontalBlock"] {
+                        flex-direction: row !important;
+                        align-items: center;
+                    }
+                    /* Adjust individual column widths inside the block */
+                    div[data-testid="column"] {
+                        width: auto !important;
+                        flex: 1 !important;
+                        min-width: unset !important;
+                    }
+                }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+
             # render the bingo board
             for row in range(1, 1 + bingo_dim):
                 # define square grid 
