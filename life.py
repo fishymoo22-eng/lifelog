@@ -31,7 +31,6 @@ def main():
     render_activity_roll(run_timestamp, conn)
     render_activities(run_timestamp, conn)
     render_journal(run_timestamp, conn)
-    render_mood(run_timestamp, conn)
     render_bingo(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
 
@@ -1003,12 +1002,41 @@ def render_journal(run_timestamp, conn):
                 key = "journal"
             )
 
-            # upload voice memo
+            # log how my day was
+            overall_day_rating = st.radio(
+                "How was your day?",
+                ("Great :smiley:", "Good :blush:", "Okay :neutral_face:", "Bad :slightly_frowning_face:", "Terrible :sob:"),
+                index = None,
+                horizontal = True
+            )
+
+            # log how work was
+            work_rating = st.radio(
+                "How was work?",
+                ("Great :smiley:", "Good :blush:", "Okay :neutral_face:", "Bad :slightly_frowning_face:", "Terrible :sob:", "N/A"),
+                index = None,
+                horizontal = True
+            )
+            
+            # allow user to tag mood/people
+            mood_tags = st.multiselect(
+                "Enter mood tags:",
+                ["Happy", "Sociable", "Fun", "Stressful", "Restless", "Productive", "Scary", "Angry", "Adventurous", "Sad", "Unremarkable"],
+                accept_new_options = True,
+            )
+
+            people_tags = st.multiselect(
+                "Enter people tags:",
+                ["Maddy", "Anthony", "Siena", "Evan", "Felice", "Dylan", "Mom", "Jessie"],
+                accept_new_options = True,
+            )
+
+            # upload journal voice memo
             uploaded_file = st.file_uploader(
                 "Upload a voice memo with journal entry:",
                 type=["m4a", "mp3", "wav", "mp4"]
             )
-            # type text manually 
+            # type journal text manually 
             journal_text = st.text_area("Enter text of journal entry:")
 
             # if uploaded voice memo, save file name
@@ -1029,13 +1057,17 @@ def render_journal(run_timestamp, conn):
             journal_data = (
                 run_timestamp, 
                 journal_date,
+                overall_day_rating,
+                mood_tags,
+                people_tags,
+                work_rating,
                 journal_text,
                 audio_file
             )
             
             cursor.execute("""
-                insert into journal (entry_time, date, journal_text, file_name)
-                values (%s, %s, %s, %s)
+                insert into journal (entry_time, date, overall_day_rating, mood_tags, people_tags, work_rating, journal_text, file_name)
+                values (%s, %s, %s, %s, %s, %s, %s, %s)
             """, journal_data)
             conn.commit()
             
@@ -1043,94 +1075,6 @@ def render_journal(run_timestamp, conn):
 
             # level up relevant fish 
             _level_up_fish("Journal", journal_date, conn)
-
-    cursor.close()
-
-
-def render_mood(run_timestamp, conn):
-    """
-    Render section: Mood
-    This section can be used to document mood day-to-day.
-    """
-
-    # display title: log my mood!
-    st.header("Mood")
-
-    cursor = conn.cursor()
-
-    with st.expander("Click to expand/collapse", expanded = False):
-        with st.form("mood_form", clear_on_submit = True, border = False):
-
-            mood_date = st.date_input(
-                "Specify date:", 
-                value = datetime.now(pytz.timezone(st.context.timezone)), 
-                key = "mood"
-            )
-
-            # log how my day was
-            general_day = st.radio(
-                "How was your day?",
-                ("Great :smiley:", "Good :blush:", "Okay :neutral_face:", "Bad :slightly_frowning_face:", "Terrible :sob:"),
-                index = None,
-                horizontal = True
-            )
-
-            # log descriptors for day
-            _write_text("What was it like?")
-            adventurous_day = st.checkbox("Adventurous :airplane:")
-            sociable_day = st.checkbox("Socialable :handshake:")
-            sad_day = st.checkbox("Sad :cry:")
-            stressful_day = st.checkbox("Stressful :confounded:")
-            angry_day = st.checkbox("Angry :rage:")
-            restless_day = st.checkbox("Restless :firecracker:")
-            productive_day = st.checkbox("Productive :chart_with_upwards_trend:")
-            unremarkable_day = st.checkbox("Unremarkable :woman_shrugging:")
-
-            day_descriptors_dict = {
-                "Adventurous :airplane:": adventurous_day,
-                "Socialable :handshake:": sociable_day,
-                "Sad :cry:": sad_day,
-                "Stressful :confounded:": stressful_day,
-                "Angry :rage:": angry_day,
-                "Restless :firecracker:": restless_day,
-                "Productive :chart_with_upwards_trend:": productive_day,
-                "Unremarkable :woman_shrugging:": unremarkable_day,
-            }
-
-            day_descriptors_list = [desc for desc, checkbox in day_descriptors_dict.items() if checkbox]
-
-            # log how work was
-            workday = st.radio(
-                "How was work?",
-                ("Great :smiley:", "Good :blush:", "Okay :neutral_face:", "Bad :slightly_frowning_face:", "Terrible :sob:", "N/A"),
-                index = None,
-                horizontal = True
-            )
-
-            # Forms require a dedicated submit button
-            mood_submit_button = st.form_submit_button("Submit Mood")
-
-        # conditional logic if button is clicked
-        if mood_submit_button:
-            # save entry to database
-            mood_data = (
-                run_timestamp, 
-                mood_date,
-                general_day,
-                day_descriptors_list,
-                workday
-            )
-            
-            cursor.execute("""
-                insert into mood (entry_time, date, how_was_your_day, day_descriptors, how_was_work)
-                values (%s, %s, %s, %s, %s)
-            """, mood_data)
-            conn.commit()
-            
-            st.success(f"[{run_timestamp}] Mood data recorded!")
-            
-            # level up relevant fish 
-            _level_up_fish("Mood", mood_date, conn)
 
     cursor.close()
 
