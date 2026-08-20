@@ -1226,9 +1226,9 @@ def render_bingo(run_timestamp, conn):
                 f"""
                 <style>
 
-                /* =====================================
-                   BOARD
-                   ===================================== */
+                /* =========================
+                Bingo board
+                ========================= */
 
                 .st-key-bingo_board {{
                     width: 100% !important;
@@ -1237,21 +1237,18 @@ def render_bingo(run_timestamp, conn):
 
                     padding-bottom: 1rem !important;
 
-                    overflow: hidden !important;
-
                     box-sizing: border-box !important;
                 }}
 
 
-                /* =====================================
-                   ROW
-                   ===================================== */
+                /* =========================
+                Bingo rows
+                ========================= */
 
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] {{
 
                     display: flex !important;
-                    flex-direction: row !important;
                     flex-wrap: nowrap !important;
 
                     width: 100% !important;
@@ -1260,67 +1257,61 @@ def render_bingo(run_timestamp, conn):
 
                     gap: 0 !important;
 
+                    align-items: stretch !important;
+
+                    /* Keep rows touching */
                     margin-bottom: -1rem !important;
-
-                    box-sizing: border-box !important;
-
-                    overflow: hidden !important;
                 }}
 
 
-                /* =====================================
-                   COLUMN
-                   ===================================== */
+                /* =========================
+                Bingo columns
+                ========================= */
 
                 .st-key-bingo_board
-                div[data-testid="stHorizontalBlock"]
-                > div[data-testid="column"] {{
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
 
                     flex: 1 1 20% !important;
 
                     width: 20% !important;
-                    max-width: 20% !important;
                     min-width: 0 !important;
+                    max-width: none !important;
 
                     padding: 0 !important;
                     margin: 0 !important;
 
                     box-sizing: border-box !important;
-
-                    overflow: hidden !important;
                 }}
 
 
-                /* =====================================
-                   SQUARE CONTAINER
-                   ===================================== */
+                /* =========================
+                Bingo square container
+                ========================= */
 
                 .st-key-bingo_board
                 [class*="st-key-bingo_square_"] {{
 
                     width: 100% !important;
-                    max-width: 100% !important;
                     min-width: 0 !important;
+                    max-width: 100% !important;
 
                     padding: 0 !important;
                     margin: 0 !important;
 
                     box-sizing: border-box !important;
-
-                    overflow: hidden !important;
                 }}
 
 
-                /* =====================================
-                   BUTTON WRAPPER
-                   ===================================== */
+                /* =========================
+                Button wrapper
+                ========================= */
 
                 .st-key-bingo_board
                 div[data-testid="stButton"] {{
 
                     width: 100% !important;
-                    max-width: 100% !important;
                     min-width: 0 !important;
+                    max-width: 100% !important;
 
                     padding: 0 !important;
                     margin: 0 !important;
@@ -1329,16 +1320,16 @@ def render_bingo(run_timestamp, conn):
                 }}
 
 
-                /* =====================================
-                   BUTTON
-                   ===================================== */
+                /* =========================
+                Bingo buttons
+                ========================= */
 
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
 
                     width: 100% !important;
-                    max-width: 100% !important;
                     min-width: 0 !important;
+                    max-width: 100% !important;
 
                     height: 100px !important;
                     min-height: 100px !important;
@@ -1362,9 +1353,63 @@ def render_bingo(run_timestamp, conn):
                 }}
 
 
-                /* =====================================
-                   COMPLETED SQUARES
-                   ===================================== */
+                /* =========================
+                Mobile
+                ========================= */
+
+                @media (max-width: 640px) {{
+
+                    .st-key-bingo_board {{
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        min-width: 0 !important;
+                    }}
+
+                    .st-key-bingo_board
+                    div[data-testid="stHorizontalBlock"] {{
+
+                        width: 100% !important;
+                        max-width: 100% !important;
+                        min-width: 0 !important;
+
+                        flex-wrap: nowrap !important;
+                        gap: 0 !important;
+                    }}
+
+                    .st-key-bingo_board
+                    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {{
+
+                        flex: 1 1 0% !important;
+
+                        width: 20% !important;
+                        min-width: 0 !important;
+                        max-width: 20% !important;
+
+                        padding: 0 !important;
+                    }}
+
+                    .st-key-bingo_board
+                    div[data-testid="stButton"] > button {{
+
+                        width: 100% !important;
+                        min-width: 0 !important;
+                        max-width: 100% !important;
+
+                        height: 80px !important;
+                        min-height: 80px !important;
+                        max-height: 80px !important;
+
+                        padding: 0.15rem !important;
+
+                        font-size: 0.75rem !important;
+                        line-height: 1.2 !important;
+                    }}
+                }}
+
+
+                /* =========================
+                Completed squares
+                ========================= */
 
                 {''.join(completed_square_rules)}
 
