@@ -1232,7 +1232,10 @@ def render_bingo(run_timestamp, conn):
                 .st-key-bingo_board {{
                     width: 100% !important;
                     max-width: 100% !important;
+                    min-width: 0 !important;
+
                     padding-bottom: 1rem !important;
+
                     box-sizing: border-box !important;
                 }}
 
@@ -1243,12 +1246,17 @@ def render_bingo(run_timestamp, conn):
 
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"] {{
+                    display: flex !important;
+                    flex-wrap: nowrap !important;
+
                     gap: 0 !important;
 
                     width: 100% !important;
                     max-width: 100% !important;
 
                     margin-bottom: -1rem !important;
+
+                    box-sizing: border-box !important;
                 }}
 
 
@@ -1259,22 +1267,37 @@ def render_bingo(run_timestamp, conn):
                 .st-key-bingo_board
                 div[data-testid="stHorizontalBlock"]
                 > div[data-testid="column"] {{
+
+                    /*
+                    Mobile:
+                        20vw = exactly 1/5 of screen
+
+                    Desktop:
+                        stops growing at 100px
+                    */
+
+                    flex: 0 0 clamp(60px, 20vw, 100px) !important;
+
+                    width: clamp(60px, 20vw, 100px) !important;
+                    min-width: clamp(60px, 20vw, 100px) !important;
+                    max-width: clamp(60px, 20vw, 100px) !important;
+
                     padding: 0 !important;
                     margin: 0 !important;
-
-                    min-width: 0 !important;
 
                     box-sizing: border-box !important;
                 }}
 
 
                 /* =========================
-                Square containers
+                Square container
                 ========================= */
 
                 .st-key-bingo_board
                 [class*="st-key-bingo_square_"] {{
+
                     width: 100% !important;
+                    max-width: 100% !important;
                     min-width: 0 !important;
 
                     padding: 0 !important;
@@ -1290,7 +1313,9 @@ def render_bingo(run_timestamp, conn):
 
                 .st-key-bingo_board
                 div[data-testid="stButton"] {{
+
                     width: 100% !important;
+                    max-width: 100% !important;
                     min-width: 0 !important;
 
                     padding: 0 !important;
@@ -1306,9 +1331,10 @@ def render_bingo(run_timestamp, conn):
 
                 .st-key-bingo_board
                 div[data-testid="stButton"] > button {{
+
                     width: 100% !important;
-                    min-width: 0 !important;
                     max-width: 100% !important;
+                    min-width: 0 !important;
 
                     height: 100px !important;
                     min-height: 100px !important;
@@ -1328,28 +1354,6 @@ def render_bingo(run_timestamp, conn):
                     word-break: break-word !important;
 
                     line-height: 1.5 !important;
-                }}
-
-
-                /* =========================
-                MOBILE
-                ========================= */
-
-                @media (max-width: 640px) {{
-
-                    .st-key-bingo_board
-                    div[data-testid="stButton"] > button {{
-                        height: 70px !important;
-                        min-height: 70px !important;
-                        max-height: 70px !important;
-
-                        font-size: 0.65rem !important;
-
-                        padding: 0.15rem !important;
-
-                        line-height: 1.1 !important;
-                    }}
-
                 }}
 
 
