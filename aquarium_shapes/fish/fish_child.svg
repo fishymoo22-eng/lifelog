@@ -9,6 +9,7 @@
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -76,21 +77,21 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="7.9999999"
-     inkscape:cx="60.187501"
-     inkscape:cy="36.4375"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="35.178563"
+     inkscape:cy="44.724504"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="scales"
+     inkscape:current-layer="svg1"
      showguides="false" />
   <!-- Main body group -->
   <!-- Tail -->
   <g
      id="fish-body"
-     transform="matrix(1.3629031,0,0,1.3629031,-28.134058,-9.7908886)">
+     transform="matrix(1.3629031,0,0,1.2399208,-28.134058,-6.6698055)">
     <!-- Main torso -->
     <path
        id="body"

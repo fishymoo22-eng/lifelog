@@ -9,6 +9,7 @@
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -76,21 +77,21 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="11.313709"
-     inkscape:cx="61.562484"
-     inkscape:cy="18.605747"
+     inkscape:zoom="4.0000002"
+     inkscape:cx="9.9999995"
+     inkscape:cy="17.624999"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="fish-body"
+     inkscape:current-layer="svg1"
      showguides="true" />
   <!-- Main body group -->
   <g
      id="fish-body"
      clip-path="none"
-     transform="matrix(1.1964402,0,0,1.1964402,-14.825356,-6.6056894)">
+     transform="matrix(1.1964402,0,0,1.2608557,-14.825356,-8.070684)">
     <!-- Main torso -->
     <path
        id="body"
@@ -991,7 +992,8 @@
   </g>
   <!-- Tail -->
   <g
-     id="fish-tail">
+     id="fish-tail"
+     transform="matrix(1,0,0,1.0608239,0,-1.2641673)">
     <path
        id="tail"
        d="m 74.003972,24.324106 c 7.890293,-7.917405 19.162142,-14.7037501 24.798065,-12.441635 -3.381554,9.048461 -3.381554,15.834806 0,24.883267 -5.635923,2.262115 -16.907772,-4.52423 -24.798065,-12.441632 z"
@@ -1001,7 +1003,7 @@
     <g
        id="tail-lines"
        transform="matrix(2.368607,0,0,2.119197,-17.927397,-32.055165)"
-       style="stroke-width:0.29756139;stroke-dasharray:none;stroke:#e66e00;stroke-opacity:1">
+       style="stroke:#e66e00;stroke-width:0.297561;stroke-dasharray:none;stroke-opacity:1">
       <path
          id="tail-line-1"
          d="m 50.442259,19.359072 c -2.351391,-0.995797 -7.808812,3.186564 -10.52197,5.921454"

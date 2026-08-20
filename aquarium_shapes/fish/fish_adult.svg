@@ -9,6 +9,7 @@
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -76,18 +77,19 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="11.313709"
-     inkscape:cx="63.286054"
-     inkscape:cy="31.952386"
+     inkscape:zoom="8.0000004"
+     inkscape:cx="85.312496"
+     inkscape:cy="41.562498"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="fish-body" />
+     inkscape:current-layer="svg1" />
   <!-- Main body group -->
   <g
-     id="fish-body">
+     id="fish-body"
+     transform="matrix(1,0,0,1.1319431,0,-3.0888057)">
     <!-- Main torso -->
     <path
        id="body"
@@ -1108,7 +1110,8 @@
   </g>
   <!-- Tail -->
   <g
-     id="fish-tail">
+     id="fish-tail"
+     transform="matrix(1,0,0,1.1356114,-2.0001683,-3.4031929)">
     <path
        id="tail"
        d="M 74.214335,22.175356 C 83.183726,13.205966 95.997139,5.5179177 102.40385,8.0806004 98.559822,18.331332 98.559822,26.01938 102.40385,36.270111 95.997139,38.832793 83.183726,31.144745 74.214335,22.175356 Z"
@@ -1117,7 +1120,7 @@
     <g
        id="tail-lines"
        transform="matrix(2.368607,0,0,2.119197,-17.927397,-32.055165)"
-       style="stroke-width:0.29756139;stroke-dasharray:none;stroke:#e66e00;stroke-opacity:1">
+       style="stroke:#e66e00;stroke-width:0.297561;stroke-dasharray:none;stroke-opacity:1">
       <path
          id="tail-line-1"
          d="m 50.442259,19.359072 c -2.351391,-0.995797 -7.808812,3.186564 -10.52197,5.921454"

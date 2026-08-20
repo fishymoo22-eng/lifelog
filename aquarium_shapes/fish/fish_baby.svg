@@ -66,20 +66,20 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="8"
-     inkscape:cx="62.0625"
-     inkscape:cy="38.6875"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="55.242717"
+     inkscape:cy="21.301592"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="scales"
+     inkscape:current-layer="svg1"
      showguides="true" />
   <!-- Main body group -->
   <g
      id="fish-body"
-     transform="matrix(1.4798989,0,0,1.4798989,-33.191442,-12.497352)">
+     transform="matrix(1.4798989,0,0,1.3250325,-34.858109,-8.3270323)">
     <!-- Main torso -->
     <path
        id="body"
@@ -748,7 +748,7 @@
   <!-- Tail -->
   <g
      id="fish-tail"
-     transform="translate(3.3333334)">
+     transform="translate(1.6666667)">
     <path
        id="tail"
        d="M 73.254042,23.391512 C 82.085999,12.337739 94.703079,2.8630777 101.01162,6.0212976 c -3.785126,12.6328834 -3.785126,22.1075424 0,34.7404244 -6.308541,3.158219 -18.925621,-6.316441 -27.757578,-17.37021 z"
