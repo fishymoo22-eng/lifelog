@@ -57,7 +57,7 @@ def render_activity_roll(run_timestamp, conn):
     """, conn)
     activity_menu = activity_config.to_dict("records")
 
-    with st.expander("Click to expand/collapse", expanded = False):
+    with st.expander("Click to expand/collapse", expanded = True):
         # specify activity requirements 
         time_of_day = st.radio(
             "Enter time of day:",
