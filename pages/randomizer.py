@@ -8,9 +8,9 @@ import random
 
 from utilities.utilities import _write_text
 
-def recommendations():
+def randomizer():
     """
-    Life recommendations!
+    Life randomizer!
     """
 
     # record run time in relevant timezone
@@ -21,7 +21,7 @@ def recommendations():
     conn = psycopg.connect(st.secrets["database"]["url"])
 
     # render sections
-    st.title("Life Recommendations")    
+    st.title("Life Randomizer")    
     render_activity_roll(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
 
@@ -260,4 +260,4 @@ def configure_user_options(run_timestamp, conn):
     cursor.close()
 
 
-recommendations()
+randomizer()
