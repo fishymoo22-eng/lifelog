@@ -28,11 +28,11 @@ def main():
     render_aquarium(conn)
     render_to_do(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
-    render_activity_roll(run_timestamp, conn)
     render_activities(run_timestamp, conn)
-    render_reflections(run_timestamp, conn)
     render_journal(run_timestamp, conn)
+    render_reflections(run_timestamp, conn)
     render_bingo(run_timestamp, conn)
+    render_activity_roll(run_timestamp, conn)
     configure_user_options(run_timestamp, conn)
 
     # display last run date in gray
