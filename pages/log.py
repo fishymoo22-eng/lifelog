@@ -1293,6 +1293,10 @@ BINGO_BOARD_COMPONENT = st.components.v2.component(
         text-decoration: line-through;
     }
 
+    .bingo-square.completed .bingo-progress s {
+        text-decoration: none;
+    }
+
 
     .bingo-square.completed:hover {
         filter: none;
@@ -1406,10 +1410,8 @@ BINGO_BOARD_COMPONENT = st.components.v2.component(
 
 
         /*
-         * Find incomplete squares.
-         *
-         * Completed squares intentionally
-         * receive no click handler.
+         * Only incomplete squares should
+         * respond to clicks.
          */
 
         const buttons =
@@ -1464,10 +1466,12 @@ def render_bingo(run_timestamp, conn):
 
     bingo_dim = 5
 
+
     with st.expander(
         "Click to expand/collapse",
         expanded=False
     ):
+
 
         # ==================================================
         # Read bingo squares from database
@@ -1494,6 +1498,7 @@ def render_bingo(run_timestamp, conn):
             row + 1: {}
             for row in range(bingo_dim)
         }
+
 
         for square in bingo_square:
 
@@ -1542,11 +1547,12 @@ def render_bingo(run_timestamp, conn):
 
 
                 progress = square["progress"]
+
                 target = square["target"]
 
 
                 # ------------------------------------------
-                # Completed styling
+                # Determine whether square is complete
                 # ------------------------------------------
 
                 completed = (
@@ -1554,11 +1560,17 @@ def render_bingo(run_timestamp, conn):
                 )
 
 
+                # ------------------------------------------
+                # Background / CSS class
+                # ------------------------------------------
+
                 if completed:
 
                     background = "#d9ead3"
 
-                    completed_class = " completed"
+                    completed_class = (
+                        " completed"
+                    )
 
                 else:
 
@@ -1566,12 +1578,53 @@ def render_bingo(run_timestamp, conn):
 
                     completed_class = ""
 
+                # ------------------------------------------
+                # Determine progress display
+                # ------------------------------------------
+
+                if target == 1:
+
+                    # One-time goals don't need a counter.
+                    progress_html = ""
+
+                elif progress == 0:
+
+                    # No progress yet: show original target normally.
+                    progress_html = (
+                        f'<span class="bingo-progress">'
+                        f'x{target}'
+                        f'</span>'
+                    )
+
+                elif progress >= target:
+
+                    # Completed: show original target struck through.
+                    progress_html = (
+                        f'<span class="bingo-progress">'
+                        f'<s>x{target}</s>'
+                        f'</span>'
+                    )
+
+                else:
+
+                    # Some progress: strike through original target
+                    # and show remaining amount.
+                    remaining = target - progress
+
+                    progress_html = (
+                        f'<span class="bingo-progress">'
+                        f'<s>x{target}</s>'
+                        f' x{remaining}'
+                        f'</span>'
+                    )
+
 
                 # ------------------------------------------
-                # Create square
+                # Build square
                 # ------------------------------------------
 
                 board_html += (
+
                     f'<button '
                     f'class="bingo-square'
                     f'{completed_class}" '
@@ -1583,9 +1636,7 @@ def render_bingo(run_timestamp, conn):
                     f'{title}'
                     f'</span>'
 
-                    f'<span class="bingo-progress">'
-                    f'{progress} / {target}'
-                    f'</span>'
+                    f'{progress_html}'
 
                     f'</button>'
                 )
@@ -1599,6 +1650,7 @@ def render_bingo(run_timestamp, conn):
         # ==================================================
 
         result = BINGO_BOARD_COMPONENT(
+
             data={
                 "html": board_html
             },
@@ -1617,17 +1669,25 @@ def render_bingo(run_timestamp, conn):
 
             clicked_id = result.bingo_clicked
 
+
             if (
                 st.session_state.selected_bingo_square
                 == clicked_id
             ):
-                # Clicking the currently selected square
-                # again deselects it.
+
+                # Clicking the currently selected
+                # square again deselects it.
+
                 st.session_state.selected_bingo_square = None
 
+
             else:
-                # Clicking a different square selects it.
-                st.session_state.selected_bingo_square = clicked_id
+
+                # Clicking another square selects it.
+
+                st.session_state.selected_bingo_square = (
+                    clicked_id
+                )
 
 
         # ==================================================
@@ -1658,6 +1718,7 @@ def render_bingo(run_timestamp, conn):
 
 
                 if selected_square is not None:
+
                     break
 
 
@@ -1684,20 +1745,6 @@ def render_bingo(run_timestamp, conn):
                 key="bingo"
             )
 
-
-            progress = st.number_input(
-                "Enter progress:",
-
-                min_value=0,
-
-                max_value=selected_square["target"],
-
-                value=selected_square["progress"],
-
-                key=f"progress_{selected_id}",
-            )
-
-
             notes = st.text_area(
                 "Enter additional details:",
 
@@ -1714,9 +1761,11 @@ def render_bingo(run_timestamp, conn):
                 key="submit_bingo",
             ):
 
+
                 # ----------------------------------------------
                 # Update progress
                 # ----------------------------------------------
+                new_progress = selected_square["progress"] + 1
 
                 cursor.execute(
                     """
@@ -1725,11 +1774,7 @@ def render_bingo(run_timestamp, conn):
                     where id = %s
                     ;
                     """,
-
-                    (
-                        progress,
-                        selected_id
-                    )
+                    (new_progress, selected_id)
                 )
 
                 conn.commit()
