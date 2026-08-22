@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 from datetime import datetime
 import re
+import html
 
 import streamlit as st
 import streamlit.components.v1 as components
@@ -11,6 +12,8 @@ import pytz
 import random
 
 from utilities.utilities import _write_text
+from components.aquarium import aquarium_component
+from components.bingo import bingo_component
 
 def log():
     """
@@ -239,244 +242,8 @@ def render_aquarium(conn):
         </div>
         """
 
-    # define html content 
+    # define dynamic html content 
     content = f"""
-    <style>
-
-    body {{
-        margin:0;
-        overflow:hidden;
-    }}
-
-    .aquarium {{
-        position: relative;
-        width:100%;
-        height:400px;
-        background:
-        linear-gradient(
-            to bottom,
-            #a9d8ef,
-            #7bb8df
-        );
-        overflow:hidden;
-    }}
-    .floor {{
-        position:absolute;
-
-        bottom:0;
-        left:0;
-
-        width:100%;
-        height:60px;
-        background:
-        linear-gradient(
-            to bottom,
-            #f7edc8,
-            #dfcf9b
-        );
-
-        z-index:1;
-    }}
-
-
-    .floor::before {{
-        content:"";
-
-        position:absolute;
-
-        top:-10px;
-        left:0;
-
-        width:100%;
-        height:20px;
-
-        background:
-            radial-gradient(
-                ellipse,
-                rgba(255,255,255,.35) 0%,
-                transparent 70%
-            );
-
-        opacity:.5;
-    }}
-
-    .fish-container {{
-        position: absolute;
-        left: -30%;
-
-        animation-name: swim;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-fill-mode: both;
-
-        animation-duration: var(--speed, 20s);
-        animation-delay: var(--delay, 0s);
-
-        top: var(--depth, 20%);
-        transform: scale(var(--size, 1));
-        
-        z-index:5;
-    }}
-
-    .bubble {{
-        position: absolute;
-
-        left: var(--left);
-        bottom: 0px;
-
-        width: var(--size);
-        height: var(--size);
-
-        border-radius: 50%;
-
-        background: transparent;
-        border: 1px solid rgba(255,255,255,.45);
-
-        box-shadow:
-            inset 2px 2px 2px rgba(255,255,255,.2);
-
-        animation: rise var(--duration) linear infinite;
-        animation-delay: var(--delay);
-
-        pointer-events: none;
-
-        z-index:1;
-    }}
-    .bubble::after {{
-        content: "";
-
-        position: absolute;
-
-        width: 20%;
-        height: 20%;
-
-        top: 20%;
-        left: 20%;
-
-        border-radius: 50%;
-
-        background: rgba(255,255,255,.8);
-
-        filter: blur(1px);
-    }}
-
-    svg {{
-        width:130px;
-        height:auto;
-    }}
-    
-    .kelp-container {{
-        position:absolute;
-        inset:0;
-
-        z-index:2;
-    }}
-
-    .kelp {{
-        position:absolute;
-
-        bottom:10px;
-        left:var(--left);
-
-        height:200px;
-
-        transform:
-            scale(var(--scale));
-
-        transform-origin:bottom center;
-    }}
-
-    .kelp svg {{
-        height:100%;
-        width:auto;
-    }}
-
-    /* animate tail if SVG contains fish-tail in id */
-    [id$="fish-tail"] {{
-        transform-box:fill-box;
-        transform-origin:left center;
-
-        animation:
-            tail-wag var(--fin-speed, .7s) ease-in-out infinite alternate;
-            transform: rotate(10deg);
-    }}
-
-    /* animate fin */
-    [id$="pectoral-fin"] {{
-        transform-box:fill-box;
-        transform-origin:top center;
-
-        animation:
-            fin-flutter var(--fin-speed, .7s) ease-in-out infinite alternate;
-    }}
-
-    /* animate bubbles */
-    @keyframes rise {{
-        from {{
-            transform: translate(0, 0);
-            opacity: 1;
-        }}
-
-        to {{
-            transform: translate(var(--drift),-380px);
-            opacity: 1;
-        }}
-    }}
-
-    /* animate fish swimming */
-    @keyframes swim {{
-        0% {{
-            left:-140px;
-            top: var(--top1);
-            transform:scaleX(-1) scale(var(--size));
-        }}
-
-        45% {{
-            left:100%;
-            top: var(--top1);
-            transform:scaleX(-1) scale(var(--size));
-        }}
-
-        50% {{
-            left:100%;
-            top: var(--top2);
-            transform:scaleX(1) scale(var(--size));
-        }}
-
-        95% {{
-            left:-140px;
-            top: var(--top2);
-            transform:scaleX(1) scale(var(--size));
-        }}
-
-        100% {{
-            left:-140px;
-            top: var(--top1);
-            transform:scaleX(-1) scale(var(--size));
-        }}
-    }}
-
-    /* animate tail/fin wagging */
-    @keyframes tail-wag {{
-        from {{
-            transform:rotate(12deg);
-        }}
-        to {{
-            transform:rotate(-12deg);
-        }}
-    }}
-
-    @keyframes fin-flutter {{
-        from {{
-            transform:rotate(-10deg);
-        }}
-        to {{
-            transform:rotate(15deg);
-        }}
-    }}
-
-    </style>
-    
     <div class="aquarium">
 
         <!-- insert bubbles -->
@@ -491,6 +258,7 @@ def render_aquarium(conn):
             {kelp_html}
         </div>
 
+        <!-- insert fish -->
         {
             " ".join([fish_dict["svg"] for fish_dict in fish_config_w_daddys.values()])
         }
@@ -499,7 +267,10 @@ def render_aquarium(conn):
     """
 
     # display aquarium
-    components.html(content, height=400, scrolling=True)
+    aquarium_component(
+        data = {"html": content},
+        key = "aquarium_component"
+    )
 
     with st.expander("Click to expand/collapse", expanded=False):
         # display table with fish attributes
@@ -1162,303 +933,11 @@ def render_reflections(run_timestamp, conn):
     cursor.close()
 
 
-# ==========================================================
-# Bingo board component
-# ==========================================================
-
-BINGO_BOARD_COMPONENT = st.components.v2.component(
-    name="bingo_board",
-
-    html="""
-    <div id="bingo-board-container"></div>
-    """,
-
-    css="""
-
-    /* ======================================================
-       Board
-       ====================================================== */
-
-    #bingo-board-container {
-        width: 100%;
-        max-width: 100%;
-
-        box-sizing: border-box;
-
-        margin: 0;
-        padding: 0;
-
-        border: 0.5px solid #aaa;
-
-        overflow: hidden;
-    }
-
-
-    /* ======================================================
-       Grid
-       ====================================================== */
-
-    .bingo-grid {
-        display: grid;
-
-        grid-template-columns:
-            repeat(5, minmax(0, 1fr));
-
-        width: 100%;
-        max-width: 100%;
-
-        margin: 0;
-        padding: 0;
-
-        gap: 0;
-
-        box-sizing: border-box;
-    }
-
-
-    /* ======================================================
-       Bingo square
-       ====================================================== */
-
-    .bingo-square {
-        display: flex;
-
-        flex-direction: column;
-
-        align-items: center;
-        justify-content: center;
-
-        width: 100%;
-        min-width: 0;
-
-        aspect-ratio: 1 / 1;
-        height: 75px;
-
-        box-sizing: border-box;
-
-        padding: 6px;
-        margin: 0;
-
-        /*
-         * Thin interior lines.
-         */
-        border: 0.25px solid #aaa;
-
-        border-radius: 0;
-
-        color: #222;
-
-        text-align: center;
-
-        overflow: hidden;
-
-        overflow-wrap: anywhere;
-        word-break: break-word;
-
-        line-height: 1.2;
-
-        cursor: pointer;
-
-        appearance: none;
-        -webkit-appearance: none;
-
-        font-family: inherit;
-    }
-
-    /* ======================================================
-       Hover / active
-       ====================================================== */
-
-    .bingo-square:hover {
-        filter: brightness(0.94);
-    }
-
-
-    .bingo-square:active {
-        filter: brightness(0.88);
-    }
-
-
-    /* ======================================================
-       Completed squares
-       ====================================================== */
-
-    .bingo-square.completed {
-        cursor: default;
-    }
-
-
-    .bingo-square.completed .bingo-title,
-    .bingo-square.completed .bingo-progress {
-        text-decoration: line-through;
-    }
-
-    .bingo-square.completed .bingo-progress s {
-        text-decoration: none;
-    }
-
-
-    .bingo-square.completed:hover {
-        filter: none;
-    }
-
-
-    /* ======================================================
-       Title
-       ====================================================== */
-
-    .bingo-title {
-        display: block;
-
-        width: 100%;
-
-
-        font-size: 0.9rem;
-
-        font-weight: 400;
-
-        overflow-wrap: anywhere;
-        word-break: break-word;
-    }
-
-
-    /* ======================================================
-       Progress
-       ====================================================== */
-
-    .bingo-progress {
-        display: block;
-
-        margin-top: 5px;
-
-
-        font-size: 0.9rem;
-        font-weight: 400;
-
-        flex-shrink: 0;
-    }
-
-
-    /* ======================================================
-       Mobile
-       ====================================================== */
-
-    @media (max-width: 640px) {
-
-        .bingo-grid {
-            width: 100%;
-
-            grid-template-columns:
-                repeat(5, minmax(0, 1fr));
-        }
-
-
-        .bingo-square {
-            padding: 3px;
-        }
-
-
-        .bingo-title {
-            font-size: 0.75rem;
-
-            line-height: 1.1;
-        }
-
-
-        .bingo-progress {
-            margin-top: 3px;
-
-            font-size: 0.75rem;
-        }
-
-    }
-
-    """,
-
-    js="""
-
-    export default function(component) {
-
-        const {
-            data,
-            parentElement,
-            setTriggerValue
-        } = component;
-
-
-        /*
-         * Find the dedicated board container.
-         */
-
-        const container =
-            parentElement.querySelector(
-                "#bingo-board-container"
-            );
-
-
-        if (!container) {
-            return;
-        }
-
-
-        /*
-         * Replace only the contents of the
-         * board container.
-         */
-
-        container.innerHTML = data.html;
-
-
-        /*
-         * Only incomplete squares should
-         * respond to clicks.
-         */
-
-        const buttons =
-            container.querySelectorAll(
-                ".bingo-square:not(.completed)"
-            );
-
-
-        buttons.forEach((button) => {
-
-            button.onclick = (event) => {
-
-                event.preventDefault();
-
-
-                const bingoId =
-                    button.getAttribute(
-                        "data-bingo-id"
-                    );
-
-
-                setTriggerValue(
-                    "bingo_clicked",
-                    bingoId
-                );
-
-            };
-
-        });
-
-    }
-
-    """
-)
-
-
-# ==========================================================
-# Render Bingo
-# ==========================================================
-
 def render_bingo(run_timestamp, conn):
     """
     Render section: Bingo
     This section can be used to document yearly bingo square progress.
     """
-
-    import html
 
     st.header("Bingo")
 
@@ -1466,17 +945,12 @@ def render_bingo(run_timestamp, conn):
 
     bingo_dim = 5
 
-
     with st.expander(
         "Click to expand/collapse",
         expanded=False
     ):
 
-
-        # ==================================================
-        # Read bingo squares from database
-        # ==================================================
-
+        # read bingo square from database
         bingo_square_pd = pd.read_sql_query(
             """
             select *
@@ -1484,58 +958,30 @@ def render_bingo(run_timestamp, conn):
             """,
             conn
         )
+        bingo_square = bingo_square_pd.to_dict("records")
 
-        bingo_square = bingo_square_pd.to_dict(
-            "records"
-        )
-
-
-        # ==================================================
-        # Create bingo matrix
-        # ==================================================
-
+        # in database, the bingo is long by each item with a row/col value
+        # transform that data into a square matrix
         bingo_matrix = {
             row + 1: {}
             for row in range(bingo_dim)
         }
 
-
         for square in bingo_square:
+            bingo_matrix[square["row"]][square["column"]] = square
 
-            bingo_matrix[
-                square["row"]
-            ][
-                square["column"]
-            ] = square
-
-
-        # ==================================================
-        # Selected square
-        # ==================================================
-
+        # we will store selected squares in session state
         if "selected_bingo_square" not in st.session_state:
-
             st.session_state.selected_bingo_square = None
 
-
-        # ==================================================
-        # Build board HTML
-        # ==================================================
-
+        # build bingo board html
         board_html = '<div class="bingo-grid">'
 
-
         for row in range(1, bingo_dim + 1):
-
             for col in range(1, bingo_dim + 1):
-
                 square = bingo_matrix[row][col]
 
-
-                # ------------------------------------------
-                # Escape database content
-                # ------------------------------------------
-
+                # escape database content
                 square_id = html.escape(
                     str(square["id"]),
                     quote=True
@@ -1545,226 +991,110 @@ def render_bingo(run_timestamp, conn):
                     str(square["title"])
                 )
 
-
                 progress = square["progress"]
-
                 target = square["target"]
 
+                # determine completed status
+                completed = (progress >= target)
 
-                # ------------------------------------------
-                # Determine whether square is complete
-                # ------------------------------------------
-
-                completed = (
-                    progress >= target
-                )
-
-
-                # ------------------------------------------
-                # Background / CSS class
-                # ------------------------------------------
-
+                # completed squares will be highlighted in green
                 if completed:
-
                     background = "#d9ead3"
-
-                    completed_class = (
-                        " completed"
-                    )
-
+                    completed_class = " completed"
                 else:
-
                     background = "#ffffff"
-
                     completed_class = ""
 
-                # ------------------------------------------
-                # Determine progress display
-                # ------------------------------------------
-
+                # determine what to display for square progress
+                # one-time goals will not get any progress tracker
                 if target == 1:
-
-                    # One-time goals don't need a counter.
                     progress_html = ""
-
+                # if no progress, show original target
                 elif progress == 0:
-
-                    # No progress yet: show original target normally.
-                    progress_html = (
-                        f'<span class="bingo-progress">'
-                        f'x{target}'
-                        f'</span>'
-                    )
-
+                    progress_html = f'<span class="bingo-progress">x{target}</span>'
+                # if completed, show original target struck through
                 elif progress >= target:
-
-                    # Completed: show original target struck through.
-                    progress_html = (
-                        f'<span class="bingo-progress">'
-                        f'<s>x{target}</s>'
-                        f'</span>'
-                    )
-
+                    progress_html = f'<span class="bingo-progress"><s>x{target}</s></span>'
+                # otherwise, strike through target and replace with remaining amount
                 else:
-
-                    # Some progress: strike through original target
-                    # and show remaining amount.
                     remaining = target - progress
+                    progress_html = f'<span class="bingo-progress"><s>x{target}</s> x{remaining}</span>'
 
-                    progress_html = (
-                        f'<span class="bingo-progress">'
-                        f'<s>x{target}</s>'
-                        f' x{remaining}'
-                        f'</span>'
-                    )
+                # build bingo board html
+                board_html += f"""
+                    <button 
+                        class="bingo-square
+                            {completed_class}" 
+                        data-bingo-id="{square_id}" 
+                        style="background-color:
+                            {background};">
 
+                    <span class="bingo-title">
+                    {title}
+                    </span>
 
-                # ------------------------------------------
-                # Build square
-                # ------------------------------------------
+                    {progress_html}
 
-                board_html += (
-
-                    f'<button '
-                    f'class="bingo-square'
-                    f'{completed_class}" '
-                    f'data-bingo-id="{square_id}" '
-                    f'style="background-color:'
-                    f'{background};">'
-
-                    f'<span class="bingo-title">'
-                    f'{title}'
-                    f'</span>'
-
-                    f'{progress_html}'
-
-                    f'</button>'
-                )
-
+                    </button>
+                """
 
         board_html += '</div>'
 
-
-        # ==================================================
-        # Mount component
-        # ==================================================
-
-        result = BINGO_BOARD_COMPONENT(
-
-            data={
-                "html": board_html
-            },
-
-            key="bingo_board_component_instance",
-
-            on_bingo_clicked_change=lambda: None,
+        # handle clicks on squares
+        result = bingo_component(
+            data = {"html": board_html},
+            key = "bingo_board_component"
         )
 
+        clicked_id = getattr(
+            result,
+            "bingo_clicked",
+            None
+        )
 
-        # ==================================================
-        # Handle clicked square
-        # ==================================================
-
-        if result.bingo_clicked:
-
-            clicked_id = result.bingo_clicked
-
-
-            if (
-                st.session_state.selected_bingo_square
-                == clicked_id
-            ):
-
-                # Clicking the currently selected
-                # square again deselects it.
-
+        if clicked_id is not None:
+            # if the same square is clicked again, deselect it 
+            if st.session_state.selected_bingo_square == clicked_id:
                 st.session_state.selected_bingo_square = None
-
-
             else:
+                st.session_state.selected_bingo_square = clicked_id
 
-                # Clicking another square selects it.
-
-                st.session_state.selected_bingo_square = (
-                    clicked_id
-                )
-
-
-        # ==================================================
-        # Find selected square
-        # ==================================================
-
-        selected_id = (
-            st.session_state.selected_bingo_square
-        )
-
+        # find selected square
+        selected_id = st.session_state.selected_bingo_square
         selected_square = None
 
-
         if selected_id is not None:
-
             for row in bingo_matrix.values():
-
                 for square in row.values():
-
-                    if (
-                        str(square["id"])
-                        == str(selected_id)
-                    ):
-
+                    if str(square["id"]) == str(selected_id):
                         selected_square = square
-
                         break
 
-
                 if selected_square is not None:
-
                     break
 
-
-        # ==================================================
-        # Edit selected square
-        # ==================================================
-
+        # show details to submit progress on selected square 
         if selected_square is not None:
-
-            st.subheader(
-                selected_square["title"]
-            )
-
+            st.subheader(selected_square["title"])
 
             bingo_date = st.date_input(
-                "Specify date:",
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "bingo"
+            )   
 
-                value=datetime.now(
-                    pytz.timezone(
-                        st.context.timezone
-                    )
-                ),
-
-                key="bingo"
-            )
-
+            # allow freeform notes 
             notes = st.text_area(
                 "Enter additional details:",
-
-                key=f"notes_{selected_id}",
+                key = f"notes_{selected_id}",
             )
 
-
-            # ==================================================
-            # Submit Bingo Progress
-            # ==================================================
-
+            # button to submit progress
             if st.button(
                 "Submit Bingo Progress",
-                key="submit_bingo",
+                key = "submit_bingo",
             ):
-
-
-                # ----------------------------------------------
-                # Update progress
-                # ----------------------------------------------
+                # increment progress by 1
                 new_progress = selected_square["progress"] + 1
 
                 cursor.execute(
@@ -1779,11 +1109,7 @@ def render_bingo(run_timestamp, conn):
 
                 conn.commit()
 
-
-                # ----------------------------------------------
-                # Add notes
-                # ----------------------------------------------
-
+                # add notes for this progress
                 bingo_data = (
                     run_timestamp,
                     bingo_date,
@@ -1791,7 +1117,6 @@ def render_bingo(run_timestamp, conn):
                     selected_square["title"],
                     notes
                 )
-
 
                 cursor.execute(
                     """
@@ -1805,17 +1130,12 @@ def render_bingo(run_timestamp, conn):
                     )
                     values (%s, %s, %s, %s, %s)
                     """,
-
                     bingo_data
                 )
 
                 conn.commit()
 
-
-                # ----------------------------------------------
-                # Level up relevant fish
-                # ----------------------------------------------
-
+                # level up the relevant fish
                 _level_up_fish(
                     "Bingo",
                     bingo_date,
@@ -1823,32 +1143,15 @@ def render_bingo(run_timestamp, conn):
                     allow_multiple_level_ups_per_day=True
                 )
 
-
-                # ----------------------------------------------
-                # Success message
-                # ----------------------------------------------
-
-                st.session_state.bingo_success = (
-                    f"[{run_timestamp}] "
-                    f"Bingo Progress Recorded!"
-                )
-
+                # save success message
+                st.session_state.bingo_success = f"[{run_timestamp}] Bingo Progress Recorded!"
 
                 st.rerun()
 
-
-        # ==================================================
-        # Success message
-        # ==================================================
-
+        # display success message
         if "bingo_success" in st.session_state:
-
-            st.success(
-                st.session_state.bingo_success
-            )
-
+            st.success(st.session_state.bingo_success)
             del st.session_state.bingo_success
-
 
     cursor.close()
 
