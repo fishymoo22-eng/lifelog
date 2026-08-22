@@ -5,6 +5,7 @@ import re
 
 import streamlit as st
 import streamlit.components.v1 as components
+
 import psycopg
 import pytz
 import random
@@ -1161,6 +1162,293 @@ def render_reflections(run_timestamp, conn):
     cursor.close()
 
 
+# ==========================================================
+# Bingo board component
+# ==========================================================
+
+BINGO_BOARD_COMPONENT = st.components.v2.component(
+    name="bingo_board",
+
+    html="""
+    <div id="bingo-board-container"></div>
+    """,
+
+    css="""
+
+    /* ======================================================
+       Board
+       ====================================================== */
+
+    #bingo-board-container {
+        width: 100%;
+        max-width: 100%;
+
+        box-sizing: border-box;
+
+        margin: 0;
+        padding: 0;
+
+        border: 0.5px solid #aaa;
+
+        overflow: hidden;
+    }
+
+
+    /* ======================================================
+       Grid
+       ====================================================== */
+
+    .bingo-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        width: 100%;
+        max-width: 100%;
+
+        margin: 0;
+        padding: 0;
+
+        gap: 0;
+
+        box-sizing: border-box;
+    }
+
+
+    /* ======================================================
+       Bingo square
+       ====================================================== */
+
+    .bingo-square {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 100%;
+        min-width: 0;
+
+        aspect-ratio: 1 / 1;
+        height: 75px;
+
+        box-sizing: border-box;
+
+        padding: 6px;
+        margin: 0;
+
+        /*
+         * Thin interior lines.
+         */
+        border: 0.25px solid #aaa;
+
+        border-radius: 0;
+
+        color: #222;
+
+        text-align: center;
+
+        overflow: hidden;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+
+        line-height: 1.2;
+
+        cursor: pointer;
+
+        appearance: none;
+        -webkit-appearance: none;
+
+        font-family: inherit;
+    }
+
+    /* ======================================================
+       Hover / active
+       ====================================================== */
+
+    .bingo-square:hover {
+        filter: brightness(0.94);
+    }
+
+
+    .bingo-square:active {
+        filter: brightness(0.88);
+    }
+
+
+    /* ======================================================
+       Completed squares
+       ====================================================== */
+
+    .bingo-square.completed {
+        cursor: default;
+    }
+
+
+    .bingo-square.completed .bingo-title,
+    .bingo-square.completed .bingo-progress {
+        text-decoration: line-through;
+    }
+
+
+    .bingo-square.completed:hover {
+        filter: none;
+    }
+
+
+    /* ======================================================
+       Title
+       ====================================================== */
+
+    .bingo-title {
+        display: block;
+
+        width: 100%;
+
+
+        font-size: 0.9rem;
+
+        font-weight: 400;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+
+    /* ======================================================
+       Progress
+       ====================================================== */
+
+    .bingo-progress {
+        display: block;
+
+        margin-top: 5px;
+
+
+        font-size: 0.9rem;
+        font-weight: 400;
+
+        flex-shrink: 0;
+    }
+
+
+    /* ======================================================
+       Mobile
+       ====================================================== */
+
+    @media (max-width: 640px) {
+
+        .bingo-grid {
+            width: 100%;
+
+            grid-template-columns:
+                repeat(5, minmax(0, 1fr));
+        }
+
+
+        .bingo-square {
+            padding: 3px;
+        }
+
+
+        .bingo-title {
+            font-size: 0.75rem;
+
+            line-height: 1.1;
+        }
+
+
+        .bingo-progress {
+            margin-top: 3px;
+
+            font-size: 0.75rem;
+        }
+
+    }
+
+    """,
+
+    js="""
+
+    export default function(component) {
+
+        const {
+            data,
+            parentElement,
+            setTriggerValue
+        } = component;
+
+
+        /*
+         * Find the dedicated board container.
+         */
+
+        const container =
+            parentElement.querySelector(
+                "#bingo-board-container"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        /*
+         * Replace only the contents of the
+         * board container.
+         */
+
+        container.innerHTML = data.html;
+
+
+        /*
+         * Find incomplete squares.
+         *
+         * Completed squares intentionally
+         * receive no click handler.
+         */
+
+        const buttons =
+            container.querySelectorAll(
+                ".bingo-square:not(.completed)"
+            );
+
+
+        buttons.forEach((button) => {
+
+            button.onclick = (event) => {
+
+                event.preventDefault();
+
+
+                const bingoId =
+                    button.getAttribute(
+                        "data-bingo-id"
+                    );
+
+
+                setTriggerValue(
+                    "bingo_clicked",
+                    bingoId
+                );
+
+            };
+
+        });
+
+    }
+
+    """
+)
+
+
+# ==========================================================
+# Render Bingo
+# ==========================================================
 
 def render_bingo(run_timestamp, conn):
     """
@@ -1168,205 +1456,354 @@ def render_bingo(run_timestamp, conn):
     This section can be used to document yearly bingo square progress.
     """
 
+    import html
+
     st.header("Bingo")
 
     cursor = conn.cursor()
 
     bingo_dim = 5
 
-    with st.expander("Click to expand/collapse", expanded=False):
+    with st.expander(
+        "Click to expand/collapse",
+        expanded=False
+    ):
 
-        # read bingo square from database 
-        bingo_square_pd = pd.read_sql_query("""
-            select * 
-            from bingo_square 
-        """, conn)
-        bingo_square = bingo_square_pd.to_dict("records")
+        # ==================================================
+        # Read bingo squares from database
+        # ==================================================
 
-        # create matrix (list of lists) of bingo 
+        bingo_square_pd = pd.read_sql_query(
+            """
+            select *
+            from bingo_square
+            """,
+            conn
+        )
+
+        bingo_square = bingo_square_pd.to_dict(
+            "records"
+        )
+
+
+        # ==================================================
+        # Create bingo matrix
+        # ==================================================
+
         bingo_matrix = {
             row + 1: {}
-            for row 
-            in range(bingo_dim) 
+            for row in range(bingo_dim)
         }
 
         for square in bingo_square:
-            bingo_matrix[square["row"]][square["column"]] = square
+
+            bingo_matrix[
+                square["row"]
+            ][
+                square["column"]
+            ] = square
+
+
+        # ==================================================
+        # Selected square
+        # ==================================================
 
         if "selected_bingo_square" not in st.session_state:
+
             st.session_state.selected_bingo_square = None
 
-        # display bingo board
-        with st.container(key="bingo_board"):
-            # build square rules
-            completed_square_rules = []
 
-            # if square is completed, fill in background color
-            for square in bingo_square:
-                if square["progress"] >= square["target"]:
-                    completed_square_rules.append(
-                        f"""
-                        .st-key-bingo_square_{square["id"]}
-                        div[data-testid="stButton"] > button {{
-                            background-color: #d9ead3 !important;
-                        }}
-                        """
-                    )
+        # ==================================================
+        # Build board HTML
+        # ==================================================
 
-            # for all squares, define formatting such that squares are touching
-            st.markdown(
-                f"""
-                <style>
+        board_html = '<div class="bingo-grid">'
 
-                .st-key-bingo_board {{
-                    width: 100%;
-                    max-width: 100%;
-                    box-sizing: border-box;
-                    padding-bottom: 1rem;
-                }}
 
-                .st-key-bingo_board
-                div[data-testid="stButton"] > button {{
-                    width: 100%;
-                    height: 100px;
-                    padding: 0.25rem;
-                    white-space: normal;
-                    margin-top: -10px;
-                    margin-bottom: -10px;
-                    border-radius: 0px !important;
-                }}
+        for row in range(1, bingo_dim + 1):
 
-                .st-key-bingo_board
-                div[data-testid="stHorizontalBlock"] {{
-                    gap: 0rem;
-                }}
+            for col in range(1, bingo_dim + 1):
 
-                {''.join(completed_square_rules)}
+                square = bingo_matrix[row][col]
 
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
 
-            # render the bingo board
-            for row in range(1, 1 + bingo_dim):
-                # define square grid 
-                cols = st.columns(bingo_dim, gap="small")
+                # ------------------------------------------
+                # Escape database content
+                # ------------------------------------------
 
-                for col in range(1, 1 + bingo_dim):
-                    square = bingo_matrix[row][col]
+                square_id = html.escape(
+                    str(square["id"]),
+                    quote=True
+                )
 
-                    with cols[col - 1]:
+                title = html.escape(
+                    str(square["title"])
+                )
 
-                        # Give each individual square its own CSS scope
-                        # so the completed-square background can target
-                        # exactly this square.
-                        with st.container(
-                            key=f"bingo_square_{square['id']}"
-                        ):
 
-                            label = (
-                                f"{square['title']}\n\n"
-                                f"{square['progress']} / {square['target']}"
-                            )
+                progress = square["progress"]
+                target = square["target"]
 
-                            if square["progress"] >= square["target"]:
-                                disable_button = True 
-                            else:
-                                disable_button = False
 
-                            if st.button(
-                                label,
-                                key=f"bingo_{square['id']}",
-                                use_container_width=True,
-                                disabled = disable_button
-                            ):
-                                st.session_state.selected_bingo_square = (
-                                    square["id"]
-                                )
+                # ------------------------------------------
+                # Completed styling
+                # ------------------------------------------
 
-        # find selected bingo square
-        selected_id = st.session_state.selected_bingo_square
+                completed = (
+                    progress >= target
+                )
+
+
+                if completed:
+
+                    background = "#d9ead3"
+
+                    completed_class = " completed"
+
+                else:
+
+                    background = "#ffffff"
+
+                    completed_class = ""
+
+
+                # ------------------------------------------
+                # Create square
+                # ------------------------------------------
+
+                board_html += (
+                    f'<button '
+                    f'class="bingo-square'
+                    f'{completed_class}" '
+                    f'data-bingo-id="{square_id}" '
+                    f'style="background-color:'
+                    f'{background};">'
+
+                    f'<span class="bingo-title">'
+                    f'{title}'
+                    f'</span>'
+
+                    f'<span class="bingo-progress">'
+                    f'{progress} / {target}'
+                    f'</span>'
+
+                    f'</button>'
+                )
+
+
+        board_html += '</div>'
+
+
+        # ==================================================
+        # Mount component
+        # ==================================================
+
+        result = BINGO_BOARD_COMPONENT(
+            data={
+                "html": board_html
+            },
+
+            key="bingo_board_component_instance",
+
+            on_bingo_clicked_change=lambda: None,
+        )
+
+
+        # ==================================================
+        # Handle clicked square
+        # ==================================================
+
+        if result.bingo_clicked:
+
+            clicked_id = result.bingo_clicked
+
+            if (
+                st.session_state.selected_bingo_square
+                == clicked_id
+            ):
+                # Clicking the currently selected square
+                # again deselects it.
+                st.session_state.selected_bingo_square = None
+
+            else:
+                # Clicking a different square selects it.
+                st.session_state.selected_bingo_square = clicked_id
+
+
+        # ==================================================
+        # Find selected square
+        # ==================================================
+
+        selected_id = (
+            st.session_state.selected_bingo_square
+        )
+
         selected_square = None
+
 
         if selected_id is not None:
 
             for row in bingo_matrix.values():
+
                 for square in row.values():
-                    if square["id"] == selected_id:
+
+                    if (
+                        str(square["id"])
+                        == str(selected_id)
+                    ):
+
                         selected_square = square
+
                         break
+
 
                 if selected_square is not None:
                     break
 
-        # edit selected square
+
+        # ==================================================
+        # Edit selected square
+        # ==================================================
+
         if selected_square is not None:
 
-            st.subheader(selected_square["title"])
+            st.subheader(
+                selected_square["title"]
+            )
+
 
             bingo_date = st.date_input(
-                "Specify date:", 
-                value = datetime.now(pytz.timezone(st.context.timezone)), 
-                key = "bingo"
+                "Specify date:",
+
+                value=datetime.now(
+                    pytz.timezone(
+                        st.context.timezone
+                    )
+                ),
+
+                key="bingo"
             )
+
 
             progress = st.number_input(
                 "Enter progress:",
+
                 min_value=0,
+
                 max_value=selected_square["target"],
+
                 value=selected_square["progress"],
+
                 key=f"progress_{selected_id}",
             )
 
+
             notes = st.text_area(
                 "Enter additional details:",
+
                 key=f"notes_{selected_id}",
             )
 
-            # display submit button
+
+            # ==================================================
+            # Submit Bingo Progress
+            # ==================================================
+
             if st.button(
                 "Submit Bingo Progress",
                 key="submit_bingo",
             ):
 
-                # update progress counter
-                cursor.execute("""
-                    update bingo_square 
+                # ----------------------------------------------
+                # Update progress
+                # ----------------------------------------------
+
+                cursor.execute(
+                    """
+                    update bingo_square
                     set progress = %s
                     where id = %s
                     ;
-                """, (progress, selected_id)) 
+                    """,
+
+                    (
+                        progress,
+                        selected_id
+                    )
+                )
+
                 conn.commit()
 
-                # add notes
+
+                # ----------------------------------------------
+                # Add notes
+                # ----------------------------------------------
+
                 bingo_data = (
-                    run_timestamp, 
+                    run_timestamp,
                     bingo_date,
                     selected_id,
                     selected_square["title"],
                     notes
                 )
-                
-                cursor.execute("""
-                    insert into bingo_notes (entry_time, date, id, title, notes)
+
+
+                cursor.execute(
+                    """
+                    insert into bingo_notes
+                    (
+                        entry_time,
+                        date,
+                        id,
+                        title,
+                        notes
+                    )
                     values (%s, %s, %s, %s, %s)
-                """, bingo_data)
+                    """,
+
+                    bingo_data
+                )
+
                 conn.commit()
-                    
-                # level up relevant fish
-                _level_up_fish("Bingo", bingo_date, conn, allow_multiple_level_ups_per_day = True)
+
+
+                # ----------------------------------------------
+                # Level up relevant fish
+                # ----------------------------------------------
+
+                _level_up_fish(
+                    "Bingo",
+                    bingo_date,
+                    conn,
+                    allow_multiple_level_ups_per_day=True
+                )
+
+
+                # ----------------------------------------------
+                # Success message
+                # ----------------------------------------------
 
                 st.session_state.bingo_success = (
-                    f"[{run_timestamp}] Bingo Progress Recorded!"
+                    f"[{run_timestamp}] "
+                    f"Bingo Progress Recorded!"
                 )
+
 
                 st.rerun()
 
-        # display success message 
+
+        # ==================================================
+        # Success message
+        # ==================================================
+
         if "bingo_success" in st.session_state:
-            st.success(st.session_state.bingo_success)
+
+            st.success(
+                st.session_state.bingo_success
+            )
+
             del st.session_state.bingo_success
+
 
     cursor.close()
 
