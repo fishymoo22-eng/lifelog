@@ -9,7 +9,6 @@
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -78,14 +77,14 @@
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
      inkscape:zoom="8.0000004"
-     inkscape:cx="85.312496"
-     inkscape:cy="41.562498"
+     inkscape:cx="85.437496"
+     inkscape:cy="41.687498"
      inkscape:window-width="1920"
      inkscape:window-height="1094"
      inkscape:window-x="-11"
      inkscape:window-y="-11"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
+     inkscape:current-layer="tail-lines" />
   <!-- Main body group -->
   <g
      id="fish-body"
@@ -832,7 +831,7 @@
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.471844;stroke-dasharray:none;stroke-opacity:1" />
       <path
-         id="scale-63-1"
+         id="path1"
          d="m 43.172379,14.107509 q 4.767061,2.182847 0.07021,4.58544"
          fill="none"
          stroke="#e66e00"
@@ -840,7 +839,7 @@
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1" />
       <path
-         id="scale-63-0"
+         id="path3"
          d="m 50.56652,7.3006301 q 4.634608,2.125118 0.06826,4.4641699"
          fill="none"
          stroke="#e66e00"
@@ -849,7 +848,7 @@
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.44445;stroke-dasharray:none;stroke-opacity:1"
          transform="matrix(1.0285792,0,0,1.0271651,-8.8017072,2.0818894)" />
       <path
-         id="scale-63-1"
+         id="path4"
          d="m 38.200518,9.7557683 q 4.767062,2.1828467 0.07021,4.5854397"
          fill="none"
          stroke="#e66e00"
@@ -857,7 +856,7 @@
          stroke-linecap="round"
          style="fill:url(#linearGradient32);fill-opacity:1;stroke:#e66e00;stroke-width:0.456838;stroke-dasharray:none;stroke-opacity:1" />
       <path
-         id="scale-63-2"
+         id="path5"
          d="m 48.123379,10.022757 q 4.63461,2.125119 0.06826,4.464169"
          fill="none"
          stroke="#e66e00"
@@ -1141,6 +1140,15 @@
          sodipodi:nodetypes="cc" />
       <path
          id="tail-line-3"
+         d="m 49.417166,21.841544 c -2.67436,-0.297388 -6.02084,1.815715 -9.40437,3.334764"
+         fill="none"
+         stroke="#e66e00"
+         stroke-width="0.958385"
+         stroke-linecap="round"
+         style="stroke:#e66e00;stroke-width:0.297561;stroke-dasharray:none;stroke-opacity:1;stroke-linecap:butt"
+         sodipodi:nodetypes="cc" />
+      <path
+         id="tail-line-4"
          d="m 49.445833,28.510882 c -2.67436,0.297388 -5.9511,-0.716802 -9.33463,-2.235851"
          fill="none"
          stroke="#e66e00"
@@ -1149,26 +1157,17 @@
          style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
          sodipodi:nodetypes="cc" />
       <path
-         id="tail-line-4"
-         d="m 49.088123,26.351718 c -3.33362,1.347918 -6.824937,-0.0017 -9.063991,-0.151237"
-         fill="none"
-         stroke="#e66e00"
-         stroke-width="0.958385"
-         stroke-linecap="round"
-         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:nodetypes="cc" />
-      <path
          id="tail-line-5"
-         d="m 49.417166,21.841544 c -2.67436,-0.297388 -6.02084,1.815715 -9.40437,3.334764"
+         d="m 48.957293,24.419485 c -3.188446,-1.243445 -6.706792,0.587826 -8.998024,0.777948"
          fill="none"
          stroke="#e66e00"
          stroke-width="0.958385"
          stroke-linecap="round"
-         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
+         style="stroke:#e66e00;stroke-width:0.297561;stroke-dasharray:none;stroke-opacity:1;stroke-linecap:butt"
          sodipodi:nodetypes="cc" />
       <path
          id="tail-line-6"
-         d="m 48.957293,24.419485 c -3.188446,-1.243445 -6.706792,0.587826 -8.998024,0.777948"
+         d="m 49.088123,26.351718 c -3.33362,1.347918 -6.824937,-0.0017 -9.063991,-0.151237"
          fill="none"
          stroke="#e66e00"
          stroke-width="0.958385"

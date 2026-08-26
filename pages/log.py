@@ -126,8 +126,9 @@ def render_aquarium(conn):
         
         # grab raw fish svg 
         fish_svg_text = fish_shape_svg[fish_type]
-    
+
         # remove light body for generation 0
+        # generations 1 and on get a light body 
         if fish_dict["generation"] == 0:
             fish_svg_text = re.sub(
                 r'<path\b(?=[^>]*\bid="body-light")[^>]*/>',
@@ -135,21 +136,40 @@ def render_aquarium(conn):
                 fish_svg_text
             )
 
-        # remove individual tail-line paths for generation 0 and 1
+        # remove tail lines when relevant depending on generation
+        # generation 2 get two tail lines, 3 gets 4, and onwards gets all 6
         if fish_dict["generation"] <= 1:
+            tail_lines_to_remove = range(1, 7)
+        elif fish_dict["generation"] == 2:
+            tail_lines_to_remove = range(3, 7)
+        elif fish_dict["generation"] == 3:
+            tail_lines_to_remove = range(5, 7)
+        else:
+            tail_lines_to_remove = []
+
+        for i in tail_lines_to_remove:
             fish_svg_text = re.sub(
-                r'<path\b(?=[^>]*\bid="tail-line-[^"]+")[^>]*/>',
+                rf'<path\b(?=[^>]*\bid="tail-line-{i}")[^>]*/>',
                 '',
                 fish_svg_text
             )
 
+        # remove scales when relevant depending on generation 
+        # generation 5 gets scale 01
+        # generation 6 gets scales 01–02
+        # etc.
+        max_scale = max(0, fish_dict["generation"] - 4)
+        removed_scales = range(max_scale + 1, 150)
+        removed_scale_numbers = "|".join(
+            f"{i}" for i in removed_scales
+        )
+
         # remove individual scale paths generations 0/1/2
-        if fish_dict["generation"] <= 2:
-            fish_svg_text = re.sub(
-                r'<path\b(?=[^>]*\bid="scale-[^"]+")[^>]*/>',
-                '',
-                fish_svg_text
-            )
+        fish_svg_text = re.sub(
+            rf'<path\b(?=[^>]*\bid="scale-(?:[^"]+)")[^>]*/>',
+            '',
+            fish_svg_text
+        )
 
         # map svg colors to new colors
         color_map = {
@@ -287,6 +307,8 @@ def render_aquarium(conn):
         st.table(fish_df)
 
         if st.button("Refresh Aquarium"):
+            # update random seed
+            st.session_state.aquarium_seed = random.randint(0, 999999)
             st.rerun()
 
     cursor.close()

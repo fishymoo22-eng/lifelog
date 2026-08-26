@@ -829,24 +829,6 @@
          sodipodi:nodetypes="cc" />
       <path
          id="tail-line-3"
-         d="m 49.065122,29.201082 c -2.67436,0.297388 -5.819166,-0.225264 -9.202696,-1.744313"
-         fill="none"
-         stroke="#e66e00"
-         stroke-width="0.958385"
-         stroke-linecap="round"
-         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:nodetypes="cc" />
-      <path
-         id="tail-line-4"
-         d="m 48.90154,27.054419 c -3.33362,1.347918 -6.824937,-0.23522 -9.063991,-0.384718"
-         fill="none"
-         stroke="#e66e00"
-         stroke-width="0.958385"
-         stroke-linecap="round"
-         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
-         sodipodi:nodetypes="cc" />
-      <path
-         id="tail-line-5"
          d="m 49.22239,22.790141 c -2.67436,-0.297388 -5.819166,0.901129 -9.202696,2.420178"
          fill="none"
          stroke="#e66e00"
@@ -855,8 +837,26 @@
          style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
          sodipodi:nodetypes="cc" />
       <path
-         id="tail-line-6"
+         id="tail-line-4"
+         d="m 49.065122,29.201082 c -2.67436,0.297388 -5.819166,-0.225264 -9.202696,-1.744313"
+         fill="none"
+         stroke="#e66e00"
+         stroke-width="0.958385"
+         stroke-linecap="round"
+         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="cc" />
+      <path
+         id="tail-line-5"
          d="m 48.791594,25.191338 c -3.188446,-1.243445 -6.618836,0.563249 -8.910068,0.753371"
+         fill="none"
+         stroke="#e66e00"
+         stroke-width="0.958385"
+         stroke-linecap="round"
+         style="stroke:#e66e00;stroke-width:0.297561;stroke-linecap:butt;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="cc" />
+      <path
+         id="tail-line-6"
+         d="m 48.90154,27.054419 c -3.33362,1.347918 -6.824937,-0.23522 -9.063991,-0.384718"
          fill="none"
          stroke="#e66e00"
          stroke-width="0.958385"
