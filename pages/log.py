@@ -65,6 +65,7 @@ def render_aquarium(conn):
         select * 
         from fish_config 
     """, conn)
+    fish_config_pd["fish_id"] = fish_config_pd["fish_id"].astype(str)
     fish_config = fish_config_pd.to_dict("records")
     
     # build dictonary with svg of each fish type 
@@ -93,7 +94,7 @@ def render_aquarium(conn):
             # modify certain features
             daddy_dict["fish_id"] = f"dad-{fish_dict_copy['fish_id']}"
             daddy_dict["fish_name"] = f"{fish_dict_copy['fish_name']}'s Daddy"
-            daddy_dict["generation"] = fish_dict_copy["generation"] + 1
+            daddy_dict["generation"] = fish_dict_copy["generation"] - 1
             daddy_dict["level"] = 19
 
             # update baby fish positioning based on daddy
@@ -102,10 +103,10 @@ def render_aquarium(conn):
             fish_dict_copy["delay"] = fish_dict_copy["delay"] + 0.7
             fish_dict_copy["speed"] = fish_dict_copy["speed"]
 
-            fish_config_w_daddys[str(daddy_dict["fish_id"])] = daddy_dict
+            fish_config_w_daddys[daddy_dict["fish_id"]] = daddy_dict
 
         # add dictionary to final fish config list
-        fish_config_w_daddys[str(fish_dict_copy["fish_id"])] = fish_dict_copy
+        fish_config_w_daddys[fish_dict_copy["fish_id"]] = fish_dict_copy
 
     # now loop through all fish in final config 
     for fish_id, fish_dict in fish_config_w_daddys.items():
@@ -295,6 +296,7 @@ def render_aquarium(conn):
     with st.expander("Click to expand/collapse", expanded=False):
         # display table with fish attributes
         fish_df = pd.DataFrame(fish_config_w_daddys.values())
+        fish_df = fish_df[~fish_df["fish_id"].str.startswith("dad")]
         fish_df = fish_df.sort_values(["fish_id"], ignore_index = True)
         fish_df = fish_df[["fish_name", "fish_mapping", "fish_age", "generation", "level"]]
         fish_df = fish_df.rename(columns={
