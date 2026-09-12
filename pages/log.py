@@ -36,6 +36,7 @@ def log():
     render_journal(run_timestamp, conn)
     render_reflections(run_timestamp, conn)
     render_bingo(run_timestamp, conn)
+    render_lifestyle(run_timestamp, conn)
     render_health(run_timestamp, conn)
 
     # display last run date in gray
@@ -1177,6 +1178,115 @@ def render_bingo(run_timestamp, conn):
         if "bingo_success" in st.session_state:
             st.success(st.session_state.bingo_success)
             del st.session_state.bingo_success
+
+    cursor.close()
+
+
+def render_lifestyle(run_timestamp, conn):
+    """
+    Render section: Lifestyle.
+    This section keeps a running, editable list of lifestyle.
+    """
+    
+    # display header: log my lifestyle!
+    st.header("Lifestyle")
+
+    cursor = conn.cursor()
+
+    with st.expander("Click to expand/collapse", expanded = False):
+        if "lifestyle_update" not in st.session_state:
+            st.session_state["lifestyle_update"] = False
+
+        with st.form(key = "lifestyle_form", border=False):
+            # read lifestyle from sql
+            lifestyle_curr = pd.read_sql_query("""
+                select lifestyle_item 
+                from lifestyle 
+                order by entry_time
+            """, conn)
+
+            # display with st.data_editor, which allows us to remove or edit items dynamically
+            lifestyle_new = st.data_editor(
+                lifestyle_curr,
+                num_rows = "dynamic",
+                column_config = {
+                    "lifestyle_item": st.column_config.TextColumn(
+                        "Lifestyle Item",
+                        width = 275
+                    )
+                }
+            )
+
+            # The app will only proceed past this line when the button is clicked
+            submit_button = st.form_submit_button(label="Save Changes")
+
+        if submit_button:
+            # get updated list of to-do and date
+            lifestyle = [
+                (run_timestamp, lifestyle_item)
+                for lifestyle_item
+                in lifestyle_new["lifestyle_item"].tolist()
+            ]
+
+            # insert new items into table, ignoring existing ones 
+            cursor.executemany("""
+                insert into lifestyle (entry_time, lifestyle_item)
+                values (%s, %s)
+                on conflict (lifestyle_item) do nothing;
+            """, lifestyle)
+            cursor.execute("""
+                insert into lifestyle_history (entry_time, action, lifestyle_item)
+                select entry_time
+                    ,'Added'
+                    ,lifestyle_item
+                from lifestyle
+                on conflict (entry_time, action, lifestyle_item) do nothing;
+            """)
+            conn.commit()
+
+            # pull any removed items  
+            removed_lifestyle = [
+                lifestyle_item
+                for lifestyle_item
+                in lifestyle_curr["lifestyle_item"].tolist()
+                if lifestyle_item not in lifestyle_new["lifestyle_item"].tolist()
+            ]
+
+            # delete all removed items 
+            if removed_lifestyle:
+                placeholders = ", ".join("%s" for _ in removed_lifestyle)
+                cursor.execute(
+                    f"delete from lifestyle where lifestyle_item in ({placeholders})", removed_lifestyle
+                )
+                conn.commit()
+
+                # get removed list of to-do and date
+                lifestyle_removed = [
+                    (run_timestamp, "Removed", lifestyle_item)
+                    for lifestyle_item
+                    in removed_lifestyle
+                ]
+
+                # insert removed items into table
+                cursor.executemany("""
+                    insert into lifestyle_history (entry_time, action, lifestyle_item)
+                    values (%s, %s, %s)     
+                    on conflict (entry_time, action, lifestyle_item) do nothing;
+                """, lifestyle_removed)
+                conn.commit()
+
+            # rerun to pull updated data from database 
+            st.session_state["lifestyle_update"] = True
+            st.rerun()
+
+        # display success message
+        if st.session_state["lifestyle_update"]:
+            st.success(f"[{run_timestamp}] Lifestyle updated!")
+            st.session_state["lifestyle_update"] = False
+
+            # level up relevant fish 
+            current_date = datetime.strptime(run_timestamp, "%Y-%m-%d %I:%M:%S %p")
+            _level_up_fish("Lifestyle", current_date.date(), conn)
 
     cursor.close()
 
