@@ -36,6 +36,7 @@ def log():
     render_journal(run_timestamp, conn)
     render_reflections(run_timestamp, conn)
     render_bingo(run_timestamp, conn)
+    render_health(run_timestamp, conn)
 
     # display last run date in gray
     _write_text(f":gray[Last run on: {run_timestamp}]")
@@ -1180,100 +1181,65 @@ def render_bingo(run_timestamp, conn):
     cursor.close()
 
 
-def configure_user_options(run_timestamp, conn):
+def render_health(run_timestamp, conn):
     """
-    Render section: Configure User Options.
-    This section provides a table with user configuration.
+    Render section: Health
+    This section can be used to document health metrics.
     """
-    
-    # display header: log my to-do!
-    st.header("Configuration")
+
+    # display header: log my health!
+    st.header("Health")
 
     cursor = conn.cursor()
 
     with st.expander("Click to expand/collapse", expanded = False):
-        if "configuration_update" not in st.session_state:
-            st.session_state["configuration_update"] = False
+        with st.form("health_form", clear_on_submit = True, border = False):
 
-        with st.form(key="configuration_form", border=False):
-            # pull current reroll setting from database
-            cursor.execute("""
-                select activity_rerolls_allowed 
-                from configuration
-            """)
-            activity_rerolls_allowed = cursor.fetchone()[0]
-
-            # display toggle with default option 
-            new_activity_rerolls_allowed = st.toggle(
-                "Allow activity rerolls", 
-                value = activity_rerolls_allowed
+            # offer various options for recording health:
+            health_date = st.date_input(
+                "Specify date:", 
+                value = datetime.now(pytz.timezone(st.context.timezone)), 
+                key = "health"
             )
             
-            # pull current activity list from database 
-            curr_activity_config = pd.read_sql_query("""
-                select * 
-                from activity_config 
+            # select a metric type
+            existing_health_metrics = pd.read_sql_query("""
+                select distinct metric
+                from health
+                ;
             """, conn)
-
-            # display with st.data_editor, which allows us to remove or edit items dynamically
-            new_activity_config = st.data_editor(
-                curr_activity_config,
-                num_rows = "dynamic",
-                column_config = {
-                    "activity": st.column_config.TextColumn(
-                        "Activity",
-                        required = True,
-                    ),
-                    "accepted_times": st.column_config.MultiselectColumn(
-                        "Accepted Times",
-                        options = ["Morning", "Afternoon", "Night"],
-                        required = True,
-                        default = ["Morning", "Afternoon", "Night"],
-                    ),
-                    "time_requirement": st.column_config.NumberColumn(
-                        "Time Requirement (Minutes)",
-                        required = True,
-                    ),
-                    "participant_requirement": st.column_config.NumberColumn(
-                        "Participant Requirement (Including Self)",
-                        required = True,
-                    )
-                }
+            health_metric = st.selectbox(
+                "Enter metric type:",
+                existing_health_metrics,
+                accept_new_options = True,
             )
 
-            # The app will only proceed past this line when the button is clicked
-            submit_button = st.form_submit_button(label="Save Changes")
+            # type text manually 
+            health_text = st.text_input("Enter metric vaule:")
 
-        if submit_button:
-            # if reroll config was changed, update database table
-            if new_activity_rerolls_allowed != activity_rerolls_allowed:
-                cursor.execute(f"""
-                    update configuration
-                    set activity_rerolls_allowed = {new_activity_rerolls_allowed};
-                """)
+            # Forms require a dedicated submit button
+            health_submit_button = st.form_submit_button("Submit Health")
 
-            # remove existing config 
+        # conditional logic if button is clicked
+        if health_submit_button:
+            # save entry to database
+            health_data = (
+                run_timestamp, 
+                health_date,
+                health_metric,
+                health_text
+            )
+            
             cursor.execute("""
-                truncate table activity_config
-            """)
+                insert into health (entry_time, date, metric, value)
+                values (%s, %s, %s, %s);
+            """, health_data)
             conn.commit()
             
-            # update activity config table
-            new_activity_config_records = [tuple(vals) for vals in new_activity_config.to_numpy()]
-            cursor.executemany("""
-                insert into activity_config (activity, accepted_times, time_requirement, participant_requirement)
-                values (%s, %s, %s, %s)
-            """, new_activity_config_records)
-            conn.commit()
+            st.success(f"[{run_timestamp}] Health data recorded!")
 
-            # rerun to pull updated data from database 
-            st.session_state["configuration_update"] = True
-            st.rerun()
-
-        # display success message
-        if st.session_state["configuration_update"]:
-            st.success(f"[{run_timestamp}] Configuration updated!")
-            st.session_state["configuration_update"] = False
+            # level up relevant fish 
+            _level_up_fish("Health", health_date, conn)
 
     cursor.close()
 
