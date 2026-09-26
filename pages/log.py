@@ -427,13 +427,17 @@ def render_habits(run_timestamp, conn):
                         "Habit"
                     ),
                     "progress": st.column_config.TextColumn(
-                        "Progress"
+                        "Progress",
+                        width = 15,
+                        alignment = "center"
                     ),
                     "complete": st.column_config.ButtonColumn(
                         "Complete",
                         key = "complete",
                         help = "Increase progress by 1",
-                        type = "primary"
+                        type = "primary",
+                        width = 15,
+                        alignment = "center"
                     )
                 }
             )
@@ -1586,7 +1590,7 @@ def render_health(run_timestamp, conn):
             )
 
             # type text manually 
-            health_text = st.text_input("Enter metric vaule:")
+            health_text = st.text_input("Enter metric value:")
 
             # Forms require a dedicated submit button
             health_submit_button = st.form_submit_button("Submit Health")
