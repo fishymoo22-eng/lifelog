@@ -9,12 +9,13 @@ def main():
     _configure_app()
 
     # define pages
-    log_page = st.Page("pages/log.py", title = "Log")
+    setup_page = st.Page("pages/setup.py", title = "Setup")
+    log_page = st.Page("pages/log.py", title = "Log", default = True)
     insights_page = st.Page("pages/insights.py", title = "Insights")
     randomizer_page = st.Page("pages/randomizer.py", title = "Randomizer")
 
     # pass to st.navigation
-    pg = st.navigation([log_page, insights_page, randomizer_page])
+    pg = st.navigation([setup_page, log_page, insights_page, randomizer_page])
 
     # run the selected page
     pg.run()
