@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+import numpy as np
 from datetime import datetime
 import re
 import html
@@ -30,6 +31,7 @@ def log():
     # render sections
     st.title("Life Log")
     render_aquarium(conn)
+    render_habits(run_timestamp, conn)
     render_to_do(run_timestamp, conn)
     render_dreams(run_timestamp, conn)
     render_activities(run_timestamp, conn)
@@ -316,6 +318,394 @@ def render_aquarium(conn):
             st.rerun()
 
     cursor.close()
+
+
+def render_habits(run_timestamp, conn):
+    """
+    Render section: Habits.
+    This section keeps a running, editable list of recurring habits.
+    """
+
+    st.header("Habits")
+
+    cursor = conn.cursor()
+
+    current_date = datetime.strptime(
+        run_timestamp,
+        "%Y-%m-%d %I:%M:%S %p"
+    ).date()
+
+    frequency_options = [
+        "Daily",
+        "Weekly",
+        "Monthly"
+    ]
+
+    with st.expander(
+        "Click to expand/collapse",
+        key="habits_expander"
+    ):
+
+        # keep track of whether habits was just updated
+        if "habits_update" not in st.session_state:
+            st.session_state["habits_update"] = False
+
+        # pull habits from database
+        if "habits_og_data" not in st.session_state:
+            st.session_state["habits_og_data"] = pd.read_sql_query("""
+                with merged_habits as (
+                    select hbt.id
+                        ,hbt.habit
+                        ,hbt.target
+                        ,hbt.frequency
+                        ,prgrs.date
+                        ,prgrs.progress
+                    from habits as hbt
+                    left join habits_progress as prgrs
+                        on hbt.id = prgrs.habit_id
+                )
+                select id
+                    ,habit
+                    ,target
+                    ,coalesce(sum(
+                        case 
+                            when frequency = 'Daily' 
+                                and date = current_date 
+                            then progress
+                            when frequency = 'Weekly' 
+                                and date >= date_trunc('week', current_date) 
+                                and date < date_trunc('week', current_date) + interval '1 week' 
+                            then progress
+                            when frequency = 'Monthly' 
+                                and date_trunc('month', date) = date_trunc('month', current_date)
+                            then progress  
+                        end
+                    ), 0) as current
+                    ,frequency
+                from merged_habits
+                group by id
+                    ,habit
+                    ,target
+                    ,frequency
+                order by id
+            """, conn)
+
+            # create copy of data which will get displayed and updated 
+            st.session_state["habits_data"] = (
+                st.session_state["habits_og_data"].copy()
+            )
+
+        # display habtis table 
+        habits_data = st.session_state["habits_data"]
+
+        if len(habits_data) == 0:
+            st.warning("Add habits using the Configure Habits drop-down.")
+        else:
+            habits_display = habits_data.copy()
+
+            # define progress of current completions out of target 
+            habits_display["progress"] = (
+                habits_display["current"].astype(int).astype(str)
+                + " / "
+                + habits_display["target"].astype(int).astype(str)
+            )
+
+            # for incomplete habits, display a checkmark completion button
+            habits_display["complete"] = np.where(
+                habits_display["current"] >= habits_display["target"],
+                "",
+                "✔"
+            )
+
+            # display read-only table of habits
+            st.data_editor(
+                habits_display[["habit", "progress", "complete"]],
+                hide_index = True,
+                disabled = ["habit", "progress"],
+                column_config = {
+                    "habit": st.column_config.TextColumn(
+                        "Habit"
+                    ),
+                    "progress": st.column_config.TextColumn(
+                        "Progress"
+                    ),
+                    "complete": st.column_config.ButtonColumn(
+                        "Complete",
+                        key = "complete",
+                        help = "Increase progress by 1",
+                        type = "primary"
+                    )
+                }
+            )
+
+        # handle completion buttons
+        if st.session_state.get("complete"):
+            row = st.session_state["complete"]["row"]
+            # add one to current completions
+            st.session_state["habits_data"].loc[
+                row,
+                "current"
+            ] += 1
+
+            st.rerun()
+
+        # display habit configure options 
+        with st.expander("Configure Habits", expanded = False, type = "compact"):
+            option = st.selectbox("Select action:",
+                options = [
+                    "Add Habit",
+                    "Edit Habit",
+                    "Delete Habit"
+                ],
+                index = None,
+                key = "configure_habits_option"
+            )
+
+            # add habits 
+            if option == "Add Habit":
+
+                # allow user to input habit details 
+                new_habit = st.text_input(
+                    "Enter habit text:"
+                )
+
+                new_frequency = st.selectbox(
+                    "Enter intended habit frequency:",
+                    frequency_options
+                )
+
+                if new_frequency == "Daily":
+                    period = "day" 
+                elif new_frequency == "Weekly":
+                    period = "week"
+                elif new_frequency == "Monthly":
+                    period = "month"
+
+                new_target = st.number_input(
+                    f"Enter intended habit completions per {period}:",
+                    min_value = 1,
+                    value = 1,
+                    step = 1
+                )
+
+                # button to save added habit 
+                if st.button("Save Added Habit"):
+                    if new_habit.strip() == "":
+                        st.warning("Please enter habit text.")
+                    elif new_habit in list(st.session_state["habits_data"]["habit"]):
+                        st.warning("Habit already exists.")
+                    else:
+                        new_row = pd.DataFrame([{
+                            "id": np.nan,
+                            "habit": new_habit.strip(),
+                            "target": int(new_target),
+                            "current": 0,
+                            "frequency": new_frequency
+                        }])
+
+                        st.session_state["habits_data"] = pd.concat(
+                            [
+                                st.session_state["habits_data"],
+                                new_row
+                            ],
+                            ignore_index = True
+                        )
+
+                        st.rerun()
+
+            # edit habits
+            elif option == "Edit Habit":
+
+                habits_data = st.session_state["habits_data"]
+                habit_options = list(habits_data.index)
+
+                # have user to select existing habit 
+                selected_index = st.selectbox(
+                    "Select habit to edit:",
+                    options = habit_options,
+                    format_func = lambda index: (
+                        habits_data.loc[index, "habit"]
+                    ),
+                    index = None
+                )
+
+                # allow user to edit existing habit details 
+                if selected_index is not None:
+                    selected_row = habits_data.loc[selected_index]
+
+                    edited_habit = st.text_input(
+                        "Enter edited habit text:",
+                        value = selected_row["habit"],
+                    )
+
+                    edited_frequency = st.selectbox(
+                        "Enter edited habit frequency:",
+                        options = frequency_options,
+                        index = frequency_options.index(selected_row["frequency"]),
+                    )
+
+                    if edited_frequency == "Daily":
+                        period = "day" 
+                    elif edited_frequency == "Weekly":
+                        period = "week"
+                    elif edited_frequency == "Monthly":
+                        period = "month"
+
+                    edited_target = st.number_input(
+                        f"Enter edited habit completions per {period}:",
+                        min_value = 1,
+                        value = selected_row["target"],
+                        step = 1
+                    )
+
+                    if st.button("Save Edited Habit"):
+                        if edited_habit.strip() == "":
+                            st.warning("Please enter edited habit text.")
+                        elif edited_habit != selected_row["habit"] and edited_habit in list(st.session_state["habits_data"]["habit"]):
+                            st.warning("Habit already exists.")
+                        else:
+                            st.session_state["habits_data"].loc[
+                                selected_index,
+                                "habit"
+                            ] = edited_habit.strip()
+
+                            st.session_state["habits_data"].loc[
+                                selected_index,
+                                "target"
+                            ] = int(edited_target)
+
+                            st.session_state["habits_data"].loc[
+                                selected_index,
+                                "frequency"
+                            ] = edited_frequency
+
+                            st.rerun()
+
+            # delete habits
+            elif option == "Delete Habit":
+
+                habits_data = st.session_state["habits_data"]
+                habit_options = list(habits_data.index)
+
+                # have user to select existing habit 
+                selected_index = st.selectbox(
+                    "Select habit to delete:",
+                    options = habit_options,
+                    format_func = lambda index: (
+                        habits_data.loc[index, "habit"]
+                    )
+                )
+
+                if st.button("Save Deleted Habit"):
+                    st.session_state["habits_data"] = (
+                        st.session_state["habits_data"]
+                        .drop(index = selected_index)
+                        .reset_index(drop = True)
+                    )
+
+                    st.rerun()
+
+            st.divider()
+
+        if st.button(
+            "Save Changes",
+            key="save_habits_button"
+        ):
+            habits_to_save = (
+                st.session_state["habits_data"].copy()
+            )
+
+            original_habits = (
+                st.session_state["habits_og_data"]
+            )
+
+            # delete removed habits
+            original_ids = set(original_habits["id"].dropna())
+            edited_ids = set(habits_to_save["id"].dropna())
+            deleted_ids = original_ids - edited_ids
+
+            for habit_id in deleted_ids:
+                cursor.execute("""
+                    delete habits
+                    where id = %s
+                """, (int(habit_id),))
+
+            # insert new habits 
+            new_habits = habits_to_save[habits_to_save["id"].isna()].copy()
+
+            for index, row in new_habits.iterrows():
+                cursor.execute("""
+                    insert into habits (
+                        habit,
+                        target,
+                        frequency
+                    )
+                    values (%s, %s, %s)
+                    returning id
+                """, (
+                    row["habit"],
+                    int(row["target"]),
+                    row["frequency"]
+                ))
+
+                # update session data to contain generated id 
+                new_id = cursor.fetchone()[0]
+                habits_to_save.at[index, "id"] = new_id
+
+            # update habits and save progress in database
+            for _, row in habits_to_save.iterrows():
+                # update habits in case text/target/frequency were updated 
+                cursor.execute("""
+                    update habits
+                    set habit = %s,
+                        target = %s,
+                        frequency = %s
+                    where id = %s
+                """, (
+                    row["habit"],
+                    int(row["target"]),
+                    row["frequency"],
+                    int(row["id"])
+                ))
+
+                # update habits progress for the day
+                cursor.execute("""
+                    insert into habits_progress (
+                        habit_id,
+                        date,
+                        progress
+                    )
+                    values (%s, %s, %s)
+                    on conflict (habit_id, date)
+                    do update set
+                        progress = excluded.progress
+                """, (
+                    int(row["id"]),
+                    current_date,
+                    int(row["current"])
+                ))
+
+            conn.commit()
+
+            # flag that habits were just updated 
+            st.session_state["habits_update"] = True
+
+            # delete habits data from session state
+            del st.session_state["habits_og_data"]
+            del st.session_state["habits_data"]
+
+            st.rerun()
+
+        # display success message 
+        if st.session_state["habits_update"]:
+            st.success(f"[{run_timestamp}] Habits updated!")
+            st.session_state["habits_update"] = False
+
+            # level up relevant fish 
+            _level_up_fish("Habits", current_date, conn)
+
+    cursor.close()
+
 
 def render_to_do(run_timestamp, conn):
     """

@@ -46,7 +46,7 @@ def render_data(run_timestamp, conn):
             # drop down list of table to query 
             from_table = st.selectbox(
                 "Select a table:",
-                ["to_do", "dreams", "activities", "journal", "reflections", "bingo_notes", "health", "lifestyle"],
+                ["to_do", "dreams", "activities", "journal", "reflections", "bingo_notes", "health", "lifestyle", "habits", "habits_progress"],
                 accept_new_options = True
             )
 
