@@ -373,14 +373,14 @@ def render_habits(run_timestamp, conn):
                     ,coalesce(sum(
                         case 
                             when frequency = 'Daily' 
-                                and date = current_date 
+                                and date = %s 
                             then progress
                             when frequency = 'Weekly' 
-                                and date >= date_trunc('week', current_date) 
-                                and date < date_trunc('week', current_date) + interval '1 week' 
+                                and date >= date_trunc('week', %s) 
+                                and date < date_trunc('week', %s) + interval '1 week' 
                             then progress
                             when frequency = 'Monthly' 
-                                and date_trunc('month', date) = date_trunc('month', current_date)
+                                and date_trunc('month', date) = date_trunc('month', %s)
                             then progress  
                         end
                     ), 0) as current
@@ -391,7 +391,7 @@ def render_habits(run_timestamp, conn):
                     ,target
                     ,frequency
                 order by id
-            """, conn)
+            """, conn, params = (current_date, current_date, current_date, current_date))
 
             # create copy of data which will get displayed and updated 
             st.session_state["habits_data"] = (
