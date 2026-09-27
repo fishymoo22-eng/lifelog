@@ -17,7 +17,10 @@ def insights():
     run_timestamp = datetime.now(user_timezone).strftime("%Y-%m-%d %I:%M:%S %p")
 
     # initialize database connection
-    conn = psycopg.connect(st.secrets["database"]["url"])
+    conn = psycopg.connect(
+        st.secrets["database"]["url"], 
+        options = "-c search_path=public"
+    )
 
     # render sections
     st.title("Life Insights")
